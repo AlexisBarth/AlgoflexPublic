@@ -29,10 +29,28 @@ run=$(curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json
   -X POST http://localhost/v1.40/containers/create | jq ".Id" -r)
 
 curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" \
-  -X POST http://localhost/v1.40/containers/$parse/start
+  -X POST http://localhost/v1.40/containers/$parse/start &&
 
 curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" \
-  -X POST http://localhost/v1.40/containers/$compile/start
+  -X POST http://localhost/v1.40/containers/$compile/start &&
 
 curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" \
-  -X POST http://localhost/v1.40/containers/$run/start
+  -X GET http://localhost/v1.40/containers/$compile/logs?stderr=true --output ./output_compile.log &&
+
+curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" \
+  -X POST http://localhost/v1.40/containers/$run/start &&
+  
+curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" \
+  -X GET http://localhost/v1.40/containers/$run/logs?stdout=true --output ./output_run.log &&
+
+curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" \
+  -X DELETE http://localhost/v1.40/containers/$parse &&
+
+curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" \
+  -X DELETE http://localhost/v1.40/containers/$compile &&
+
+curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" \
+  -X DELETE http://localhost/v1.40/containers/$run &&
+
+curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" \
+  -X DELETE http://localhost/v1.40/volumes/test

@@ -1,0 +1,90 @@
+- name: Installing base packages on server
+  hosts: all
+  become: yes
+  remote_user: root
+
+  tasks:
+    - name: Update repositories
+      apt:
+        upgrade: dist
+        update_cache: yes
+
+    - name: Update apt Cache
+      apt:
+        update_cache: yes
+        force_apt_get: yes
+
+    - name: waiting for sudo
+      pause:
+        seconds: 45
+
+    - name: Installing base packages
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - htop
+          - curl
+          - net-tools
+          - dnsutils
+          - python-setuptools
+          - python3-setuptools
+          - python3-pip
+          - sudo
+          - ufw
+          - unzip
+          - wget
+          - fail2ban
+
+    - name: Ensure UFW is enabled
+      ufw:
+        state: enabled
+
+    - name: Allowing ssh
+      ufw:
+        rule: allow
+        port: "22"
+        state: enabled
+
+    - name: Enabling Fail2ban
+      systemd:
+        name: fail2ban
+        enabled: yes
+        masked: no
+
+    - name: Check if configuration file already exists
+      stat:
+        path: /etc/fail2ban/jail.local
+      register: confFile
+
+    - name: Copying configuration files
+      command: cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+      when: confFile.stat.exists == false
+
+    - name: Copy sshd.local config
+      template:
+        src: ../files/sshd.local
+        dest: /etc/fail2ban/jail.d/sshd.local
+
+    - name: Reloading daemon
+      systemd:
+        daemon_reload: yes
+
+    - name: Check log directory
+      stat:
+        path: /var/log/secure
+      register: secure
+
+    - name: Create directory if not exists
+      file:
+        path: /var/log/secure
+        state: directory
+        mode: 0755
+        group: root
+        owner: root
+      when: secure.stat.exists == false
+
+    - name: Starting Fail2ban
+      service:
+        name: fail2ban
+        state: started

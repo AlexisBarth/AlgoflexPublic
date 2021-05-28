@@ -1,0 +1,8 @@
+- name: Configure compiler
+  hosts: compiler
+  become: yes
+  remote_user: root
+
+  tasks:
+    - name: Ping
+      command: echo Pong

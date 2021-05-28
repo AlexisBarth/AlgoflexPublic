@@ -74,10 +74,11 @@ To setup the server the following are needed:
 ### Steps :
 
 - Access the production file at the root of the project
-.1 Add the IP address of the server to the production file under **compiler** and **all**
-.2 Still in the production file add the password in the **ansible_ssh_pass** password.
+  1. Add the IP address of the server to the production file under **compiler** and **all**
+  2. Still in the production file add the password in the **ansible_ssh_pass** password.
 
 ![production file](https://i.imgur.com/5roxld2.png)
+
 Then save the file.
 
 - Go at the root of the project and run the command below to start the configuration :

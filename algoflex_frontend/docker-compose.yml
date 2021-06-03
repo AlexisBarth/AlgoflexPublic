@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  front:
+    container_name: dev_front
+    environment:
+      - API_PUBLIC_URL=${API_URL}
+    build:
+      context: .
+    ports:
+      - 80:3000
+    restart: always

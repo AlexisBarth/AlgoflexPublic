@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  api:
+    container_name: dev_api
+    environment:
+      - DATABASE_PUBLIC_URL=${DATABASE_URL}
+    build: .
+    restart: always
+    ports:
+      - "4100:4100"

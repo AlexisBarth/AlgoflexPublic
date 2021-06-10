@@ -1,0 +1,7 @@
+INSERT INTO ROLE
+VALUES ('ADMIN', 'Administrateur');
+
+INSERT INTO ROLE
+VALUES ('USR', 'Utilisateur');
+
+SELECT * FROM ROLE

@@ -1,0 +1,57 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ CI_CD ]
+  pull_request:
+    branches: [ CI_CD ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SSH_KEY: ${{secrets.AWS_KEY_PEM}}
+      SSH_BACK_USER: ${{ secrets.SSH_BACK_USER }}
+      SSH_FRONT_USER: ${{ secrets.SSH_FRONT_USER }}
+      HOST_PROD_BACK_SERVER: ${{secrets.HOST_PROD_BACK_SERVER}}
+      HOST_PROD_FRONT_SERVER: ${{secrets.HOST_PROD_FRONT_SERVER}}
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/KeyAlgoflex.pem
+          chmod 600 ~/.ssh/KeyAlgoflex.pem
+          cat >>~/.ssh/config <<END
+          Host back_server
+            HostName $HOST_PROD_BACK_SERVER
+          Host front_server
+            HostName $HOST_PROD_FRONT_SERVER
+          Host back_server front_server
+            User $SSH_BACK_USER
+            IdentityFile ~/.ssh/KeyAlgoflex.pem
+            StrictHostKeyChecking no
+          END
+
+      - name: Test
+        run: ls
+
+#      - name: Stop the back server
+#        run: ssh back_server 'sudo systemctl stop my-application'
+
+#      - name: Check out the source
+#        run: ssh back_server 'cd my-application && git fetch && git reset --hard origin/master'
+
+#      - name: Start the server
+#        if: ${{ always() }}
+#        run: ssh back_server 'sudo systemctl start my-application'

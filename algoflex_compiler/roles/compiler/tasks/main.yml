@@ -7,8 +7,17 @@
   roles:
     - role: "nickjj.docker"
       tags: ["docker"]
+      docker__daemon_flags:
+        - "-H unix://"
+        - "-H tcp://0.0.0.0:2375" # Here allow outside connections on engine on the port 2375
 
   # Setup Docker Auth and Engine API
   tasks:
+    - name: Allow connection on port 2375
+      ufw:
+        rule: allow
+        port: "2375"
+        state: enabled
+
     - name: Ping
       command: echo Pong

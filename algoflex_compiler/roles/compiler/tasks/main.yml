@@ -3,6 +3,12 @@
   become: yes
   remote_user: root
 
+  # Clean install Docker via ansible-galaxy
+  roles:
+    - role: "nickjj.docker"
+      tags: ["docker"]
+
+  # Setup Docker Auth and Engine API
   tasks:
     - name: Ping
       command: echo Pong

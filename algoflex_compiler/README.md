@@ -87,13 +87,7 @@ $ ansible-playbook playbook.yml
 ```
 
 If everything went well and there was no errors, the server should be fully setup, up and running.
-
-## Contributing
-
-### Code style
-
-[Conventionnal commits](https://www.conventionalcommits.org/en/v1.0.0/)
-
+  
 ### Useful links
 
 [Docker Engine API doc](https://docs.docker.com/engine/api/v1.41/)
@@ -102,6 +96,7 @@ If everything went well and there was no errors, the server should be fully setu
 
 ### Next steps
 
+- [x] Role to install Docker
 - [ ] Authentication
 - [ ] Forward requests to Docker Engine API
 

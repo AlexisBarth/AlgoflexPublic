@@ -35,6 +35,8 @@
           - unzip
           - wget
           - fail2ban
+          - gnupg
+          - lsb-release
 
     - name: Ensure UFW is enabled
       ufw:

@@ -1,6 +1,8 @@
 # Algoflex
 Projet Epitech Algoflex
 
+AL-26 IDE
+
 Contact:
 
 hugo.haquette@epitech.eu

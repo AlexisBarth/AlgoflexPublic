@@ -63,15 +63,6 @@
     
 }
 
-.output {
-        padding: 4px;
-        border: 2px solid gray;
-        min-height: 100px;
-        width: 99%;
-        resize: none;
-
-}
-
 #outer
 {
     width:100%;
@@ -80,4 +71,13 @@
 .inner
 {
     display: inline-block;
+}
+
+.output {
+    padding: 4px;
+    border: 2px solid gray;
+    min-height: 100px;
+    width: 99%;
+    resize: none;
+
 }

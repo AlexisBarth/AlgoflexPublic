@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
-import AceEditor from 'react-ace'
-import axios from 'axios'
-import './ide.css'
+import React, { useState } from 'react';
+import AceEditor from 'react-ace';
+import './ide.css';
+import { socket, ss } from "../../service/socket";
 
-import 'ace-builds/src-noconflict/mode-c_cpp'
-import 'ace-builds/src-noconflict/theme-monokai'
-import 'ace-builds/src-noconflict/ext-language_tools'
-import 'ace-builds/src-noconflict/ext-beautify'
+import 'ace-builds/src-noconflict/mode-c_cpp';
+import 'ace-builds/src-noconflict/theme-monokai';
+import 'ace-builds/src-noconflict/ext-language_tools';
+import 'ace-builds/src-noconflict/ext-beautify';
+
 
 export default function Ide() {
 
@@ -23,14 +24,18 @@ export default function Ide() {
     };
 
     function sendToCompileAndRun() {
-        axios.post('http://localhost:4100/api/build', {
-            ID: '1', 
-            code: code
-        }).then((response) => {
-            const text = response.data;
-            const newText = text.split('\n').map((str: string) => <p>{str}</p>);
-            setResponse(newText);
+        ss(socket).on('console', (stream : any) => {
+            var binaryString = "";
+
+            stream.on('data', (data : any) => {
+                for(var i = 0; i < data.length; i++) {
+                    binaryString += String.fromCharCode(data[i]);
+                }
+                setResponse(binaryString);            
+            });
         });
+
+        socket.emit('build', code);
     };
 
     function accesConfig() {

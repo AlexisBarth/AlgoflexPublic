@@ -1,8 +1,7 @@
 import errorHandler from 'errorhandler';
-import { ScopeAwareRuleWalker } from 'tslint';
-import { EmitFlags } from 'typescript';
 import app from './app';
-import { BuildController } from './controllers/build_controller';
+import { Server } from 'socket.io';
+import { BuildListener } from './listeners/build_listener';
 
 const config = require('config').get(process.env.NODE_ENV || 'development');
 
@@ -19,6 +18,20 @@ const server = http.listen(config.port, () => {
         config.mode
     );
     console.log("  Press CTRL-C to stop\n");
+});
+
+export const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+      }
+});
+
+io.on('connection', (socket) => {
+    const buildController = new BuildListener(socket);
+    socket.on('build', (data) => {
+        buildController.execute(data);
+    });
 });
 
 export default server

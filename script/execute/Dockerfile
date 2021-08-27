@@ -2,6 +2,6 @@
 
 FROM gcc:latest
 
-WORKDIR /volume/test
+WORKDIR /volume/pcr
 
-CMD ["./Test"]
+CMD ["./program"]

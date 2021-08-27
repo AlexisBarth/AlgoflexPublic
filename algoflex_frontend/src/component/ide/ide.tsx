@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import AceEditor from 'react-ace';
 import './ide.css';
-import { socket, ss } from "../../service/socket";
+import Console from '../console/console'
+import axios from 'axios'
+import { Button, Box } from '@material-ui/core'
 
 import 'ace-builds/src-noconflict/mode-c_cpp';
 import 'ace-builds/src-noconflict/theme-monokai';
@@ -12,30 +14,49 @@ import 'ace-builds/src-noconflict/ext-beautify';
 export default function Ide() {
 
     const [code, setCode] = useState('//Your code belongs to us')
-
-    const [response, setResponse] = useState("");
+    
+    const consoleRef: React.RefObject<Console> = React.useRef(null);
 
     function changeLanguages() {
         console.log("Change Langage");
     };
 
     function sendToCompile() {
-        console.log("Compile"); 
+        axios.post('http://localhost:4100/api/build', {
+            code: code,
+            execute: false
+        }).then((response) => {
+            const socketCompile = new WebSocket("ws://localhost:2376/containers/" + response.data['compileId'] + "/attach/ws?logs=1&stream=1&stdin=1&stdout=1&stderr=1");
+            consoleRef.current?.attachToConsole(socketCompile);
+            axios.post('http://localhost:4100/api/run', {
+                compileId: response.data['compileId'],
+                executeId: response.data['executeId'],
+                volumeId: response.data['volumeId'],
+                asCompiled: response.data['asCompiled']
+            });
+        });
     };
 
     function sendToCompileAndRun() {
-        ss(socket).on('console', (stream : any) => {
-            var binaryString = "";
-
-            stream.on('data', (data : any) => {
-                for(var i = 0; i < data.length; i++) {
-                    binaryString += String.fromCharCode(data[i]);
-                }
-                setResponse(binaryString);            
+        axios.post('http://localhost:4100/api/build', {
+            code: code,
+            execute: true
+        }).then((response) => {
+            let socket;
+            if(response.data['asCompiled']){
+                socket = new WebSocket("ws://localhost:2376/containers/" + response.data['executeId'] + "/attach/ws?logs=1&stream=1&stdin=1&stdout=1&stderr=1");
+            }
+            else{
+                socket = new WebSocket("ws://localhost:2376/containers/" + response.data['compileId'] + "/attach/ws?logs=1&stream=1&stdin=1&stdout=1&stderr=1");
+            }
+            axios.post('http://localhost:4100/api/run', {
+                compileId: response.data['compileId'],
+                executeId: response.data['executeId'],
+                volumeId: response.data['volumeId'],
+                asCompiled: response.data['asCompiled']
             });
+            consoleRef.current?.attachToConsole(socket);
         });
-
-        socket.emit('build', code);
     };
 
     function accesConfig() {
@@ -79,19 +100,22 @@ export default function Ide() {
                     tabSize: 4,
                 }}
             />
-            <div id="outer">
-                <div className="inner">
-                    <button className="btn1" onClick={sendToCompile}> Compile </button>
-                    <button className="btn2" onClick={sendToCompileAndRun}> Compile and Run </button>
-                    <button className="btn3" onClick={accesConfig}> Configurator </button>
-                </div>
-            </div>
-            <p> Console : </p>
-            <div className="output"> 
-                {response}
+            <Box m={1}>
+            <Box mr={1} display="inline">     
+            <Button variant="contained" color="primary" onClick={sendToCompile}> Compile </Button>
+            </Box>
+            <Box mr={1} display="inline">   
+            <Button variant="contained" onClick={sendToCompileAndRun}> Compile and Run </Button>
+            </Box>
+            <Box mr={1} display="inline">   
+            <Button variant="contained" color="secondary" onClick={accesConfig}> Configurator </Button>
+            </Box>
+            </Box>
+            <div className="col">
+            <p> Console d'exécution : </p>
+            <Console ref={consoleRef} />
             </div>
             <script src="./langage.js"></script>
-
         </body>
     )
 }

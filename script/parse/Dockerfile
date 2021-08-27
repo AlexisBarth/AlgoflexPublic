@@ -1,9 +1,5 @@
 FROM python:latest
 
-WORKDIR /volume/test
+WORKDIR /volume/pcr
 
 COPY parserEasy.py parserEasy.py
-
-#RUN python parserEasy.py '{"ID": "45", "code": "hello world"}'
-
-#CMD ["cat", "main.cpp"]

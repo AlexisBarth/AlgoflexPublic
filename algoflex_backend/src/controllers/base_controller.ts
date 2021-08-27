@@ -9,7 +9,6 @@ export abstract class BaseController {
   public async execute (
     req: express.Request, res: express.Response
   ): Promise<void> {
-
     try {
       await this.executeImpl(req, res);
     } catch (err) {

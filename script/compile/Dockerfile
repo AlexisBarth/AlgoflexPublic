@@ -2,6 +2,6 @@
 
 FROM gcc:latest
 
-WORKDIR /volume/test
+WORKDIR /volume/pcr
 
-CMD ["g++", "-o", "Test", "main.cpp"]
+CMD ["g++", "-o", "program", "main.cpp"]

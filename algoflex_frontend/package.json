@@ -1,21 +1,30 @@
 {
-  "name": "algoflex_frontend_2",
+  "name": "algoflex_frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.10",
-    "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^12.8.3",
+    "@material-ui/core": "^4.12.3",
+    "axios": "^0.21.1",
+    "react": "^17.0.2",
+    "react-ace": "^9.4.1",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^4.0.3",
+    "typescript": "^4.2.4",
+    "web-vitals": "^1.1.1",
+    "xterm": "^4.13.0",
+    "xterm-addon-attach": "^0.6.0",
+    "xterm-addon-fit": "^0.5.0"
+  },
+  "devDependencies": {
+    "@types/blessed": "^0.1.19",
     "@types/jest": "^26.0.22",
     "@types/node": "^12.20.7",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "socket.io-client": "^4.0.1",
-    "typescript": "^4.2.4",
-    "web-vitals": "^1.1.1"
+    "@types/ws": "^7.4.7",
+    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^12.8.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -23,6 +32,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:4100",
   "eslintConfig": {
     "extends": [
       "react-app",

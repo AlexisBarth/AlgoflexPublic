@@ -1,5 +1,7 @@
 import errorHandler from 'errorhandler';
 import app from './app';
+import { waitForDebugger } from 'inspector';
+import wss from './webSocket';
 
 const config = require('config').get(process.env.NODE_ENV || 'development');
 

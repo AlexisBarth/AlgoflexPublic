@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AceEditor from 'react-ace';
+import ws from '../services/socket';
 import './ide.css';
 
 import 'ace-builds/src-noconflict/mode-c_cpp';
@@ -7,7 +8,6 @@ import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-beautify';
 import { Box, Button } from '@material-ui/core';
-import axios from 'axios';
 import Console from './console';
 
 interface IdeProperties {
@@ -16,47 +16,44 @@ interface IdeProperties {
 
 const Ide = (props: IdeProperties) => {
 
-    const consoleRef = React.useRef<Console>(null);
+    const consoleCompileRef = React.useRef<Console>(null);
+    const consoleExecuteRef = React.useRef<Console>(null);
 
     const [code, setCode] = useState("");
 
-    const sendToCompile = () => {
-        axios.post('http://localhost:4100/api/build', {
-            code: code,
-            execute: false
-        }).then((response) => {
-            const socketCompile = new WebSocket("ws://localhost:2376/containers/" + response.data['compileId'] + "/attach/ws?logs=1&stream=1&stdin=1&stdout=1&stderr=1");
-            consoleRef.current?.attachToConsole(socketCompile);
-            axios.post('http://localhost:4100/api/run', {
-                compileId: response.data['compileId'],
-                executeId: response.data['executeId'],
-                volumeId: response.data['volumeId'],
-                asCompiled: response.data['asCompiled']
-            });
-        });
-    };
+    const send = (execute : boolean) => {
+        if(ws.readyState === ws.OPEN){
+            ws.onmessage = (event: MessageEvent) => {
+                let result = JSON.parse(event.data);
+                const state = result.state;
+                if(state === 1){
+                    const socketCompileTerminal = new WebSocket("ws://localhost:2376/containers/" + result.compileId + "/attach/ws?logs=1&stream=1&stdin=1&stdout=1&stderr=1");
+                    const socketExecuteTerminal = new WebSocket("ws://localhost:2376/containers/" + result.executeId + "/attach/ws?logs=1&stream=1&stdin=1&stdout=1&stderr=1");
+                    consoleCompileRef.current?.attachToConsole(socketCompileTerminal);
+                    consoleExecuteRef.current?.attachToConsole(socketExecuteTerminal);
+                }
+                else if(state === 2){
+                    const buildMessage = result.asCompiled ? "Build success" : "Build failed";
+                    consoleCompileRef.current?.write(buildMessage);
+                }
+                else if(state === 3){
+                    const executeMessage = !result.asExecuted && execute ? "Execution failed: timeout" : "";
+                    consoleExecuteRef.current?.write(executeMessage);
+                }
+                else{
+                    console.error("Error: undefined state");
+                }
+            };
 
-    const sendToCompileAndRun = () => {
-        axios.post('http://localhost:4100/api/build', {
-            code: code,
-            execute: true
-        }).then((response) => {
-            let socket;
-            if(response.data['asCompiled']){
-                socket = new WebSocket("ws://localhost:2376/containers/" + response.data['executeId'] + "/attach/ws?logs=1&stream=1&stdin=1&stdout=1&stderr=1");
-            }
-            else{
-                socket = new WebSocket("ws://localhost:2376/containers/" + response.data['compileId'] + "/attach/ws?logs=1&stream=1&stdin=1&stdout=1&stderr=1");
-            }
-            consoleRef.current?.attachToConsole(socket);
-            axios.post('http://localhost:4100/api/run', {
-                compileId: response.data['compileId'],
-                executeId: response.data['executeId'],
-                volumeId: response.data['volumeId'],
-                asCompiled: response.data['asCompiled']
-            });
-        });
-    };
+            ws.onerror = (event: Event) => {
+                console.error("Server error");
+            };
+
+            var data = {code : code, execute: execute};
+
+            ws.send(JSON.stringify(data)); 
+        }
+    }
 
     return (
     <div className="editor">
@@ -83,14 +80,15 @@ const Ide = (props: IdeProperties) => {
                 tabSize: 4,
             }}
         />
-        <Button variant="contained" color="primary" onClick={sendToCompile}> Compile </Button>
+        <Button variant="contained" color="primary" onClick={() => send(false)}> Compile </Button>
         <Box mr={1} display="inline">   
-        <Button variant="contained" onClick={sendToCompileAndRun}> Compile and Run </Button>
+        <Button variant="contained" onClick={() => send(true)}> Compile and Run </Button>
         </Box>
         <Box mr={1} display="inline">   
         <Button variant="contained" color="secondary" > Configurator </Button>
         </Box>
-        <Console ref={consoleRef} />
+        <Console ref={consoleCompileRef} />
+        <Console ref={consoleExecuteRef} />
     </div>
     );
 }

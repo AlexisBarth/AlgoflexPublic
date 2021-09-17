@@ -201,6 +201,9 @@ export default class Console extends React.Component<IProps> {
 		this.terminal.loadAddon(attachAddon);
 	}
 
+	public write(data: string){
+		this.terminal.write(data);
+	}
 
 	private onBinary(data: string) {
 		if (this.props.onBinary) this.props.onBinary(data)

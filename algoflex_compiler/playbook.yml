@@ -1,0 +1,5 @@
+- name: Setting up server
+  hosts: all
+
+- import_playbook: roles/base/tasks/main.yml
+- import_playbook: roles/compiler/tasks/main.yml

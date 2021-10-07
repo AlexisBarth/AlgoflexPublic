@@ -94,7 +94,7 @@ export class BuildListener {
     }
 
     public async destroyDocker(){
-        await Promise.all([this.parseContainer?.remove(), this.compileContainer?.remove(), this.executeContainer?.remove()]);
+        await Promise.all([this.parseContainer?.remove({force: true}), this.compileContainer?.remove({force: true}), this.executeContainer?.remove({force: true})]);
         this.commonVolume?.remove();
     }
 
@@ -104,5 +104,13 @@ export class BuildListener {
 
     private async timeout(ms: number){
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    public getCompileLink(){
+        return `ws://localhost:2376/containers/${this.getCompileId()}/attach/ws?logs=1&stream=1&stdout=1&stderr=1`;
+    }
+
+    public getExecuteLink(){
+        return `ws://localhost:2376/containers/${this.getExecuteId()}/attach/ws?logs=1&stream=1&stdout=1&stderr=1`;
     }
 }

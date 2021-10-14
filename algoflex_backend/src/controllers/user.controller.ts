@@ -1,4 +1,6 @@
-import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-controllers';
+import { JsonController, Param, Body, Get, Post, Put, Delete, Authorized } from 'routing-controllers';
+import { Inject, Service } from 'typedi';
+import { UserService } from '../services/user.service';
 
 // class BaseUser {
 //   @IsNotEmpty()
@@ -15,22 +17,32 @@ import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-control
 //   public username: string;
 // }
 
-@Controller()
+@JsonController()
+@Service()
 export class UserController {
 
-  // constructor(
-  //   private userService: UserService
-  // ) { }
+  constructor(
+    private userService: UserService
+  ) { }
 
-  @Get()
+  // @Get() 
     // @ResponseSchema(UserResponse, { isArray: true })
     // public find(): Promise<User[]> {
     //   return this.userService.find();
     // }
 
+  @Authorized()
+  @Get('/users')
+  getAll() {
+    return this.userService.find();
+    // return 'This action returns user #' + id;
+  }
+
+  @Authorized()
   @Get('/users/:id')
   getOne(@Param('id') id: number) {
-    return 'This action returns user #' + id;
+    return this.userService.find();
+    // return 'This action returns user #' + id;
   }
 
   @Post('/users')

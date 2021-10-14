@@ -11,6 +11,8 @@ npm run dev
 
 ## Lancement du serveur d'autocomplétion : 
 
+mkdir /tmp/algoflex_autocomplete
+touch /tmp/algoflex_autocomplete/file.cpp
 npm run prepare
 node dist/server.js --port 3010 --languageServers servers.yml
 

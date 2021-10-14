@@ -87,7 +87,7 @@ const Ide = (props: IdeProperties) => {
             value={code}
             onChange={code => setCode(String(code))}
             beforeMount={didMount}
-            path={`file:///tmp/algoflex_autocomplete/file_${autocompleteId}.cpp`}
+            path='file:///tmp/algoflex_autocomplete/file.cpp'
         />
         <Button variant="contained" color="primary" onClick={() => send(false)}> Compile </Button>
         <Box mr={1} display="inline">   

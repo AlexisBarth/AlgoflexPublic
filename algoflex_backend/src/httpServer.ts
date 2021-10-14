@@ -7,7 +7,9 @@ if (process.env.NODE_ENV === "development") {
     app.use(errorHandler());
 }
 
-const server = app.listen(config.port, () => {
+const http = require('http').Server(app);
+
+const server = http.listen(config.port, () => {
     console.log(
         "  App is running at http://localhost:%d in %s mode",
         config.port,
@@ -15,5 +17,7 @@ const server = app.listen(config.port, () => {
     );
     console.log("  Press CTRL-C to stop\n");
 });
+
+app.listen(4200);
 
 export default server

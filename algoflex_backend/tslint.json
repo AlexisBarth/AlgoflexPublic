@@ -5,7 +5,7 @@
     ],
     "jsRules": {},
     "rules": {
-        "no-conosle": false
+        "no-console": false
     },
     "rulesDirectory": []
 }

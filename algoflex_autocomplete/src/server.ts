@@ -9,18 +9,19 @@ import * as ws from 'ws';
 import * as rpc from '@sourcegraph/vscode-ws-jsonrpc';
 import * as rpcServer from '@sourcegraph/vscode-ws-jsonrpc/lib/server';
 
-let argv = parseArgs(process.argv.slice(2));
+const argv = parseArgs(process.argv.slice(2));
 
 if (argv.help || !argv.languageServers) {
-  console.log(`Usage: server.js --port 3000 --languageServers config.yml`);
+  console.log(`Usage: server.js --port 3010 --languageServers config.yml`);
   process.exit(1);
 }
 
-let serverPort : number = parseInt(argv.port) || 3000;
+const serverPort : number = parseInt(argv.port) || 3000;
 
-let languageServers;
+let languageServers: string[];
+
 try {
-  let parsed = yaml.safeLoad(fs.readFileSync(argv.languageServers), 'utf8');
+  const parsed = yaml.safeLoad(fs.readFileSync(argv.languageServers), 'utf8');
   if (!parsed.langservers) {
     console.log('Your langservers file is not a valid format, see README.md');
     process.exit(1);
@@ -44,7 +45,7 @@ function toSocket(webSocket: ws): rpc.IWebSocket {
       onMessage: cb => webSocket.onmessage = event => {
         // On converti le paramètre "code" en int pour éviter que le serveur de langage plante
         var result = JSON.parse(event.data.toString());
-        if(result['method'] == "textDocument/codeAction" ){
+        if(result['method'] === "textDocument/codeAction" ){
             result['params']['context']['diagnostics'].forEach((value, index, array) => {
                 array[index]['code'] = parseInt(value['code']);
             });
@@ -75,10 +76,10 @@ wss.on('connection', (client : ws, request : http.IncomingMessage) => {
     return;
   }
 
-  let localConnection = rpcServer.createServerProcess('Example', langServer[0], langServer.slice(1));
+  const localConnection = rpcServer.createServerProcess('Example', langServer[0], langServer.slice(1));
   console.log(langServer[0]);
-  let socket : rpc.IWebSocket = toSocket(client);
-  let connection = rpcServer.createWebSocketConnection(socket);
+  const socket : rpc.IWebSocket = toSocket(client);
+  const connection = rpcServer.createWebSocketConnection(socket);
   rpcServer.forward(connection, localConnection);
   console.log(`Forwarding new client`);
   socket.onClose((code, reason) => {

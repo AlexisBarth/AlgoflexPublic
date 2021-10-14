@@ -9,6 +9,15 @@ npm run start
 
 npm run dev
 
+## Lancement du serveur d'autocomplétion : 
+
+npm run prepare
+node dist/server.js --port 3010 --languageServers servers.yml
+
+### Dépendance du serveur :
+
+- ccls
+
 ## Debug Docker API engine
 
 Il faut avoir installer Docker sur le terminal ainsi que le programme "socat".

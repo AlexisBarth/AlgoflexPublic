@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import Editor from "@monaco-editor/react";
-import { MonacoLanguageClient,MonacoServices, createConnection } from '@codingame/monaco-languageclient';
+import { 
+    MonacoLanguageClient, MonacoServices, 
+    createConnection, CloseAction, ErrorAction 
+} from '@codingame/monaco-languageclient';
 import { listen, MessageConnection } from '@codingame/monaco-jsonrpc'
-import AlgoSocket from '../services/algosocket';
 import { Box, Button } from '@material-ui/core';
 import Console from './console';
-import { v4 as uuidv4 } from "uuid"
 import './ide.css';
 
-const ws = new AlgoSocket('ws://localhost:4100/ws');
-const autocompleteId = uuidv4();
+const ReconnectingWebSocket = require('reconnecting-websocket');
+
+const ws = new ReconnectingWebSocket('ws://localhost:4100/ws');
 
 interface IdeProperties {
     baseCode?: string;
@@ -26,6 +28,10 @@ const Ide = (props: IdeProperties) => {
             name: "Cpp Language Client",
             clientOptions: {
                 documentSelector: ['cpp'],
+                errorHandler: {
+                    error: () => ErrorAction.Continue,
+                    closed: () => CloseAction.DoNotRestart
+                }
             },
             connectionProvider: {
                 get: (errorHandler, closeHandler) => {
@@ -33,11 +39,23 @@ const Ide = (props: IdeProperties) => {
                 }
             }
         });
-    }
+    };
+
+    const createLanguageWebSocket = (url: string) : WebSocket => {
+        const socketOptions = {
+            maxReconnectionDelay: 10000,
+            minReconnectionDelay: 1000,
+            reconnectionDelayGrowFactor: 1.3,
+            connectionTimeout: 10000,
+            maxRetries: Infinity,
+            debug: false
+        };
+        return new ReconnectingWebSocket(url, [], socketOptions);
+    };
 
     const didMount = (monaco: any) => {
         MonacoServices.install(monaco, {rootUri: "file:///tmp/algoflex_autocomplete/"});
-        const webSocket = new WebSocket("ws://localhost:3010/cpp");
+        const webSocket = createLanguageWebSocket("ws://localhost:3010/cpp");
         listen({
             webSocket,
             onConnection: connection => {
@@ -46,11 +64,11 @@ const Ide = (props: IdeProperties) => {
                 connection.onClose(() => disposable.dispose());
             }
         });
-    }
+    };
 
     const send = (execute : boolean) => {
-        if(ws.socket.readyState === ws.socket.OPEN){
-            ws.socket.onmessage = (event: MessageEvent) => {
+        if(ws.readyState === ws.OPEN){
+            ws.onmessage = (event: MessageEvent) => {
                 let result = JSON.parse(event.data);
                 const state = result.state;
                 if(state === 1){
@@ -74,9 +92,9 @@ const Ide = (props: IdeProperties) => {
 
             var data = {code : code, execute: execute};
 
-            ws.socket.send(JSON.stringify(data)); 
+            ws.send(JSON.stringify(data)); 
         }
-    }
+    };
 
     return (
     <div className="editor">

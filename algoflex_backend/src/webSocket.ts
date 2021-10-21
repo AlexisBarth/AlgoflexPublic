@@ -20,14 +20,14 @@ wss.on('connection', (ws: WebSocket) => {
             const buildData = JSON.parse(data);
             buildListener = await BuildListener.create(buildData.code);
 
-            ws.send(JSON.stringify({state:1, executeId: buildListener.getExecuteId(), compileId: buildListener.getCompileId()}));
-            const asCompiled = await buildListener.build();
+            ws.send(JSON.stringify({state:1, executeLink: buildListener.getExecuteLink(), compileLink: buildListener.getCompileLink()}));
+            const hasCompiled = await buildListener.build();
 
-            ws.send(JSON.stringify({state:2, asCompiled}))
+            ws.send(JSON.stringify({state:2, hasCompiled}))
 
-            if(asCompiled && buildData.execute){
-                await buildListener.execute(10000);
-                ws.send(JSON.stringify({state:3, asExecuted: buildListener.isExecuted()}))
+            if(hasCompiled && buildData.execute){
+                await buildListener.execute();
+                ws.send(JSON.stringify({state:3, hasExecuted: buildListener.isExecuted()}))
             }
             removeDocker();
         }

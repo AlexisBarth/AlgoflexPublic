@@ -9,36 +9,27 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import { CardItemProps } from './interface';
 
-interface cardData {
-
-  themeName?: string;
-  themeDesc?: string;
-  themeImage?: string;
-  exerciseCount?: number;
-  finishedExerciseCount?: number;
-  favoriteStatus?: boolean;
-}
-
-export default function MultiActionAreaCard(props: cardData) {
+export default function CardItem(props: CardItemProps) {
   const [favorite, setFavorite] = useState(props.favoriteStatus);
   console.log("Card Gen");
+  console.log(props);
   let aPercentageFinished: number = 0;
-  let themeFinished: boolean = false;
-  let aFavorite: boolean = false;
+  let isThemeFinished: boolean = false;
+
 
   
   if (props.exerciseCount !== undefined && props.finishedExerciseCount !== undefined) {
     aPercentageFinished = Math.round(((props.finishedExerciseCount)/props.exerciseCount)*100);
     if (aPercentageFinished >= 100) {
       aPercentageFinished = 100;
-      themeFinished = true;
+      isThemeFinished = true;
     }
   }
 
   const testCompletion = () => {
-    if (themeFinished) {
+    if (isThemeFinished) {
       return <CheckCircleOutlineIcon />;
     } else {
       return <PlayCircleIcon />;

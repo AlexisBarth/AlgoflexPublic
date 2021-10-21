@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AceEditor from 'react-ace';
-import ws from '../services/socket';
+import AlgoSocket from '../services/algosocket';
 import './ide.css';
 
 import 'ace-builds/src-noconflict/mode-c_cpp';
@@ -9,6 +9,8 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-beautify';
 import { Box, Button } from '@material-ui/core';
 import Console from './console';
+
+const ws = new AlgoSocket('ws://localhost:4100/ws');
 
 interface IdeProperties {
     baseCode?: string;
@@ -22,22 +24,22 @@ const Ide = (props: IdeProperties) => {
     const [code, setCode] = useState("");
 
     const send = (execute : boolean) => {
-        if(ws.readyState === ws.OPEN){
-            ws.onmessage = (event: MessageEvent) => {
+        if(ws.socket.readyState === ws.socket.OPEN){
+            ws.socket.onmessage = (event: MessageEvent) => {
                 let result = JSON.parse(event.data);
                 const state = result.state;
                 if(state === 1){
-                    const socketCompileTerminal = new WebSocket("ws://localhost:2376/containers/" + result.compileId + "/attach/ws?logs=1&stream=1&stdin=1&stdout=1&stderr=1");
-                    const socketExecuteTerminal = new WebSocket("ws://localhost:2376/containers/" + result.executeId + "/attach/ws?logs=1&stream=1&stdin=1&stdout=1&stderr=1");
+                    const socketCompileTerminal = new WebSocket(result.compileLink);
+                    const socketExecuteTerminal = new WebSocket(result.executeLink);
                     consoleCompileRef.current?.attachToConsole(socketCompileTerminal);
                     consoleExecuteRef.current?.attachToConsole(socketExecuteTerminal);
                 }
                 else if(state === 2){
-                    const buildMessage = result.asCompiled ? "Build success" : "Build failed";
+                    const buildMessage = result.hasCompiled ? "Build success" : "Build failed";
                     consoleCompileRef.current?.write(buildMessage);
                 }
                 else if(state === 3){
-                    const executeMessage = !result.asExecuted && execute ? "Execution failed: timeout" : "";
+                    const executeMessage = !result.hasExecuted && execute ? "Execution failed: timeout" : "";
                     consoleExecuteRef.current?.write(executeMessage);
                 }
                 else{
@@ -45,13 +47,9 @@ const Ide = (props: IdeProperties) => {
                 }
             };
 
-            ws.onerror = (event: Event) => {
-                console.error("Server error");
-            };
-
             var data = {code : code, execute: execute};
 
-            ws.send(JSON.stringify(data)); 
+            ws.socket.send(JSON.stringify(data)); 
         }
     }
 

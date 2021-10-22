@@ -1,9 +1,9 @@
-import React, { useState, useContext, ChangeEvent, FormEvent } from 'react';
+import { useState, useContext, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { SignupProps } from '../interfaces';
-import { FirebaseContext } from '../services/Firebase';
+import { FirebaseContext } from '../../services/Firebase';
+import history from '../../services/history';
 
-const Signup = (props: SignupProps) => {
+const Signup = () => {
 
     const firebase = useContext(FirebaseContext);
 
@@ -27,7 +27,7 @@ const Signup = (props: SignupProps) => {
         firebase.signupUser(email, password)
         .then(user => {
             setloginData({...data})
-            props.history.push('/welcome');
+            history.push('/welcome');
         })
         .catch(error => {
             setError(error);

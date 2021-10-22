@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { ForgetPasswordProps } from '../interfaces';
-import { FirebaseContext } from '../services/Firebase';
+import { FirebaseContext } from '../../services/Firebase';
+import history from '../../services/history'
 
-const ForgetPassword = (props: ForgetPasswordProps) => {
+const ForgetPassword = () => {
 
     const firebase = useContext(FirebaseContext);
     
@@ -20,7 +20,7 @@ const ForgetPassword = (props: ForgetPasswordProps) => {
             setEmail("");
 
             setTimeout(() => {
-                props.history.push('/login')
+                history.push('/login')
             }, 5000)
         })
         .catch(error => {

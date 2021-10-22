@@ -1,13 +1,12 @@
-import React, { useState, Fragment, useContext, useEffect } from 'react';
-import { FirebaseContext } from '../services/Firebase';
+import { useState, Fragment, useContext, useEffect } from 'react';
+import { FirebaseContext } from '../../services/Firebase';
 import firebase from "firebase/app";
-import Logo from '../Logo';
 import Navigation from '../Navigation';
 import Logout from '../Logout';
-import { WelcomeProps } from '../interfaces';
+import history from '../../services/history'
 type User = firebase.User;
 
-const Welcome = (props: WelcomeProps) => {
+const Welcome = () => {
 
     const Firebase = useContext(FirebaseContext)
 
@@ -16,13 +15,13 @@ const Welcome = (props: WelcomeProps) => {
     useEffect(() => {
 
         let listener = Firebase.auth.onAuthStateChanged(user => {
-            user ? setUserSession(user) : props.history.push('/')
+            user ? setUserSession(user) : history.push('/')
         })
 
         return () => {
             listener()
         };
-    }, [Firebase.auth, props.history])
+    }, [Firebase.auth])
 
     return userSession == null ? (
         <Fragment>
@@ -33,7 +32,6 @@ const Welcome = (props: WelcomeProps) => {
         <div className="quiz-bg">
             <div className="container">
                 <Navigation />
-                <Logo />
                 <Logout />
             </div>
         </div>

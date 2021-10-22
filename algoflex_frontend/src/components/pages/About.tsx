@@ -1,12 +1,6 @@
-import React from 'react';
-import Logo from '../Logo';
-import Navigation from '../Navigation';
-
 const About = () => {
     return (
         <div>
-            <Navigation />
-            <Logo />
             <h1>A propos</h1>
             <br />
             <br />

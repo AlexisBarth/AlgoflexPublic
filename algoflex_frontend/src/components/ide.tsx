@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AceEditor from 'react-ace';
-import AlgoSocket from './services/algosocket';
+import AlgoSocket from '../services/algosocket';
 import './ide.css';
 
 import 'ace-builds/src-noconflict/mode-c_cpp';

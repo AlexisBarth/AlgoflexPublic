@@ -1,0 +1,11 @@
+[compiler]
+# your.ip.address.here
+
+[all]
+# your.ip.address.here
+
+[all:vars]
+ansible_user=root
+ansible_connection=ssh
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_pass=yourPasswordHere <==== Don't forget to add the server password here

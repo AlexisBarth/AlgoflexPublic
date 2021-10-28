@@ -15,5 +15,5 @@ export class Theme {
   desc: string;
 
   @Column()
-  image: number;
+  image: string;
 }

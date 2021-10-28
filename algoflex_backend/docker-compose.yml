@@ -1,18 +1,5 @@
 version: "3.7"
 services:
-  api:
-    container_name: algoflex_back
-    environment:
-      - DATABASE_PUBLIC_URL=db
-    build: .
-    restart: always
-    ports:
-      - "4100:4100"
-    networks:
-      - backend
-    depends_on:
-      - db
-
   db:
     image: mcr.microsoft.com/mssql/server:2017-latest
     restart: always
@@ -21,9 +8,3 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "Abc123**"
-    networks:
-      - backend
-
-networks:
-  backend:
-    driver: bridge

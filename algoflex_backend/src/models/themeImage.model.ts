@@ -1,19 +1,16 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
 
 @Entity()
-export class Theme {
+export class ThemeImage {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  type: string;
 
   @Column()
   name: string;
 
   @Column()
-  desc: string;
+  description: string;
 
   @Column()
-  image: number;
+  url: string;
 }

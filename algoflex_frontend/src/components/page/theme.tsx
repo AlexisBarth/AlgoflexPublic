@@ -1,6 +1,6 @@
 import React from "react";
 import CardList from "../cardList";
-import { CardItemProps } from "../interface";
+import { CardItemProps } from "../interfaces";
 
 
 
@@ -27,37 +27,37 @@ import { CardItemProps } from "../interface";
 
 const itemData: CardItemProps[] = [
     {
-        themeName: 'Theme01',
-        themeDesc: 'Test Value',
+        cardName: 'Theme01',
+        cardDesc: 'Test Value',
         exerciseCount: 35,
         finishedExerciseCount: 7,
-        themeImage: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+        cardImage: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
         favoriteStatus: true,
     },
     {
-        themeName: 'Theme02',
-        themeDesc: 'Desc012',
+        cardName: 'Theme02',
+        cardDesc: 'Desc012',
         exerciseCount: 5,
         finishedExerciseCount: 5,
-        themeImage: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+        cardImage: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
         favoriteStatus: false,
 
     },
     {
-        themeName: 'Theme03',
-        themeDesc: 'Desc03',
+        cardName: 'Theme03',
+        cardDesc: 'Desc03',
         exerciseCount: 25,
         finishedExerciseCount: 20,
-        themeImage: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+        cardImage: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
         favoriteStatus: true,
 
     },
     {
-        themeName: 'Theme04',
-        themeDesc: 'Desc04',
+        cardName: 'Theme04',
+        cardDesc: 'Desc04',
         exerciseCount: 50,
         finishedExerciseCount: 34,
-        themeImage: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+        cardImage: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
         favoriteStatus: false,
 
     },

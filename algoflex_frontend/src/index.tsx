@@ -10,7 +10,7 @@ import Exercice from './components/page/exercice'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Exercice />
+    <Ide />
   </React.StrictMode>,
   document.getElementById('root')
 );

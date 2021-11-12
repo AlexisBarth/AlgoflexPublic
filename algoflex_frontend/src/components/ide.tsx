@@ -1,31 +1,74 @@
 import React, { useState } from 'react';
-import AceEditor from 'react-ace';
-import AlgoSocket from '../services/algosocket';
+import { Box, Button } from '@mui/material';
+import Editor from "@monaco-editor/react";
+import { 
+    MonacoLanguageClient, MonacoServices, 
+    createConnection, CloseAction, ErrorAction 
+} from '@codingame/monaco-languageclient';
+import { listen, MessageConnection } from '@codingame/monaco-jsonrpc'
+import Console from './console';
 import './ide.css';
 
-import 'ace-builds/src-noconflict/mode-c_cpp';
-import 'ace-builds/src-noconflict/theme-monokai';
-import 'ace-builds/src-noconflict/ext-language_tools';
-import 'ace-builds/src-noconflict/ext-beautify';
-import { Box, Button } from '@mui/material';
-import Console from './console';
+const ReconnectingWebSocket = require('reconnecting-websocket');
 
-const ws = new AlgoSocket('ws://localhost:4100/ws');
+const ws = new ReconnectingWebSocket('ws://localhost:4100/ws');
 
 interface IdeProperties {
     baseCode?: string;
 }
 
 const Ide = (props: IdeProperties) => {
-
     const consoleCompileRef = React.useRef<Console>(null);
     const consoleExecuteRef = React.useRef<Console>(null);
 
     const [code, setCode] = useState("");
 
+    const createLanguageClient = (connection: MessageConnection): MonacoLanguageClient => {
+        return new MonacoLanguageClient({
+            name: "Cpp Language Client",
+            clientOptions: {
+                documentSelector: ['cpp'],
+                errorHandler: {
+                    error: () => ErrorAction.Continue,
+                    closed: () => CloseAction.DoNotRestart
+                }
+            },
+            connectionProvider: {
+                get: (errorHandler, closeHandler) => {
+                    return Promise.resolve(createConnection(connection, errorHandler, closeHandler))
+                }
+            }
+        });
+    };
+
+    const createLanguageWebSocket = (url: string) : WebSocket => {
+        const socketOptions = {
+            maxReconnectionDelay: 10000,
+            minReconnectionDelay: 1000,
+            reconnectionDelayGrowFactor: 1.3,
+            connectionTimeout: 10000,
+            maxRetries: Infinity,
+            debug: false
+        };
+        return new ReconnectingWebSocket(url, [], socketOptions);
+    };
+
+    const didMount = (monaco: any) => {
+        MonacoServices.install(monaco, {rootUri: "file:///tmp/algoflex_autocomplete/"});
+        const webSocket = createLanguageWebSocket("ws://localhost:3010/cpp");
+        listen({
+            webSocket,
+            onConnection: connection => {
+                const languageClient = createLanguageClient(connection);
+                const disposable = languageClient.start();
+                connection.onClose(() => disposable.dispose());
+            }
+        });
+    };
+
     const send = (execute : boolean) => {
-        if(ws.socket.readyState === ws.socket.OPEN){
-            ws.socket.onmessage = (event: MessageEvent) => {
+        if(ws.readyState === ws.OPEN){
+            ws.onmessage = (event: MessageEvent) => {
                 let result = JSON.parse(event.data);
                 const state = result.state;
                 if(state === 1){
@@ -49,34 +92,20 @@ const Ide = (props: IdeProperties) => {
 
             var data = {code : code, execute: execute};
 
-            ws.socket.send(JSON.stringify(data)); 
+            ws.send(JSON.stringify(data)); 
         }
-    }
+    };
 
     return (
     <div className="editor">
-        <AceEditor
-            style={{
-                height: '50vh',
-                width: '100%',
-            }}
-            placeholder='Start Coding'
-            theme='monokai'
-            mode="c_cpp"
-            name='basic-code-editor'
-            onChange={code => setCode(code)}
-            fontSize={18}
-            showPrintMargin={false}
-            showGutter={true}
-            highlightActiveLine={true}
+           <Editor
+            height="70vh"
+            defaultLanguage="cpp"
+            theme="vs-dark"
             value={code}
-            setOptions={{
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: true,
-                enableSnippets: true,
-                showLineNumbers: true,
-                tabSize: 4,
-            }}
+            onChange={code => setCode(String(code))}
+            beforeMount={didMount}
+            path='file:///tmp/algoflex_autocomplete/file.cpp'
         />
         <Button variant="contained" color="primary" onClick={() => send(false)}> Compile </Button>
         <Box mr={1} display="inline">   

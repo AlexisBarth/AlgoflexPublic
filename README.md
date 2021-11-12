@@ -9,6 +9,16 @@ npm run start
 
 npm run dev
 
+## Lancement du serveur d'autocomplétion : 
+
+mkdir /tmp/algoflex_autocomplete
+touch /tmp/algoflex_autocomplete/file.cpp
+npm run dev
+
+### Dépendance du serveur :
+
+- ccls
+
 ## Debug Docker API engine
 
 Il faut avoir installer Docker sur le terminal ainsi que le programme "socat".

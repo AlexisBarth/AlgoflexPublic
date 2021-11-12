@@ -4,12 +4,13 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Ide from './components/ide';
 import Theme from './components/page/theme';
+import Exercice from './components/page/exercice'
 
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <Theme />
+    <Exercice />
   </React.StrictMode>,
   document.getElementById('root')
 );

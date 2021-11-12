@@ -31,7 +31,7 @@ const itemData: CardItemProps[] = [
         cardDesc: 'Test Value',
         exerciseCount: 35,
         finishedExerciseCount: 7,
-        cardImage: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+        cardImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Cayley_Q8_quaternion_multiplication_graph.svg/330px-Cayley_Q8_quaternion_multiplication_graph.svg.png',
         favoriteStatus: true,
     },
     {
@@ -39,7 +39,7 @@ const itemData: CardItemProps[] = [
         cardDesc: 'Desc012',
         exerciseCount: 5,
         finishedExerciseCount: 5,
-        cardImage: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+        cardImage: 'https://media.wired.com/photos/5af2249a0b975d475fa7afbf/master/pass/algorithms_landlord-FINAL.jpg',
         favoriteStatus: false,
 
     },
@@ -48,7 +48,7 @@ const itemData: CardItemProps[] = [
         cardDesc: 'Desc03',
         exerciseCount: 25,
         finishedExerciseCount: 20,
-        cardImage: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+        cardImage: 'https://d2jx2rerrg6sh3.cloudfront.net/image-handler/picture/2021/1/shutterstock_1691666992-1.jpg',
         favoriteStatus: true,
 
     },
@@ -57,7 +57,7 @@ const itemData: CardItemProps[] = [
         cardDesc: 'Desc04',
         exerciseCount: 50,
         finishedExerciseCount: 34,
-        cardImage: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+        cardImage: 'http://d30ce0f8e9hxxq.cloudfront.net/0_live-card-images/16142/1436203361959_game-as-art.jpg?time=1436203363181',
         favoriteStatus: false,
 
     },

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { Box, Button } from '@mui/material';
 import Editor from "@monaco-editor/react";
 import { 
     MonacoLanguageClient, MonacoServices, 
     createConnection, CloseAction, ErrorAction 
 } from '@codingame/monaco-languageclient';
 import { listen, MessageConnection } from '@codingame/monaco-jsonrpc'
-import { Box, Button } from '@material-ui/core';
 import Console from './console';
 import './ide.css';
 

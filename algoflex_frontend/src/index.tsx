@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Ide from './components/ide';
+import Theme from './components/page/theme';
+import Exercice from './components/page/exercice'
 
 
 

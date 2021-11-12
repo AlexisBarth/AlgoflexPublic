@@ -2,8 +2,6 @@ import React from "react";
 import CardList from "../cardList";
 import { CardItemProps } from "../interfaces";
 
-
-
 // Page Thème:
 // Ajouter navbar
 // Afficher liste thèmes
@@ -17,13 +15,6 @@ import { CardItemProps } from "../interfaces";
 //générer cartes pour les thèmes trouvé
 //pagination des thèmes
 //recherche thèmes
-
-// themeName?: string;
-//   themeDesc?: string;
-//   themeImage?: string;
-//   exerciseCount?: number;
-//   finishedExerciseCount?: number;
-
 
 const itemData: CardItemProps[] = [
     {

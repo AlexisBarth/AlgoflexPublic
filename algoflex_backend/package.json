@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsc-watch --onSuccess \"node ./dist/webSocket.js\"",
     "prod": "cross-env NODE_ENV=production tsc && node ./dist/webSocket.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --build",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "author": "",
   "license": "ISC",

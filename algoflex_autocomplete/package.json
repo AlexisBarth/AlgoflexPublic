@@ -16,7 +16,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsc-watch --onSuccess \"node ./dist/server.js --port 3010 --languageServers servers.yml\"",
     "prod": "cross-env NODE_ENV=production tsc && node ./dist/server.js --port 3010 --languageServers servers.yml",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --build",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "dependencies": {
     "@sourcegraph/vscode-ws-jsonrpc": "0.0.3-fork",

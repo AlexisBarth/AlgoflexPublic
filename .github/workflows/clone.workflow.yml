@@ -3,8 +3,6 @@ name: clone_workflow
 on:
   push:
     branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
 
 jobs:
   copy:
@@ -17,6 +15,6 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.ALGOFLEX_TOKEN }}
       with:
         source-files: '.'
-        destination-username: 'Hugo087'
-        destination-repository: 'Algo2'
+        destination-username: 'EpitechMscPro2020'
+        destination-repository: 'Algoflex'
         commit-email: 'hugo097@hotmail.fr'

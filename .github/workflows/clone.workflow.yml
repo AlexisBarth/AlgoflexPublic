@@ -3,15 +3,20 @@ name: clone_workflow
 on:
   push:
     branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
 
 jobs:
   copy:
     runs-on: ubuntu-latest
     steps:
-    - run: |
-          rm -rfv !(".git")
-          git clone https://.:${{ secrets.ALGOFLEX_TOKEN }}@github.com/Hugo087/Algo2.git
-          git add .
-          git diff-index --quiet HEAD || git commit -m "Automatic publish from github.com/project"
-          git push target master
-    
+    - uses: actions/checkout@v2
+    - name: Copy files to another repository
+      uses: nkoppel/push-files-to-another-repository@v1.1.0
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.ALGOFLEX_TOKEN }}
+      with:
+        source-files: '.'
+        destination-username: 'hugo087'
+        destination-repository: 'github.com/Hugo087/Algo2'
+        commit-email: 'hugo097@hotmail.fr'

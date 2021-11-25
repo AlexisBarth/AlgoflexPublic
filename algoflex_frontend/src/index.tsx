@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 import Firebase, { FirebaseContext } from './services/Firebase';
-import Ide from './components/ide';
-import Theme from './components/page/theme';
-import Exercice from './components/page/exercice'
-
 
 ReactDOM.render(
   <React.StrictMode>

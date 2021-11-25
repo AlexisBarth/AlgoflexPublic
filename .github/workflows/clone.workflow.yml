@@ -17,6 +17,6 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.ALGOFLEX_TOKEN }}
       with:
         source-files: '.'
-        destination-username: 'hugo087'
-        destination-repository: 'github.com/Hugo087/Algo2'
+        destination-username: 'Hugo087'
+        destination-repository: 'Algo2'
         commit-email: 'hugo097@hotmail.fr'

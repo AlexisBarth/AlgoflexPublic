@@ -9,12 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - run: rm -rf .git
     - name: Copy files to another repository
       uses: nkoppel/push-files-to-another-repository@v1.1.0
       env:
         API_TOKEN_GITHUB: ${{ secrets.ALGOFLEX_TOKEN }}
       with:
-        source-files: '!(.git)'
+        source-files: '.'
         destination-branch: 'develop'
         destination-username: 'EpitechMscPro2020'
         destination-repository: 'Algoflex'

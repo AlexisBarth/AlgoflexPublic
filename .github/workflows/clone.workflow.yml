@@ -15,7 +15,7 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.ALGOFLEX_TOKEN }}
       with:
         source-files: '.'
-        target-branch: 'develop'
+        destination-branch: 'develop'
         destination-username: 'EpitechMscPro2020'
         destination-repository: 'Algoflex'
         commit-email: 'hugo097@hotmail.fr'

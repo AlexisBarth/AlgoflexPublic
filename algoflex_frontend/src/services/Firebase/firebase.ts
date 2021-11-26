@@ -27,8 +27,13 @@ class Firebase {
 
     // inscription
     signupUser = async (email: string, password: string) => {
-        const user = await this.auth.createUserWithEmailAndPassword(email, password);
-        console.log(user);
+        const { user } = await this.auth.createUserWithEmailAndPassword(email, password);
+        const token = await user?.getIdToken(true);
+        if (token === undefined) {
+            return;
+        }
+        localStorage.setItem('token', token);
+        client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
 
     // connexion

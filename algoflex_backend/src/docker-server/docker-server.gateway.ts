@@ -7,28 +7,18 @@ import { UpdateDockerServerDto } from './dto/update-docker-server.dto';
 export class DockerServerGateway {
   constructor(private readonly dockerServerService: DockerServerService) {}
 
-  @SubscribeMessage('createDockerServer')
-  create(@MessageBody() createDockerServerDto: CreateDockerServerDto) {
-    return this.dockerServerService.create(createDockerServerDto);
+  @SubscribeMessage('ws/message')
+  onMessage() {
+    // return this.dockerServerService.findAll();
   }
 
-  @SubscribeMessage('findAllDockerServer')
-  findAll() {
-    return this.dockerServerService.findAll();
+  @SubscribeMessage('ws/connection')
+  onConnection(@MessageBody() createDockerServerDto: CreateDockerServerDto) {
+    // return this.dockerServerService.create(createDockerServerDto);
   }
 
-  @SubscribeMessage('findOneDockerServer')
-  findOne(@MessageBody() id: number) {
-    return this.dockerServerService.findOne(id);
-  }
-
-  @SubscribeMessage('updateDockerServer')
-  update(@MessageBody() updateDockerServerDto: UpdateDockerServerDto) {
-    return this.dockerServerService.update(updateDockerServerDto.id, updateDockerServerDto);
-  }
-
-  @SubscribeMessage('removeDockerServer')
-  remove(@MessageBody() id: number) {
-    return this.dockerServerService.remove(id);
+  @SubscribeMessage('ws/close')
+  onClose(@MessageBody() id: number) {
+    // return this.dockerServerService.remove(id);
   }
 }

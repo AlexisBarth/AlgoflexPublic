@@ -34,5 +34,3 @@ export class ProblemsController {
     return this.problemsService.remove(+id);
   }
 }
-
-

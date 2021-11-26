@@ -1,5 +1,4 @@
-import { IsArray, IsString } from "class-validator";
-import { Role } from "src/users/entity";
+import { IsString } from 'class-validator';
 
 export class RegisterDto {
   @IsString()

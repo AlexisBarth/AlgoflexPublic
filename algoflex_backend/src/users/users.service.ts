@@ -1,6 +1,5 @@
-import { ConflictException, Injectable, NotFoundException, Scope } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { createSalt, encodePassword } from 'src/auth/password';
 import { Repository } from 'typeorm';
 // import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entity';
@@ -14,7 +13,7 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     return this.userRepository.find({
-      relations: ['roles']
+      relations: ['roles'],
     });
   }
 

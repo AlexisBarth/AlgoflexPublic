@@ -10,7 +10,7 @@ async function bootstrap() {
 
   const options = new DocumentBuilder()
     .setTitle('Algoflex API backend')
-    .setDescription('API to retrieve problem\'s data')
+    .setDescription("API to retrieve problem's data")
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, options);

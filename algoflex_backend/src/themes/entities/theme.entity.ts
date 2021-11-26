@@ -1,6 +1,6 @@
-import { Problem } from "src/problems/entities/problem.entity";
-import { User } from "src/users/entity";
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinTable, ManyToMany } from "typeorm";
+import { Problem } from 'src/problems/entities/problem.entity';
+import { User } from 'src/users/entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from 'typeorm';
 
 @Entity()
 export class Theme {
@@ -16,12 +16,9 @@ export class Theme {
   @Column()
   imageUrl: string;
 
-  @OneToMany(() => Problem, problem => problem.theme)
+  @OneToMany(() => Problem, (problem) => problem.theme)
   problems: Problem[];
 
-  @ManyToMany(
-    type => User,
-    user => user.favoriteThemes,
-  )
+  @ManyToMany(() => User, (user) => user.favoriteThemes)
   users: User[];
 }

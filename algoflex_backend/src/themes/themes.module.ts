@@ -5,10 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Theme } from './entities';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Theme])
-  ],
+  imports: [TypeOrmModule.forFeature([Theme])],
   controllers: [ThemesController],
-  providers: [ThemesService]
+  providers: [ThemesService],
 })
 export class ThemesModule {}

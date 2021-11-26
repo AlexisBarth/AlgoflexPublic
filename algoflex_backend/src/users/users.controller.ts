@@ -1,7 +1,6 @@
 import {
   Controller,
   ClassSerializerInterceptor,
-  Request,
   Get,
   Post,
   UseGuards,
@@ -14,11 +13,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/auth/dto';
 import { JwtAuthGuard } from '../common';
-import {
-  RolesGuard,
-  Role,
-  Roles
-} from '../common';
+import { RolesGuard, Role, Roles } from '../common';
 import { User } from './entity';
 import { UsersService } from './users.service';
 
@@ -26,9 +21,7 @@ import { UsersService } from './users.service';
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
-  constructor(
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
@@ -39,7 +32,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
-  @Get(":id")
+  @Get(':id')
   findOne(@Param('id') id: string): Promise<User> {
     return this.usersService.findById(id);
   }
@@ -53,14 +46,14 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
-  @Put(":userId")
+  @Put(':userId')
   update(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
-  @Delete(":id")
+  @Delete(':id')
   remove(@Param('id') id: string): Promise<User> {
     return this.usersService.remove(id);
   }

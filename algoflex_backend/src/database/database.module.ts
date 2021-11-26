@@ -10,8 +10,8 @@ export class DatabaseModule {
         {
           provide: 'CONNECTION',
           useValue: createConnection(options),
-        }
-      ]
-    }
+        },
+      ],
+    };
   }
 }

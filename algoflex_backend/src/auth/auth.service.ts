@@ -13,7 +13,7 @@ export class AuthService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) {}
 
   public async validateUser(email: string, pass: string): Promise<any> {
@@ -24,7 +24,7 @@ export class AuthService {
     const providedPassword = await encodePassword(pass, user.salt);
     if (user.password === providedPassword) {
       const { password, salt, ...result } = user;
-      console.log("result", result);
+      console.log('result', result);
       return result;
     }
     return null;
@@ -38,8 +38,8 @@ export class AuthService {
       email: user.email,
       roles: user.roles,
     };
-    console.log("user", user);
-    console.log("payload", payload);
+    console.log('user', user);
+    console.log('payload', payload);
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -51,9 +51,7 @@ export class AuthService {
       throw new ConflictException(`Email ${registerDto.email} is already used`);
     }
 
-    const roles = await Promise.all(
-      registerDto.roles.map(name => this.preloadRoleByName(name)),
-    );
+    const roles = await Promise.all(registerDto.roles.map((name) => this.preloadRoleByName(name)));
     const salt = await createSalt();
     const password = await encodePassword(registerDto.password, salt);
     const user = {
@@ -72,9 +70,12 @@ export class AuthService {
   }
 
   private async findByEmail(email: string): Promise<User> {
-    return await this.userRepository.findOne({ email }, {
-      relations: ['roles'],
-    });
+    return await this.userRepository.findOne(
+      { email },
+      {
+        relations: ['roles'],
+      }
+    );
   }
 
   private async preloadRoleByName(name: string): Promise<Role> {

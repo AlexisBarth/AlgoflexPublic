@@ -28,8 +28,8 @@ import * as Joi from '@hapi/joi';
       database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
-      options: { 
-        encrypt: false
+      options: {
+        encrypt: false,
       },
     }),
     AuthModule,

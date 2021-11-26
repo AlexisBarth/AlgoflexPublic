@@ -14,13 +14,13 @@ export class ThemesService {
 
   async findAll(): Promise<Theme[]> {
     return this.themeRepository.find({
-      relations: ['images']
+      relations: ['images'],
     });
   }
 
   async findOne(id: number): Promise<Theme> {
     const theme = await this.themeRepository.findOne(id, {
-      relations: ['images']
+      relations: ['images'],
     });
     if (!theme) {
       throw new NotFoundException(`Theme ${id} not found`);

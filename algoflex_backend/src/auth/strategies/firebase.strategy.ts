@@ -6,12 +6,11 @@ import { ServiceAccount } from 'firebase-admin';
 
 @Injectable()
 export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase-auth') {
-
   firebase_params: ServiceAccount = {
     projectId: process.env.FIREBASE_PROJECT_ID,
     privateKey: process.env.FIREBASE_PRIVATE_KEY,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-  }
+  };
 
   private defaultApp: any;
 

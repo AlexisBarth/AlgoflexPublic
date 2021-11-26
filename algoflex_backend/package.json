@@ -105,8 +105,8 @@
   },
   "lint-staged": {
     "**/*.js": [
-      "yarn lint",
-      "yarn format",
+      "npm run lint",
+      "npm run format",
       "git add"
     ]
   }

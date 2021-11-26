@@ -23,12 +23,7 @@ import { Role, User } from 'src/users/entity';
     }),
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    FirebaseStrategy,
-    JwtStrategy,
-    LocalStrategy,
-  ],
+  providers: [AuthService, FirebaseStrategy, JwtStrategy, LocalStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

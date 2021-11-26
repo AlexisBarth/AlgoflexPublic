@@ -1,7 +1,7 @@
-import { Role } from "./role.entity";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Role } from './role.entity';
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude, Transform, Type } from 'class-transformer';
-import { Theme } from "src/themes/entities";
+import { Theme } from 'src/themes/entities';
 
 @Entity()
 export class User {
@@ -29,13 +29,9 @@ export class User {
   favoriteLangage: string;
 
   @JoinTable()
-  @ManyToMany(
-    type => Theme,
-    (theme) => theme.users,
-    {
-      cascade: true,
-    }
-  )
+  @ManyToMany(() => Theme, (theme) => theme.users, {
+    cascade: true,
+  })
   favoriteThemes: Theme[];
 
   @Column({ nullable: true })
@@ -44,15 +40,11 @@ export class User {
   @Column({ nullable: true })
   createdAt: string;
 
-  @Transform((roles) => roles.value.map(role => role.name), { toPlainOnly: true })
+  @Transform((roles) => roles.value.map((role) => role.name), { toPlainOnly: true })
   @Type(() => Role)
   @JoinTable()
-  @ManyToMany(
-    type => Role,
-    (role) => role.name,
-    {
-      cascade: true,
-    }
-  )
+  @ManyToMany(() => Role, (role) => role.name, {
+    cascade: true,
+  })
   roles?: Role[];
 }

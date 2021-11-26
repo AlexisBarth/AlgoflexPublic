@@ -1,5 +1,5 @@
-import { Theme } from "src/themes/entities";
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm";
+import { Theme } from 'src/themes/entities';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Problem {
@@ -9,6 +9,6 @@ export class Problem {
   @Column()
   description: string;
 
-  @ManyToOne(() => Theme, theme => theme.problems)
+  @ManyToOne(() => Theme, (theme) => theme.problems)
   theme: Theme;
 }

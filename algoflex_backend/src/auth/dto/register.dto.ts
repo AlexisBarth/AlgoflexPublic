@@ -13,6 +13,6 @@ export class RegisterDto {
   @IsString()
   readonly password: string;
 
-  @IsString({ each: true })
-  readonly roles: string[];
+  @IsString()
+  readonly role: string;
 }

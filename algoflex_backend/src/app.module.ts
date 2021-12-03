@@ -8,7 +8,6 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ProblemsModule } from './problems/problems.module';
 import { ThemesModule } from './themes/themes.module';
-import { DockerServerModule } from './docker-server/docker-server.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -37,7 +36,6 @@ import * as Joi from '@hapi/joi';
     UsersModule,
     ProblemsModule,
     ThemesModule,
-    DockerServerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

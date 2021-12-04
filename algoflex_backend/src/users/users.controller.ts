@@ -12,8 +12,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { FirebaseAuthGuard } from '../common';
-import { RolesGuard, Role, Roles } from '../common';
+import { FirebaseAuthGuard, RolesGuard, Role, Roles } from '../common';
 import { User } from './entity';
 import { UsersService } from './users.service';
 

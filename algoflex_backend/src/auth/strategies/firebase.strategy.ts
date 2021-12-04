@@ -1,4 +1,4 @@
-import { Strategy, ExtractJwt } from 'passport-firebase-jwt';
+import { Strategy } from 'passport-firebase-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../auth.service';
@@ -38,15 +38,13 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase-auth'
     if (!firebaseUser) {
       throw new UnauthorizedException();
     }
-    const verifiedUser = await this.verifyUser(firebaseUser);
-    return verifiedUser;
+    return this.verifyUser(firebaseUser);
   }
 
   async verifyUser(firebaseUser): Promise<User> {
     const existingUser = await this.authService.findById(firebaseUser.uid);
     if (!existingUser) {
-      const newUser = await this.authService.register(firebaseUser);
-      return newUser;
+      return this.authService.register(firebaseUser);
     }
     return existingUser;
   }

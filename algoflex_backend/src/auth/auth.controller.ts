@@ -1,6 +1,6 @@
 import { Controller, Request, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard, FirebaseAuthGuard } from '../common';
+import { FirebaseAuthGuard } from '../common';
 import { User } from 'src/users/entity';
 import { ApiTags } from '@nestjs/swagger';
 

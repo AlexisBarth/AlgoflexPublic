@@ -1,11 +1,10 @@
-import { Problem } from 'src/problems/entities/problem.entity';
 import { User } from 'src/users/entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToMany } from 'typeorm';
 
 @Entity()
 export class Theme {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryColumn({ unique: true })
+  uid: string;
 
   @Column()
   name: string;
@@ -15,9 +14,6 @@ export class Theme {
 
   @Column()
   imageUrl: string;
-
-  @OneToMany(() => Problem, (problem) => problem.theme)
-  problems: Problem[];
 
   @ManyToMany(() => User, (user) => user.favoriteThemes)
   users: User[];

@@ -1,26 +1,61 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { UpdateSubmissionDto } from './dto/update-submission.dto';
+import { Submission } from './entities/submission.entity';
+
+enum SubmissionStatus {
+  Correct = "CORRECT",
+  Incorrect = "INCORRECT",
+}
 
 @Injectable()
 export class SubmissionsService {
-  create(createSubmissionDto: CreateSubmissionDto) {
-    return 'This action adds a new submission';
+  constructor(
+    @InjectRepository(Submission)
+    private readonly submissionRepository: Repository<Submission>
+  ) {}
+
+  async findAll(id: string): Promise<Submission[]> {
+    return this.submissionRepository.find({ userId: id });
   }
 
-  findAll() {
-    return `This action returns all submissions`;
+  async findOne(submissionId: string, userId: string): Promise<Submission> {
+    const submission = await this.submissionRepository.findOne({
+      uid: submissionId,
+      userId: userId,
+    });
+    if (!submission) {
+      throw new NotFoundException(`Submission ${submissionId} not found`);
+    }
+    return submission;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} submission`;
+  async create(id: string, createSubmissionDto: CreateSubmissionDto): Promise<Submission> {
+    const submission: Partial<Submission> = {
+      ...createSubmissionDto,
+      userId: id,
+      status: SubmissionStatus.Correct,
+    }
+    return this.submissionRepository.save(submission);
   }
 
-  update(id: number, updateSubmissionDto: UpdateSubmissionDto) {
-    return `This action updates a #${id} submission`;
+  async update(submissionId: string, userId: string, updateSubmissionDto: UpdateSubmissionDto) {
+    const submission = await this.submissionRepository.preload({
+      uid: submissionId,
+      ...updateSubmissionDto,
+    });
+    console.log(submission);
+
+    if (!submission || submission.userId !== userId) {
+      throw new NotFoundException(`Coding question #${submissionId} not found`);
+    }
+    return this.submissionRepository.save(submission);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} submission`;
+  async remove(submissionId: string): Promise<Submission> {
+    const submission = await this.submissionRepository.findOne(submissionId);
+    return this.submissionRepository.remove(submission);
   }
 }

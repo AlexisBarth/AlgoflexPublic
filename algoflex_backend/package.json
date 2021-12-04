@@ -1,48 +1,113 @@
 {
   "name": "algoflex_backend",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
-  "main": "",
-  "scripts": {
-    "dev": "cross-env NODE_ENV=development tsc-watch --onSuccess \"node ./dist/webSocket.js\"",
-    "prod": "cross-env NODE_ENV=production tsc && node ./dist/webSocket.js",
-    "build": "tsc --build",
-    "test": "echo \"Error: no test specified\" && exit 0"
-  },
   "author": "",
-  "license": "ISC",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
   "dependencies": {
-    "class-transformer": "^0.4.0",
-    "class-validator": "^0.13.1",
-    "class-validator-jsonschema": "^3.1.0",
-    "config": "^3.3.6",
-    "cross-env": "^7.0.3",
-    "dockerode": "^3.3.0",
-    "errorhandler": "^1.5.1",
-    "eslint": "^8.2.0",
-    "express": "^4.17.1",
-    "jquery": "^3.6.0",
-    "jsonwebtoken": "^8.5.1",
-    "mssql": "^7.2.1",
-    "reflect-metadata": "^0.1.13",
-    "routing-controllers": "^0.9.0",
-    "routing-controllers-openapi": "^3.1.0",
+    "@hapi/joi": "^17.1.1",
+    "@nestjs/common": "^8.2.2",
+    "@nestjs/config": "^1.1.0",
+    "@nestjs/core": "^8.2.2",
+    "@nestjs/jwt": "^8.0.0",
+    "@nestjs/mapped-types": "*",
+    "@nestjs/passport": "^8.0.1",
+    "@nestjs/platform-express": "^8.2.2",
+    "@nestjs/platform-socket.io": "^8.2.3",
+    "@nestjs/swagger": "^5.1.5",
+    "@nestjs/typeorm": "^8.0.2",
+    "class-transformer": "0.4.0",
+    "class-validator": "^0.13.2",
+    "cookie-parser": "^1.4.6",
+    "firebase": "^9.6.0",
+    "firebase-admin": "^10.0.0",
+    "helmet": "^4.6.0",
+    "install": "^0.13.0",
+    "mssql": "^7.3.0",
+    "passport": "^0.5.0",
+    "passport-firebase-jwt": "^1.2.1",
+    "passport-jwt": "^4.0.0",
+    "reflect-metadata": "0.1.13",
+    "rimraf": "^3.0.2",
+    "rxjs": "^7.4.0",
     "swagger-ui-express": "^4.1.6",
-    "typedi": "^0.10.0",
-    "typeorm": "0.2.37",
-    "typeorm-typedi-extensions": "^0.4.1",
-    "typescript": "^4.2.3",
-    "ws": "^8.2.2"
+    "typeorm": "^0.2.41"
   },
   "devDependencies": {
-    "@types/config": "^0.0.38",
-    "@types/dockerode": "^3.2.3",
-    "@types/errorhandler": "^1.5.0",
-    "@types/express": "^4.17.11",
-    "@types/jsonwebtoken": "^8.5.5",
-    "@types/node": "^16.9.2",
-    "@types/swagger-ui-express": "^4.1.3",
-    "@types/ws": "^7.4.7",
-    "tsc-watch": "^4.2.9"
+    "@firebase/auth-types": "^0.11.0",
+    "@nestjs/cli": "^8.1.5",
+    "@nestjs/schematics": "^8.0.5",
+    "@nestjs/testing": "^8.2.2",
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.13",
+    "@types/hapi__joi": "^17.1.7",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.9",
+    "@types/passport-jwt": "^3.0.6",
+    "@types/passport-local": "^1.0.34",
+    "@types/supertest": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.3.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "jest": "^27.3.1",
+    "lint-staged": "^12.1.1",
+    "prettier": "^2.4.1",
+    "source-map-support": "^0.5.21",
+    "supertest": "^6.1.6",
+    "ts-jest": "^27.0.7",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths": "^3.12.0",
+    "typescript": "4.5.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "./",
+    "modulePaths": ["<rootDir>"],
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "npm run lint",
+      "npm run format",
+      "git add"
+    ]
   }
 }

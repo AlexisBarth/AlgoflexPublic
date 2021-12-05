@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCodingQuestionDto } from './dto/create-coding-question.dto';
@@ -20,17 +20,23 @@ export class CodingQuestionsService {
   async findOne(id: string): Promise<CodingQuestion> {
     const codingQuestion = await this.codingQuestionRepository.findOne(id);
     if (!codingQuestion) {
-      throw new NotFoundException(`CodingQuestion ${id} not found`);
+      throw new NotFoundException(`Coding question ${id} not found`);
     }
     return codingQuestion;
   }
 
   async create(createCodingQuestionDto: CreateCodingQuestionDto): Promise<CodingQuestion> {
     const uid = slugify(createCodingQuestionDto.name);
-    const codingQuestion: CodingQuestion = {
-      uid,
-      ...createCodingQuestionDto,
+    const codingQuestionExists = await this.codingQuestionRepository.findOne(uid);
+
+    if (codingQuestionExists) {
+      throw new ConflictException(`Coding question with ${uid} name already exists`);
     }
+    const codingQuestion: CodingQuestion = {
+      ...createCodingQuestionDto,
+      uid,
+    }
+
     return this.codingQuestionRepository.save(codingQuestion);
   }
 

@@ -1,5 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
-import { Theme } from 'src/themes/entities';
+import { Theme } from 'src/problems/themes/entities';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class User {
@@ -24,6 +25,7 @@ export class User {
   @Column({ nullable: true })
   createdAt: string;
 
+  @ApiProperty({ enum: ['Admin', 'User']})
   @Column()
   role: string;
 }

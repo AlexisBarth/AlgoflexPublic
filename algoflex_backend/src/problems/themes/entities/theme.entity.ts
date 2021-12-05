@@ -1,9 +1,9 @@
 import { User } from 'src/users/entity';
-import { Entity, PrimaryColumn, Column, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
 
 @Entity()
 export class Theme {
-  @PrimaryColumn({ unique: true })
+  @PrimaryGeneratedColumn("uuid")
   uid: string;
 
   @Column()

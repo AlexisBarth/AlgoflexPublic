@@ -17,6 +17,6 @@ export class AuthController {
   @UseGuards(FirebaseAuthGuard)
   @Get('user-info')
   public async getUserInfo(@Request() req): Promise<User> {
-    return this.authService.findById(req.uid);
+    return this.authService.findById(req.user.uid);
   }
 }

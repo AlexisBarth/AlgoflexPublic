@@ -1,11 +1,12 @@
-import { Entity, PrimaryColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { SubmissionStatistic } from './submission-statistics';
 
 @Entity()
 export class CodingQuestion {
-  @PrimaryColumn({ unique: true })
+  @PrimaryColumn()
   uid: string;
 
-  @Column({ nullable: true })
+  @Column()
   name: string;
 
   @Column()
@@ -17,11 +18,6 @@ export class CodingQuestion {
   @Column()
   prompt: string;
 
-  // @Column()
-  // submissionStatistics: SubmissionStatistic;
+  @JoinColumn()
+  submissionStatistics?: SubmissionStatistic;
 }
-
-// class SubmissionStatistic {
-//   correctCount: number;
-//   failureCount: number;
-// }

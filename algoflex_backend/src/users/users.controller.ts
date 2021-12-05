@@ -2,11 +2,9 @@ import {
   Controller,
   ClassSerializerInterceptor,
   Get,
-  Post,
   UseGuards,
   Put,
   Delete,
-  Body,
   Param,
   UseInterceptors,
   Req,
@@ -36,13 +34,6 @@ export class UserController {
   findOne(@Param('id') id: string): Promise<User> {
     return this.usersService.findById(id);
   }
-
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.Admin)
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto): Promise<User[]> {
-  //   return this.usersService.findAll();
-  // }
 
   @UseGuards(FirebaseAuthGuard)
   @Put(':userId')

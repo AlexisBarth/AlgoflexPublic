@@ -5,7 +5,6 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ProblemsModule } from './problems/problems.module';
-import { ThemesModule } from './themes/themes.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -32,7 +31,6 @@ import * as Joi from '@hapi/joi';
     AuthModule,
     DatabaseModule,
     ProblemsModule,
-    ThemesModule,
     UsersModule,
   ],
 })

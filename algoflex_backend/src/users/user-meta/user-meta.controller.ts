@@ -1,34 +1,57 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UnauthorizedException, Req } from '@nestjs/common';
 import { UserMetaService } from './user-meta.service';
 import { CreateUserMetaDto } from './dto/create-user-meta.dto';
 import { UpdateUserMetaDto } from './dto/update-user-meta.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { FirebaseAuthGuard, Role, Roles, RolesGuard } from 'src/common';
+import { User } from '../entity';
 
-@Controller('user-meta')
+@ApiTags('Users metadata')
+@UseGuards(FirebaseAuthGuard, RolesGuard)
+@Controller('users/:userParam/meta')
 export class UserMetaController {
   constructor(private readonly userMetaService: UserMetaService) {}
 
-  @Post()
-  create(@Body() createUserMetaDto: CreateUserMetaDto) {
-    return this.userMetaService.create(createUserMetaDto);
-  }
-
   @Get()
-  findAll() {
-    return this.userMetaService.findAll();
+  findAll(@Req() req, @Param('userParam') userParam: string) {
+    this.verifyAccessToMetadata(req.user, userParam);
+    return this.userMetaService.findAll(userParam);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userMetaService.findOne(+id);
+  @Get(':questionId')
+  findOne(
+    @Req() req,
+    @Param('userParam') userParam: string,
+    @Param('questionId') questionId: string,
+  ) {
+    this.verifyAccessToMetadata(req.user, userParam);
+    return this.userMetaService.findOne(userParam, questionId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserMetaDto: UpdateUserMetaDto) {
-    return this.userMetaService.update(+id, updateUserMetaDto);
+  @Post()
+  create(
+    @Req() req,
+    @Param('userParam') userParam: string,
+    @Body() createUserMetaDto: CreateUserMetaDto,
+  ) {
+    this.verifyAccessToMetadata(req.user, userParam);
+    return this.userMetaService.create(userParam, createUserMetaDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userMetaService.remove(+id);
+  @Roles(Role.Admin)
+  @Delete(':metaId')
+  remove(
+    @Req() req,
+    @Param('userParam') userParam: string,
+    @Param('metaId') metaId: string
+  ) {
+    this.verifyAccessToMetadata(req.user, userParam);
+    return this.userMetaService.remove(metaId);
+  }
+
+  verifyAccessToMetadata(user: User, requestedUserInfo: string): void {
+    if (user.uid !== requestedUserInfo && user.role !== Role.Admin) {
+      throw new UnauthorizedException('UNAUTHORIZED');
+    }
   }
 }

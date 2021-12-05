@@ -24,6 +24,9 @@ import * as Joi from '@hapi/joi';
       database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
+      ssl: {
+        rejectUnauthorized: false
+      },
     }),
     AuthModule,
     DatabaseModule,

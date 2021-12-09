@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { client } from '../axios.client';
 
 const config = {
     apiKey: "AIzaSyA29TC3w3ppTdQNmvRigb_L8rZb8bFOseY",
@@ -25,15 +26,32 @@ class Firebase {
     }
 
     // inscription
-    signupUser = (email: string, password: string) => 
-    this.auth.createUserWithEmailAndPassword(email, password);
+    signupUser = async (email: string, password: string) => {
+        const { user } = await this.auth.createUserWithEmailAndPassword(email, password);
+        const token = await user?.getIdToken(true);
+        if (token === undefined) {
+            return;
+        }
+        localStorage.setItem('token', token);
+        client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
 
     // connexion
-    loginUser = (email: string, password: string) =>
-    this.auth.signInWithEmailAndPassword(email, password);
+    loginUser = async (email: string, password: string) => {
+        const { user } = await this.auth.signInWithEmailAndPassword(email, password);
+        const token = await user?.getIdToken(true);
+        if (token === undefined) {
+            return;
+        }
+        localStorage.setItem('token', token);
+        client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
 
     // deconnexion
-    signoutUser = () => this.auth.signOut();
+    signoutUser = () => {
+        localStorage.removeItem('token');
+        this.auth.signOut();
+    };
 
     // récupérer le mot de passe
     passwordReset = (email: string) => this.auth.sendPasswordResetEmail(email);

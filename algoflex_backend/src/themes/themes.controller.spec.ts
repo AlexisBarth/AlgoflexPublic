@@ -14,11 +14,7 @@ describe('ThemesController', () => {
         ...dto
       }
     }),
-    findOne: jest.fn(id => {
-      return {
-        id: id
-      }
-    }),
+    findOne: jest.fn(id => {id: id}),
     update: jest.fn((id, dto) => {
       return {
         id,
@@ -41,7 +37,7 @@ describe('ThemesController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should list all themes', () => {
+  it('should find all themes', () => {
     controller.findAll()
 
     expect(mockThemesService.findAll).toHaveBeenCalled();

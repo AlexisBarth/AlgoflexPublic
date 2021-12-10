@@ -1,9 +1,10 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FirebaseAuthGuard, Role, Roles, RolesGuard } from 'src/common';
 import { CodingQuestionsService } from './coding-questions.service';
 import { CreateCodingQuestionDto } from './dto/create-coding-question.dto';
 import { UpdateCodingQuestionDto } from './dto/update-coding-question.dto';
+import { CodingQuestion } from './entities/coding-question.entity';
 
 @ApiTags('Coding questions')
 @Controller('problems/coding-questions')
@@ -22,6 +23,15 @@ export class CodingQuestionsController {
 
   @UseGuards(FirebaseAuthGuard, RolesGuard)
   @Roles(Role.Admin)
+  @ApiResponse({
+    status: 200,
+    type: CodingQuestion,
+    description: 'Create a coding question.',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Returns 409 when the problem already exists.',
+  })
   @Post()
   create(@Body() createCodingQuestionDto: CreateCodingQuestionDto) {
     return this.codingQuestionsService.create(createCodingQuestionDto);

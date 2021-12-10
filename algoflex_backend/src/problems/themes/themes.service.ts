@@ -13,15 +13,11 @@ export class ThemesService {
   ) {}
 
   async findAll(): Promise<Theme[]> {
-    return this.themeRepository.find({
-      relations: ['images'],
-    });
+    return this.themeRepository.find();
   }
 
   async findOne(id: number): Promise<Theme> {
-    const theme = await this.themeRepository.findOne(id, {
-      relations: ['images'],
-    });
+    const theme = await this.themeRepository.findOne(id);
     if (!theme) {
       throw new NotFoundException(`Theme ${id} not found`);
     }
@@ -33,11 +29,14 @@ export class ThemesService {
   }
 
   async update(id: number, updateThemeDto: UpdateThemeDto): Promise<string> {
-    return `This action updates a #${id} theme`;
+    return `This action updates a #${id} ${updateThemeDto} theme`;
   }
 
   async remove(id: number): Promise<Theme> {
     const theme = await this.themeRepository.findOne(id);
+    if (!theme) {
+      throw new NotFoundException(`Theme #${id} not found`);
+    }
     return this.themeRepository.remove(theme);
   }
 }

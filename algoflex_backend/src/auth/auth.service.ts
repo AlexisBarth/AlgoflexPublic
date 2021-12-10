@@ -58,7 +58,7 @@ export class AuthService {
     return this.userRepository.findOne(id);
   }
 
-  private async findByEmail(email: string): Promise<User> {
+  private async findByEmail(email: string | undefined): Promise<User | undefined> {
     return this.userRepository.findOne({ email });
   }
 }

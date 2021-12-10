@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, JoinColumn } from 'typeorm';
 import { SubmissionStatistic } from './submission-statistics';
 
 @Entity()

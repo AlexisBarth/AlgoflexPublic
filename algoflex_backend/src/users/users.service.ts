@@ -22,26 +22,11 @@ export class UsersService {
     return user;
   }
 
-  // async update(id: string, updateUserDto: UpdateUserDto) {
-  //   const flavors =
-  //     updateCoffeeDto.flavors &&
-  //     (await Promise.all(
-  //       updateCoffeeDto.flavors.map(name => this.preloadFlavorByName(name)),
-  //     ));
-
-  //   const coffee = await this.coffeeRepository.preload({
-  //     id: +id,
-  //     ...updateCoffeeDto,
-  //     flavors,
-  //   });
-  //   if (!coffee) {
-  //     throw new NotFoundException(`Coffee #${id} not found`);
-  //   }
-  //   return this.coffeeRepository.save(coffee);
-  // }
-
-  async remove(id: string): Promise<User> {
+  async remove(id: string): Promise<User | undefined> {
     const user = await this.userRepository.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
     return this.userRepository.remove(user);
   }
 }

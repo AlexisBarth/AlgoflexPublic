@@ -13,7 +13,7 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase-auth'
   private firebaseApp: any;
   private firebaseParams: ServiceAccount = {
     projectId: process.env.FIREBASE_PROJECT_ID,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
   };
 
@@ -31,7 +31,7 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase-auth'
     const firebaseUser: DecodedIdToken = await this.firebaseApp
       .auth()
       .verifyIdToken(token, true)
-      .catch((err) => {
+      .catch((err: any) => {
         console.log(err);
         throw new UnauthorizedException(err.message);
       });
@@ -41,7 +41,7 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase-auth'
     return this.verifyUser(firebaseUser);
   }
 
-  async verifyUser(firebaseUser): Promise<User> {
+  async verifyUser(firebaseUser: DecodedIdToken): Promise<User> {
     const existingUser = await this.authService.findById(firebaseUser.uid);
     if (!existingUser) {
       return this.authService.register(firebaseUser);

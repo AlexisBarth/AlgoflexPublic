@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
@@ -56,6 +56,9 @@ export class SubmissionsService {
 
   async remove(submissionId: string): Promise<Submission> {
     const submission = await this.submissionRepository.findOne(submissionId);
+    if (!submission) {
+      throw new NotFoundException(`Coding question #${submissionId} not found`);
+    }
     return this.submissionRepository.remove(submission);
   }
 }

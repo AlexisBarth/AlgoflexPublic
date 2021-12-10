@@ -11,13 +11,13 @@ export class User {
   email: string;
 
   @Column({ nullable: true })
-  favoriteLangage: string;
+  favoriteLangage?: string;
 
   @JoinTable()
   @ManyToMany(() => Theme, (theme) => theme.users, {
     cascade: true,
   })
-  favoriteThemes: Theme[];
+  favoriteThemes?: Theme[];
 
   @Column({ nullable: true })
   lastLogin: number;

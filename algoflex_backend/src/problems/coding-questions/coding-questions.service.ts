@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateCodingQuestionDto } from './dto/create-coding-question.dto';
 import { UpdateCodingQuestionDto } from './dto/update-coding-question.dto';
 import { CodingQuestion } from './entities/coding-question.entity';
-import slugify from 'slugify';
+import { customSlugify } from 'src/common';
 
 @Injectable()
 export class CodingQuestionsService {
@@ -26,7 +26,7 @@ export class CodingQuestionsService {
   }
 
   async create(createCodingQuestionDto: CreateCodingQuestionDto): Promise<CodingQuestion> {
-    const uid = slugify(createCodingQuestionDto.name);
+    const uid = customSlugify(createCodingQuestionDto.name);
     const codingQuestionExists = await this.codingQuestionRepository.findOne(uid);
 
     if (codingQuestionExists) {
@@ -54,6 +54,9 @@ export class CodingQuestionsService {
 
   async remove(id: string): Promise<CodingQuestion> {
     const codingQuestion = await this.codingQuestionRepository.findOne(id);
+    if (!codingQuestion) {
+      throw new NotFoundException(`Coding question #${id} not found`);
+    }
     return this.codingQuestionRepository.remove(codingQuestion);
   }
 }

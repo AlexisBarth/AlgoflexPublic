@@ -1,10 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UnauthorizedException, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, UnauthorizedException, Req } from '@nestjs/common';
 import { UserMetaService } from './user-meta.service';
 import { CreateUserMetaDto } from './dto/create-user-meta.dto';
-import { UpdateUserMetaDto } from './dto/update-user-meta.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { FirebaseAuthGuard, Role, Roles, RolesGuard } from 'src/common';
-import { User } from '../entity';
+import { BaseRequest, FirebaseAuthGuard, RequestUser, Role, Roles, RolesGuard } from 'src/common';
 
 @ApiTags('Users metadata')
 @UseGuards(FirebaseAuthGuard, RolesGuard)
@@ -13,14 +11,14 @@ export class UserMetaController {
   constructor(private readonly userMetaService: UserMetaService) {}
 
   @Get()
-  findAll(@Req() req, @Param('userParam') userParam: string) {
+  findAll(@Req() req: BaseRequest, @Param('userParam') userParam: string) {
     this.verifyAccessToMetadata(req.user, userParam);
     return this.userMetaService.findAll(userParam);
   }
 
   @Get(':questionId')
   findOne(
-    @Req() req,
+    @Req() req: BaseRequest,
     @Param('userParam') userParam: string,
     @Param('questionId') questionId: string,
   ) {
@@ -30,7 +28,7 @@ export class UserMetaController {
 
   @Post()
   create(
-    @Req() req,
+    @Req() req: BaseRequest,
     @Param('userParam') userParam: string,
     @Body() createUserMetaDto: CreateUserMetaDto,
   ) {
@@ -41,7 +39,7 @@ export class UserMetaController {
   @Roles(Role.Admin)
   @Delete(':metaId')
   remove(
-    @Req() req,
+    @Req() req: BaseRequest,
     @Param('userParam') userParam: string,
     @Param('metaId') metaId: string
   ) {
@@ -49,8 +47,8 @@ export class UserMetaController {
     return this.userMetaService.remove(metaId);
   }
 
-  verifyAccessToMetadata(user: User, requestedUserInfo: string): void {
-    if (user.uid !== requestedUserInfo && user.role !== Role.Admin) {
+  verifyAccessToMetadata(user: RequestUser | undefined, requestedUserInfo: string): void {
+    if (user?.uid !== requestedUserInfo && user?.role !== Role.Admin) {
       throw new UnauthorizedException('UNAUTHORIZED');
     }
   }

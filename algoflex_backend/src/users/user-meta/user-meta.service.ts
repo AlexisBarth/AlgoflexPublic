@@ -1,11 +1,10 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CodingQuestion } from 'src/problems/coding-questions/entities/coding-question.entity';
 import { Repository } from 'typeorm';
 import { CreateUserMetaDto } from './dto/create-user-meta.dto';
-import { UpdateUserMetaDto } from './dto/update-user-meta.dto';
 import { UserMeta } from './entities/user-meta.entity';
-import slugify from 'slugify';
+import { customSlugify } from 'src/common';
 
 @Injectable()
 export class UserMetaService {
@@ -32,7 +31,7 @@ export class UserMetaService {
   }
 
   async create(userId: string, createUserMetaDto: CreateUserMetaDto): Promise<UserMeta> {
-    const codingQuestionId = slugify(createUserMetaDto.questionId);
+    const codingQuestionId = customSlugify(createUserMetaDto.questionId);
     const codingQuestion = await this.codingQuestionRepository.findOne({ uid: codingQuestionId });
     if (!codingQuestion) {
       throw new NotFoundException(`Question with name ${createUserMetaDto.questionId} not found`);
@@ -47,6 +46,9 @@ export class UserMetaService {
 
   async remove(userMetaId: string): Promise<UserMeta> {
     const userMeta = await this.userMetaRepository.findOne(userMetaId);
+    if (!userMeta) {
+      throw new NotFoundException(`Question with name ${userMetaId} not found`);
+    }
     return this.userMetaRepository.remove(userMeta);
   }
 }

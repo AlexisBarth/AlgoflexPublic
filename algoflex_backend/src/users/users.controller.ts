@@ -10,7 +10,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { FirebaseAuthGuard, RolesGuard, Role, Roles } from '../common';
+import { FirebaseAuthGuard, RolesGuard, Role, Roles, BaseRequest } from '../common';
 import { User } from './entity';
 import { UsersService } from './users.service';
 
@@ -23,7 +23,7 @@ export class UserController {
   @UseGuards(FirebaseAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Get()
-  findAll(@Req() req): Promise<User[]> {
+  findAll(@Req() req: BaseRequest): Promise<User[]> {
     console.log(req.user);
     return this.usersService.findAll();
   }
@@ -43,7 +43,7 @@ export class UserController {
 
   @UseGuards(FirebaseAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<User> {
+  remove(@Param('id') id: string): Promise<User | undefined> {
     return this.usersService.remove(id);
   }
 }

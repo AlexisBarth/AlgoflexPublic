@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { client } from '../axios.client';
+import { client } from '../axios-client';
 
 const config = {
     apiKey: "AIzaSyA29TC3w3ppTdQNmvRigb_L8rZb8bFOseY",

@@ -5,7 +5,7 @@ import { UpdateThemeDto } from './dto/update-theme.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Themes')
-@Controller('themes')
+@Controller('problems/themes')
 export class ThemesController {
   constructor(private readonly themesService: ThemesService) {}
 

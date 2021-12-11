@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginDto, RegisterDto } from './dto';
+import { LoginDto } from './dto';
 import { User } from 'src/users/entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -58,7 +58,7 @@ export class AuthService {
     return this.userRepository.findOne(id);
   }
 
-  private async findByEmail(email: string): Promise<User> {
+  private async findByEmail(email: string | undefined): Promise<User | undefined> {
     return this.userRepository.findOne({ email });
   }
 }

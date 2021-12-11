@@ -84,13 +84,9 @@ const Ide = (props: IdeProperties) => {
                     const executeMessage = !result.hasExecuted && execute ? "Execution failed: timeout" : "";
                     consoleExecuteRef.current?.write(executeMessage);
                 }
-                else{
-                    console.error("Error: undefined state");
-                }
             };
 
             var data = {code : code, execute: execute};
-
             ws.send(JSON.stringify(data)); 
         }
     };
@@ -102,7 +98,7 @@ const Ide = (props: IdeProperties) => {
             defaultLanguage="cpp"
             theme="vs-dark"
             value={code}
-            onChange={code => setCode(String(code))}
+            onChange={value => setCode(String(value))}
             beforeMount={didMount}
             path='file:///tmp/algoflex_autocomplete/file.cpp'
         />

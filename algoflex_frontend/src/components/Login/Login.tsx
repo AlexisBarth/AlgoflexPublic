@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext, FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FirebaseContext } from '@services/Firebase';
-import { useHistory } from 'react-router-dom';
 
 const Login = () => {
 
@@ -25,13 +24,13 @@ const Login = () => {
         e.preventDefault();
         
         firebase.loginUser(email, password)
-        .then(user => {
+        .then(() => {
             setEmail('');
             setPassword('');
             history.push('/');
         })
-        .catch(error => {
-            setError(error);
+        .catch(firebaseError => {
+            setError(firebaseError);
             setEmail('');
             setPassword('');   
         })

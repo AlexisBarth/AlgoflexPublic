@@ -17,25 +17,24 @@ const Signup = () => {
     const [loginData, setloginData] = useState(data);
     const [error, setError] = useState<Error>()
 
+    const { pseudo, email, password, confirmPassword } = loginData;
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setloginData({...loginData, [e.target.id]: e.target.value})
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const { email, password } = loginData;
         firebase.signupUser(email, password)
-        .then(user => {
+        .then(() => {
             setloginData({...data})
-            history.push('/welcome');
+            history.push('/');
         })
-        .catch(error => {
-            setError(error);
+        .catch(firebaseError => {
+            setError(firebaseError);
             setloginData({...data});
         })
     }
-
-    const { pseudo, email, password, confirmPassword } = loginData;
 
     const btn = pseudo === '' || email === '' || password === '' || password !== confirmPassword
     ? <button disabled>Inscription</button> : <button>Inscription</button>

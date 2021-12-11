@@ -32,7 +32,6 @@ class Firebase {
         if (token === undefined) {
             return;
         }
-        //client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
 
     // connexion
@@ -42,8 +41,6 @@ class Firebase {
         if (token === undefined) {
             return;
         }
-        //client.post("/auth/login")
-        //client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
 
     // deconnexion

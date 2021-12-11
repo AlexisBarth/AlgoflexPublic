@@ -23,8 +23,8 @@ const ForgetPassword = () => {
                 history.push('/login')
             }, 5000)
         })
-        .catch(error => {
-            setError(error);
+        .catch(firebaseError => {
+            setError(firebaseError);
             setEmail("");
         })
     }

@@ -41,16 +41,7 @@ const itemData: CardItemProps[] = [
         cardImage: 'https://d2jx2rerrg6sh3.cloudfront.net/image-handler/picture/2021/1/shutterstock_1691666992-1.jpg',
         favoriteStatus: true,
 
-    },
-    {
-        cardName: 'Theme04',
-        cardDesc: 'Desc04',
-        exerciseCount: 50,
-        finishedExerciseCount: 34,
-        cardImage: 'http://d30ce0f8e9hxxq.cloudfront.net/0_live-card-images/16142/1436203361959_game-as-art.jpg?time=1436203363181',
-        favoriteStatus: false,
-
-    },
+    }
 ];
 
 

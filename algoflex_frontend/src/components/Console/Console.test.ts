@@ -1,3 +1,3 @@
-import Console from './console'
+import Console from './Console'
 
 test.todo("Make Console tests");

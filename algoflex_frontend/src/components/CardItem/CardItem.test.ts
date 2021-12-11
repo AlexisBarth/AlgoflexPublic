@@ -1,3 +1,3 @@
-import CardItem from './cardItem'
+import CardItem from './CardItem'
 
 test.todo("Make CardItem tests");

@@ -1,3 +1,3 @@
-import NotFound from './notFound'
+import NotFound from './NotFound'
 
 test.todo("Make NotFound tests");

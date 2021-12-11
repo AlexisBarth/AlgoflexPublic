@@ -1,3 +1,3 @@
-import Authentification from './components/authentification'
+import Authentification from './components/Authentification'
 
 export default Authentification;

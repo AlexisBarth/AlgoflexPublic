@@ -1,3 +1,3 @@
-import Themes from "./components/themes";
+import Themes from "./components/Themes";
 
 export default Themes;

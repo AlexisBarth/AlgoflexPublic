@@ -1,3 +1,3 @@
-import Exercices from "./components/exercices";
+import Exercices from "./components/Exercices";
 
 export default Exercices;

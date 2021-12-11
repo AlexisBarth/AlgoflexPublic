@@ -1,5 +1,4 @@
 export interface CardItemProps{
-
     cardName?: string;
     cardDesc?: string;
     cardImage?: string;

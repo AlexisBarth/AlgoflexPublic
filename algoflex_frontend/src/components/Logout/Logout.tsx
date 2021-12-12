@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { FirebaseContext } from '@services/Firebase';
-import { Button } from '@mui/material';
+import {Button, Typography} from '@mui/material';
+import {Link} from "react-router-dom";
 
 const Logout = () => {
 
@@ -14,9 +15,9 @@ const Logout = () => {
     };
 
     return (
-        <Button onClick={logout}>
+        <Typography variant="h6" component={Button} onClick={logout} style={{ color: 'inherit', textDecoration: 'none', margin: 15 }}>
             Logout
-        </Button>
+        </Typography>
     );
 };
 

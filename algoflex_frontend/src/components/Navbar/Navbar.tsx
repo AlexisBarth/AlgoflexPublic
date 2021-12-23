@@ -1,13 +1,9 @@
 import { Link } from 'react-router-dom';
-import { Logout } from '@components';
 import IsAuthenticated from '@services/Authentication.utils';
-import {Toolbar, Typography, Divider} from '@mui/material'
-import {useContext} from "react";
-import {FirebaseContext} from "@services/Firebase";
+import {Toolbar, Typography} from '@mui/material'
+import UserMenu from "./UserMenu";
 
 const Navbar = () => {
-    const firebase = useContext(FirebaseContext);
-
     const AuthContent = () => {
         if (IsAuthenticated()){
             return (<>
@@ -22,24 +18,13 @@ const Navbar = () => {
 
     const AuthCheck = () => {
         if(IsAuthenticated()){
-            //TODO : change link to --> user page
-            //TODO : ask that firebase auth save username, not only email
             return (<>
-                <Typography variant="h6" component={Link} to='about' style={{ color: 'inherit', textDecoration: 'none', margin: 15 }}>
-                    {firebase.auth.currentUser?.email}
-                </Typography>
-                <Typography variant="h6" component={Logout} style={{ color: 'inherit', textDecoration: 'none', margin: 15 }}>
-                    Logout
-                </Typography>
+                <UserMenu/>
             </>);
         }
         return(<>
             <Typography variant="h6" component={Link} to='login' style={{ color: 'inherit', textDecoration: 'none', margin: 15 }}>
                 Log in
-            </Typography>
-            <Divider orientation="vertical" variant="middle" flexItem style={{ background: 'black', width: "2.5px"}}/>
-            <Typography variant="h6" component={Link} to='login' style={{ color: 'inherit', textDecoration: 'none', margin: 15 }}>
-                Sign up
             </Typography>
             </>);
     }
@@ -51,7 +36,7 @@ const Navbar = () => {
                     Accueil
                 </Typography>
                 <Typography variant="h6" component={Link} to='about' style={{ color: 'inherit', textDecoration: 'none', margin: 15 }}>
-                    A propos
+                    À propos
                 </Typography>
                 <AuthContent/>
             </div>

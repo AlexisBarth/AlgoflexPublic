@@ -1,10 +1,9 @@
 version: "3.7"
 services:
   db:
-    image: mcr.microsoft.com/azure-sql-edge
+    image: postgres
     restart: always
     ports:
-      - "1433:1433"
+      - "5432:5432"
     environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: "Abc123**"
+       POSTGRES_PASSWORD: "pass123"

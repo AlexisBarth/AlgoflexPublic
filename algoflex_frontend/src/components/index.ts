@@ -7,6 +7,7 @@ import Login from "./Login/Login";
 import Logout from "./Logout/Logout";
 import Navbar from "./Navbar/Navbar";
 import Signup from "./Signup/Signup";
+import TwitterFlow from "./TwitterFlow/TwitterFlow";
 
 export {
     CardItem,
@@ -17,5 +18,6 @@ export {
     Login,
     Logout,
     Navbar,
-    Signup
+    Signup,
+    TwitterFlow
 }

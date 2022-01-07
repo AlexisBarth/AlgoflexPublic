@@ -1,3 +1,4 @@
+import { deleteCookie, setCookie } from '@services/Cookie.utils';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
@@ -41,11 +42,12 @@ class Firebase {
         if (token === undefined) {
             return;
         }
+        setCookie('token', token);
     }
 
     // deconnexion
     signoutUser = () => {
-        //deleteCookie('token');
+        deleteCookie('token');
         this.auth.signOut();
     };
 

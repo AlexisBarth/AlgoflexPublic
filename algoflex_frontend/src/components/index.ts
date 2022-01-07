@@ -7,6 +7,7 @@ import Login from "./Login/Login";
 import Logout from "./Logout/Logout";
 import Navbar from "./Navbar/Navbar";
 import Signup from "./Signup/Signup";
+import TwitterFlow from "./TwitterFlow/TwitterFlow";
 import Markdown from "./Markdown/Markdown"
 
 export {
@@ -19,5 +20,6 @@ export {
     Logout,
     Navbar,
     Signup,
+    TwitterFlow,
     Markdown
 }

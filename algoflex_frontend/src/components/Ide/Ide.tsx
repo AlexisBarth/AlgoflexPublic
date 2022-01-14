@@ -92,7 +92,7 @@ const Ide = (props: IdeProperties) => {
     };
 
     return (
-    <div className="editor">
+    <div className="editor" style={{marginTop:"8vh"}}>
            <Editor
             height="70vh"
             defaultLanguage="cpp"

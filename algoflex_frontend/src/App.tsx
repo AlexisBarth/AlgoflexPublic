@@ -1,5 +1,5 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { Navbar, NotFound, TwitterFlow} from '@components';
+import { Navbar, NotFound} from '@components';
 import IsAuthenticated from '@services/Authentication.utils';
 import routes from './routes';
 
@@ -20,7 +20,6 @@ const App = () => {
 		<BrowserRouter>
 			<Navbar />
 			<GetRoutes />
-			<TwitterFlow/>
 		</BrowserRouter>
 	);
 };

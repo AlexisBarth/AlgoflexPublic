@@ -1,9 +1,8 @@
-import { User } from 'src/users/entity';
-import { Entity, PrimaryColumn, Column, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Theme {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   uid: string;
 
   @Column()
@@ -11,7 +10,4 @@ export class Theme {
 
   @Column({ nullable: true })
   imageUrl: string;
-
-  @ManyToMany(() => User, (user) => user.favoriteThemes)
-  users: User[];
 }

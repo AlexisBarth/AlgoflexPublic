@@ -157,7 +157,7 @@ ${props.description}`;
                             <Tab label={<Badge badgeContent={compileDot} color="error" variant="dot">Compilation</Badge>} value="1" />
                             <Tab label={<Badge badgeContent={executeDot} color="error" variant="dot">Execution</Badge>} value="2" />
                         </TabList>
-                    </Box>              
+                    </Box>
                     <Console height={12} hidden={tab === '2'} ref={consoleCompileRef} options={{ theme: { background: "#001e3c", foreground: "white" },  }} />
                     <Console height={12} hidden={tab === '1'} ref={consoleExecuteRef} options={{ theme: { background: "#001e3c", foreground: "white" } }} />
                 </TabContext>

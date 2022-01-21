@@ -1,5 +1,10 @@
+export default Themes;
 import { CardList } from "@components";
 import { CardItemProps } from "@components/interfaces";
+import axios from "axios";
+import React, {useEffect, useState} from "react";
+import { Grid } from "@mui/material";
+
 
 // Page Thème:
 // Ajouter navbar
@@ -17,6 +22,7 @@ import { CardItemProps } from "@components/interfaces";
 
 const itemData: CardItemProps[] = [
     {
+        cardId: 1,
         cardName: 'Theme01',
         cardDesc: 'Test Value',
         exerciseCount: 35,
@@ -25,6 +31,7 @@ const itemData: CardItemProps[] = [
         favoriteStatus: true,
     },
     {
+        cardId: 2,
         cardName: 'Theme02',
         cardDesc: 'Desc012',
         exerciseCount: 5,
@@ -34,7 +41,48 @@ const itemData: CardItemProps[] = [
 
     },
     {
+        cardId: 3,
         cardName: 'Theme03',
+        cardDesc: 'Desc03',
+        exerciseCount: 25,
+        finishedExerciseCount: 20,
+        cardImage: 'https://d2jx2rerrg6sh3.cloudfront.net/image-handler/picture/2021/1/shutterstock_1691666992-1.jpg',
+        favoriteStatus: true,
+
+    },
+    {
+        cardId: 4,
+        cardName: 'Theme04',
+        cardDesc: 'Desc03',
+        exerciseCount: 25,
+        finishedExerciseCount: 20,
+        cardImage: 'https://d2jx2rerrg6sh3.cloudfront.net/image-handler/picture/2021/1/shutterstock_1691666992-1.jpg',
+        favoriteStatus: true,
+
+    },
+    {
+        cardId: 5,
+        cardName: 'Theme05',
+        cardDesc: 'Desc03',
+        exerciseCount: 25,
+        finishedExerciseCount: 20,
+        cardImage: 'https://d2jx2rerrg6sh3.cloudfront.net/image-handler/picture/2021/1/shutterstock_1691666992-1.jpg',
+        favoriteStatus: true,
+
+    },
+    {
+        cardId: 6,
+        cardName: 'Theme06',
+        cardDesc: 'Desc03',
+        exerciseCount: 25,
+        finishedExerciseCount: 20,
+        cardImage: 'https://d2jx2rerrg6sh3.cloudfront.net/image-handler/picture/2021/1/shutterstock_1691666992-1.jpg',
+        favoriteStatus: true,
+
+    },
+    {
+        cardId: 7,
+        cardName: 'Theme07',
         cardDesc: 'Desc03',
         exerciseCount: 25,
         finishedExerciseCount: 20,
@@ -45,14 +93,39 @@ const itemData: CardItemProps[] = [
 ];
 
 
-const Themes = () => {
+const Theme = () => {
+        
 
+
+const Themes = () => {
+    const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [data, setData] = useState(null);
+
+    // useEffect(() => {
+    //     axios.get('https://staging-algoflex.herokuapp.com/problems/themes')
+    //         .then(res => res.json())
+    //         .then(
+    //             (result) => {
+    //                 setIsLoaded(true);
+    //                 setData(result.data);
+    //             },
+    //         )
+    // }, [])
+    
     return (
         <div>
-            <CardList cardDatas={itemData} />
+            <Grid container spacing={2}>
+                <Grid item xs={3}>
+                </Grid>
+                    <Grid item xs={6}>
+                        <CardList cardDatas={itemData} />
+                    </Grid>
+            </Grid>
+                
         </div>
 
     );
 }
 
-export default Themes;
+export default Theme;

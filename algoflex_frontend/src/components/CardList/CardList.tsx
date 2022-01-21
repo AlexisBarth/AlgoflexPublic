@@ -15,9 +15,10 @@ const CardList = ({cardDatas}: CardListProps) => {
     return (
         <div>
             <Button onClick={() => setA(a + 1)} >Bouton</Button>
-            <ImageList sx={{ width: 500 , maxHeight: 1500, overflow: 'auto' }} cols={3} rowHeight={164} >
+            <ImageList sx={{ overflow: 'auto' }} rowHeight={164} >
             {cardDatas.map((item) => (
                 <CardItem
+                    cardId={item.cardId}
                     cardName={item.cardName} 
                     cardDesc={item.cardDesc}
                     cardImage={item.cardImage}

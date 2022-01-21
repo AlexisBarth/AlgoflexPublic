@@ -1,4 +1,7 @@
-export interface CardItemProps{
+import { integer } from "@codingame/monaco-languageclient";
+
+export interface CardItemProps {
+    cardId?: integer;
     cardName?: string;
     cardDesc?: string;
     cardImage?: string;
@@ -6,3 +9,4 @@ export interface CardItemProps{
     finishedExerciseCount?: number;
     favoriteStatus?: boolean;
 }
+

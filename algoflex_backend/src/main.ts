@@ -4,10 +4,16 @@ import * as helmet from 'helmet';
 import * as cookieParser from 'cookie-parser'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+const DOMAIN_WHITE_LIST = ['http://localhost:3000', 'https://staging-algoflex.heroku.app'];
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
-  app.enableCors();
+
+  app.enableCors({
+    origin: DOMAIN_WHITE_LIST,
+    credentials: true,
+  });
   app.use(cookieParser());
 
   const options = new DocumentBuilder()

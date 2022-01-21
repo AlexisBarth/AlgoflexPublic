@@ -1,4 +1,4 @@
-export default Themes;
+// export default Themes;
 import { CardList } from "@components";
 import { CardItemProps } from "@components/interfaces";
 import axios from "axios";
@@ -93,9 +93,6 @@ const itemData: CardItemProps[] = [
 ];
 
 
-const Theme = () => {
-        
-
 
 const Themes = () => {
     const [error, setError] = useState(null);
@@ -121,11 +118,9 @@ const Themes = () => {
                     <Grid item xs={6}>
                         <CardList cardDatas={itemData} />
                     </Grid>
-            </Grid>
-                
+            </Grid>  
         </div>
-
     );
 }
 
-export default Theme;
+export default Themes;

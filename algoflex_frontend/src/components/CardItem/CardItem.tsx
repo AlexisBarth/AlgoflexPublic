@@ -9,6 +9,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import { CardItemProps } from '../interfaces';
+import { useHistory } from 'react-router-dom';
 
 export default function CardItem(props: CardItemProps) {
     const [favorite, setFavorite] = useState(props.favoriteStatus);
@@ -41,9 +42,15 @@ export default function CardItem(props: CardItemProps) {
         }
     }
 
+    const history = useHistory();
+    const faireRedirection = () => {
+        let url = "/theme/"+props.cardId;
+        history.push(url);
+    }
+
     return (
-        <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea>
+        <Card >
+        <CardActionArea onClick={faireRedirection}>
             <CardMedia
             component="img"
             height="140"
@@ -60,7 +67,7 @@ export default function CardItem(props: CardItemProps) {
             </CardContent>
         </CardActionArea>
         <CardActions>
-            <Button size="small" color="primary">
+            <Button size="small" color="primary" onClick={faireRedirection}>
             {testCompletion()}
             </Button>
             <Button size="small" color="secondary" onClick={() => setFavorite(!favorite)} >

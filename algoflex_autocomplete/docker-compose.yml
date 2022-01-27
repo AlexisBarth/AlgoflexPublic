@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  front:
+    container_name: algoflex_autocomplete
+    build:
+      context: .
+    ports:
+      - 3010:3010
+    restart: always

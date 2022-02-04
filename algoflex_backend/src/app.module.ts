@@ -5,6 +5,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ProblemsModule } from './problems/problems.module';
+import { BuildModule } from './compilation/build.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -32,6 +33,7 @@ import * as Joi from '@hapi/joi';
     DatabaseModule,
     ProblemsModule,
     UsersModule,
+    BuildModule,
   ],
 })
 export class AppModule {}

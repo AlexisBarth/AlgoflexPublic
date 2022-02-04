@@ -1,7 +1,12 @@
 import sys
 
-argument = sys.argv[1]
+code = sys.argv[1]
+json = sys.argv[2]
 
-f = open("main.cpp", "w")
-f.write(argument)
-f.close()  
+fcode = open("main.cpp", "w")
+fcode.write(code)
+fcode.close()  
+
+fjson = open("test.json", "w")
+fjson.write(json)
+fjson.close()

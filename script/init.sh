@@ -6,9 +6,9 @@ curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" \
                                       -d '{"Name": "test", "Driver": "local"}' \
                                       -X POST http://localhost/v1.40/volumes/create
 
-parse_name=algoflex/parse:0.4
-compile_name=algoflex/compile:0.4
-execute_name=algoflex/execute:0.4
+parse_name=algoflex/parse:0.7
+compile_name=algoflex/compile:0.7
+execute_name=algoflex/execute:0.7
 
 docker build -t $parse_name ./parse
 

@@ -4,4 +4,6 @@ FROM gcc:latest
 
 WORKDIR /volume/pcr
 
-CMD ["./program"]
+COPY runner/runner.out runner.out
+
+CMD ["./runner.out"]

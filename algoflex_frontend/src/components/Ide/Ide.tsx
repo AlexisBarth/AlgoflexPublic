@@ -10,7 +10,7 @@ import { Console } from '@components';
 
 const ReconnectingWebSocket = require('reconnecting-websocket');
 
-const ws = new ReconnectingWebSocket('ws://localhost:4100/ws');
+const ws = new ReconnectingWebSocket('ws://localhost:4100');
 
 interface IdeProperties {
     baseCode?: string;
@@ -66,7 +66,7 @@ const Ide = (props: IdeProperties) => {
     };
 
     const send = (execute : boolean) => {
-        if(ws.readyState === ws.OPEN){
+        if(ws.readyState === ws.OPEN) {
             ws.onmessage = (event: MessageEvent) => {
                 let result = JSON.parse(event.data);
                 const state = result.state;
@@ -86,14 +86,20 @@ const Ide = (props: IdeProperties) => {
                 }
             };
 
-            var data = {code : code, execute: execute};
-            ws.send(JSON.stringify(data)); 
+            const data = {
+                event: 'compile-request',
+                data: {
+                    code,
+                    execute,
+                },
+            };
+            ws.send(JSON.stringify(data));
         }
     };
 
     return (
     <div className="editor">
-           <Editor
+        <Editor
             height="70vh"
             defaultLanguage="cpp"
             theme="vs-dark"
@@ -103,11 +109,11 @@ const Ide = (props: IdeProperties) => {
             path='file:///tmp/algoflex_autocomplete/file.cpp'
         />
         <Button variant="contained" color="primary" onClick={() => send(false)}> Compile </Button>
-        <Box mr={1} display="inline">   
-        <Button variant="contained" onClick={() => send(true)}> Compile and Run </Button>
+        <Box mr={1} display="inline">
+            <Button variant="contained" onClick={() => send(true)}> Compile and Run </Button>
         </Box>
-        <Box mr={1} display="inline">   
-        <Button variant="contained" color="secondary" > Configurator </Button>
+        <Box mr={1} display="inline">
+            <Button variant="contained" color="secondary" > Configurator </Button>
         </Box>
         <Console ref={consoleCompileRef} />
         <Console ref={consoleExecuteRef} />

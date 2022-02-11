@@ -7,9 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Server } from 'ws';
-import { Socket } from "socket.io";
-
-import { BuildListener } from './build_listener';
+import BuildListener from './build_listener';
 
 interface compileRequestEvent {
   code: string;
@@ -22,11 +20,32 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
   server: Server;
   private buildListener: BuildListener | null = null;
   private logger: Logger = new Logger('BuildGateway');
+  private execute = false;
 
   @SubscribeMessage('compile-request')
-  async handleCompileRequest(client: Socket, event: compileRequestEvent): Promise<void> {
+  async handleCompileRequest(client: any, event: compileRequestEvent): Promise<void> {
     if (this.buildListener === null) {
-      this.buildListener = await BuildListener.create(event.code, ''); // TODO : a changer
+      this.buildListener = await BuildListener.create(
+        event.code,
+        `
+      {
+        "exercice": [
+            {
+                "entree": ["30"],
+                "sorties": ["a"],
+                "maxtime": 30000,
+                "maxmemory": 10
+            },
+            {
+                "entree": ["8"],
+                "sorties": ["a"],
+                "maxtime": 30000,
+                "maxmemory": 10
+            }
+        ]
+    }`
+      ); // TODO : a changer
+      this.execute = event.execute;
 
       client.send(
         JSON.stringify({
@@ -35,11 +54,17 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
           compileLink: this.buildListener.getCompileLink(),
         })
       );
+    }
+  }
+
+  @SubscribeMessage('execute-request')
+  async handle(client: any): Promise<void> {
+    if (this.buildListener !== null) {
       const hasCompiled = await this.buildListener.build();
 
       client.send(JSON.stringify({ state: 2, hasCompiled }));
 
-      if (hasCompiled && event.execute) {
+      if (hasCompiled && this.execute) {
         await this.buildListener.execute();
         client.send(JSON.stringify({ state: 3, hasExecuted: this.buildListener.isExecuted() }));
       }
@@ -60,6 +85,7 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
     if (this.buildListener != null) {
       this.buildListener.destroyDocker();
       this.buildListener = null;
+      this.execute = false;
     }
   }
 }

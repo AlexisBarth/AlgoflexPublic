@@ -7,10 +7,11 @@ import {
 } from '@codingame/monaco-languageclient';
 import { listen, MessageConnection } from '@codingame/monaco-jsonrpc'
 import { Console } from '@components';
+import ReconnectingWebsocket from 'reconnecting-websocket';
 
 const ReconnectingWebSocket = require('reconnecting-websocket');
 
-const ws = new ReconnectingWebSocket('ws://localhost:4100');
+let ws : ReconnectingWebsocket | null = null;
 
 interface IdeProperties {
     baseCode?: string;
@@ -53,6 +54,7 @@ const Ide = (props: IdeProperties) => {
     };
 
     const didMount = (monaco: any) => {
+        ws = new ReconnectingWebSocket('ws://localhost:4100');
         MonacoServices.install(monaco, {rootUri: "file:///tmp/algoflex_autocomplete/"});
         const webSocket = createLanguageWebSocket("ws://localhost:3010/cpp");
         listen({
@@ -66,7 +68,7 @@ const Ide = (props: IdeProperties) => {
     };
 
     const send = (execute : boolean) => {
-        if(ws.readyState === ws.OPEN) {
+        if(ws !== null && ws.readyState === ws.OPEN) {
             ws.onmessage = (event: MessageEvent) => {
                 let result = JSON.parse(event.data);
                 const state = result.state;
@@ -75,6 +77,11 @@ const Ide = (props: IdeProperties) => {
                     const socketExecuteTerminal = new WebSocket(result.executeLink);
                     consoleCompileRef.current?.attachToConsole(socketCompileTerminal);
                     consoleExecuteRef.current?.attachToConsole(socketExecuteTerminal);
+                    socketCompileTerminal.onopen = () => {
+                        socketExecuteTerminal.onopen = () => {
+                            ws?.send(JSON.stringify({event: 'execute-request'}));
+                        };
+                    };
                 }
                 else if(state === 2){
                     const buildMessage = result.hasCompiled ? "Build success" : "Build failed";

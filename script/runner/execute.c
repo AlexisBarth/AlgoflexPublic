@@ -159,23 +159,27 @@ void alarm_handler(int sig) {
 
 int main(){
     int wstatus, status, success;
-    int filedes[2];
+    int inputFiledes[2], outputFileDes[2];
     const char r = '\r';
     char** result;
     char buffer[4096];
-    int i, j, n, k, nbOfValue;
+    int i, j, n, k, nbOfValue, nbOfCharacter;
     ssize_t count;
     pid_t pid;
 
     // On récupère l'exercice
-    EXERCICE exercice = getExercice("test.json");
+    EXERCICE exercice = getExercice("/volume/pcr/test.json");
 
     // On itère sur les tests à faire passer
     for(i = 0; i < exercice.numberOfTests; i++){
         k = 0;
         nbOfValue = 0;
         // On créé un pipe 
-        if(pipe(filedes) == -1){
+        if(pipe(inputFiledes) == -1){
+            exitWithError(exercice, "Pipe error");
+        }
+
+        if(pipe(outputFileDes) == -1){
             exitWithError(exercice, "Pipe error");
         }
 
@@ -189,23 +193,25 @@ int main(){
         }
         else if(pid == 0){
             // On duplique l'entrée du pipe à la sortie standard du processus fils
-            while((dup2(filedes[1], STDOUT_FILENO) == -1) && (errno == EINTR)) {}
+            while((dup2(outputFileDes[1], STDOUT_FILENO) == -1) && (errno == EINTR)) {}
 
             // On duplique la sortie du pipe à l'entrée standard du processus fils
-            while((dup2(filedes[0], STDIN_FILENO) == -1) && (errno == EINTR)) {}
+            while((dup2(inputFiledes[0], STDIN_FILENO) == -1) && (errno == EINTR)) {}
 
             // On ferme les pipes
-            close(filedes[1]);
-            close(filedes[0]);
+            close(outputFileDes[1]);
+            close(outputFileDes[0]);
+            close(inputFiledes[1]);
+            close(inputFiledes[0]);
 
             // On remplace le code du processus fils par le programme de l'utilisateur
-            execl("./program", "program", (char*) NULL);
+            execl("/volume/pcr/program", "program", (char*) NULL);
             exitWithError(exercice, "Execv error");
         }
         else{
             // On écrit les entrées du programmes dans le pipe
             for(j = 0; j < exercice.tests[i].numberOfEntrees; j++){
-                if(write(filedes[1], exercice.tests[i].entree[j], (strlen(exercice.tests[i].entree[j]) ) * sizeof(char)) == -1 || write(filedes[1], &r , 1) == -1){
+                if(write(inputFiledes[1], exercice.tests[i].entree[j], (strlen(exercice.tests[i].entree[j]) ) * sizeof(char)) == -1 || write(inputFiledes[1], &r , 1) == -1){
                     exitWithError(exercice, "Write error");
                 }
             }
@@ -234,9 +240,13 @@ int main(){
             while(1){
 
                 // Lit les données du pipe
-                count = read(filedes[0], buffer, sizeof(buffer));
-                close(filedes[0]);
-                close(filedes[1]);
+                count = read(outputFileDes[0], buffer, sizeof(buffer));
+
+                // On ferme les pipes
+                close(outputFileDes[1]);
+                close(outputFileDes[0]);
+                close(inputFiledes[1]);
+                close(inputFiledes[0]);
 
                 // En cas d'erreur de lecture, on quitte le programme
                 if(count == -1){
@@ -259,21 +269,21 @@ int main(){
                     }
                     // On alloue la mémoire en fonction du nombre de sorties
                     result = malloc(sizeof(char*) * nbOfValue);
-                    nbOfValue = 0;
+                    nbOfCharacter = 0;
 
                     // On stocke les sorties dans un tableau
                     for(j = 0; j < count; j++){
                         if(buffer[j] == '\n'){
-                            result[k] = malloc(sizeof(char) * (nbOfValue + 1));
-                            for(n = 0; n < nbOfValue; n++){
-                                result[k][n] = buffer[j - nbOfValue + n];
+                            result[k] = malloc(sizeof(char) * (nbOfCharacter + 1));
+                            for(n = 0; n < nbOfCharacter; n++){
+                                result[k][n] = buffer[j - nbOfCharacter + n];
                             }
                             result[k][n] = '\0';
-                            nbOfValue = 0;
+                            nbOfCharacter = 0;
                             k++;
                         }
                         else{
-                            nbOfValue++;
+                            nbOfCharacter++;
                         }
                     }
                     break;
@@ -285,7 +295,8 @@ int main(){
             if(k == exercice.tests[i].numberOfSorties){
                 success = 1;
                 for(j = 0; j < k ; j++){
-                    printf("%s : %s\n", result[j], exercice.tests[i].sortie[j]);
+                    printf("Sortie attendue : %s\n", exercice.tests[i].sortie[j]);
+                    printf("Sortie lue : %s\n", result[j]);
                     if(strcmp(result[j], exercice.tests[i].sortie[j]) != 0){
                         success = 0;
                     }

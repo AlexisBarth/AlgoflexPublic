@@ -2,8 +2,6 @@
 
 FROM gcc:latest
 
-WORKDIR /volume/pcr
-
-COPY runner/runner.out runner.out
+COPY runner.out runner.out
 
 CMD ["./runner.out"]

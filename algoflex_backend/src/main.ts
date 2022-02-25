@@ -1,14 +1,17 @@
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import * as helmet from 'helmet';
-import * as cookieParser from 'cookie-parser'
+import { WsAdapter } from '@nestjs/platform-ws';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+import { AppModule } from './app.module';
 
 const DOMAIN_WHITE_LIST = ['http://localhost:3000', 'https://staging-algoflex.heroku.app'];
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
+  app.useWebSocketAdapter(new WsAdapter(app));
 
   app.enableCors({
     origin: DOMAIN_WHITE_LIST,

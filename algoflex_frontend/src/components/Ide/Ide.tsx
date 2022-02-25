@@ -7,10 +7,11 @@ import {
 } from '@codingame/monaco-languageclient';
 import { listen, MessageConnection } from '@codingame/monaco-jsonrpc'
 import { Console } from '@components';
+import ReconnectingWebsocket from 'reconnecting-websocket';
 
 const ReconnectingWebSocket = require('reconnecting-websocket');
 
-const ws = new ReconnectingWebSocket('ws://localhost:4100/ws');
+let ws : ReconnectingWebsocket | null = null;
 
 interface IdeProperties {
     baseCode?: string;
@@ -53,6 +54,7 @@ const Ide = (props: IdeProperties) => {
     };
 
     const didMount = (monaco: any) => {
+        ws = new ReconnectingWebSocket('ws://localhost:4100');
         MonacoServices.install(monaco, {rootUri: "file:///tmp/algoflex_autocomplete/"});
         const webSocket = createLanguageWebSocket("ws://localhost:3010/cpp");
         listen({
@@ -66,7 +68,7 @@ const Ide = (props: IdeProperties) => {
     };
 
     const send = (execute : boolean) => {
-        if(ws.readyState === ws.OPEN){
+        if(ws !== null && ws.readyState === ws.OPEN) {
             ws.onmessage = (event: MessageEvent) => {
                 let result = JSON.parse(event.data);
                 const state = result.state;
@@ -75,6 +77,11 @@ const Ide = (props: IdeProperties) => {
                     const socketExecuteTerminal = new WebSocket(result.executeLink);
                     consoleCompileRef.current?.attachToConsole(socketCompileTerminal);
                     consoleExecuteRef.current?.attachToConsole(socketExecuteTerminal);
+                    socketCompileTerminal.onopen = () => {
+                        socketExecuteTerminal.onopen = () => {
+                            ws?.send(JSON.stringify({event: 'execute-request'}));
+                        };
+                    };
                 }
                 else if(state === 2){
                     const buildMessage = result.hasCompiled ? "Build success" : "Build failed";
@@ -86,14 +93,20 @@ const Ide = (props: IdeProperties) => {
                 }
             };
 
-            var data = {code : code, execute: execute};
-            ws.send(JSON.stringify(data)); 
+            const data = {
+                event: 'compile-request',
+                data: {
+                    code,
+                    execute,
+                },
+            };
+            ws.send(JSON.stringify(data));
         }
     };
 
     return (
     <div className="editor">
-           <Editor
+        <Editor
             height="70vh"
             defaultLanguage="cpp"
             theme="vs-dark"
@@ -103,11 +116,11 @@ const Ide = (props: IdeProperties) => {
             path='file:///tmp/algoflex_autocomplete/file.cpp'
         />
         <Button variant="contained" color="primary" onClick={() => send(false)}> Compile </Button>
-        <Box mr={1} display="inline">   
-        <Button variant="contained" onClick={() => send(true)}> Compile and Run </Button>
+        <Box mr={1} display="inline">
+            <Button variant="contained" onClick={() => send(true)}> Compile and Run </Button>
         </Box>
-        <Box mr={1} display="inline">   
-        <Button variant="contained" color="secondary" > Configurator </Button>
+        <Box mr={1} display="inline">
+            <Button variant="contained" color="secondary" > Configurator </Button>
         </Box>
         <Console ref={consoleCompileRef} />
         <Console ref={consoleExecuteRef} />

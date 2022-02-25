@@ -33,6 +33,7 @@
     "@nestjs/swagger": "^5.1.5",
     "@nestjs/typeorm": "^8.0.2",
     "@nestjs/websockets": "^8.2.6",
+    "@sourcegraph/vscode-ws-jsonrpc": "^0.0.3-fork",
     "class-transformer": "0.4.0",
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",

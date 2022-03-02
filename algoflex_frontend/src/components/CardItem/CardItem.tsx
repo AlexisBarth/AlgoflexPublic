@@ -8,7 +8,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import { CardItemProps } from '../interfaces';
+import { CardItemProps } from '@components/interfaces';
 import { useHistory } from 'react-router-dom';
 
 export default function CardItem(props: CardItemProps) {
@@ -44,7 +44,7 @@ export default function CardItem(props: CardItemProps) {
 
     const history = useHistory();
     const faireRedirection = () => {
-        let url = "/theme/"+props.cardId;
+        let url = "/theme/"+props.uid;
         history.push(url);
     }
 
@@ -54,14 +54,14 @@ export default function CardItem(props: CardItemProps) {
             <CardMedia
             component="img"
             height="140"
-            image={props.cardImage}
+            image={props.imageUrl}
             />
             <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-                {props.cardName}
+                {props.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-                {props.cardDesc}
+                {props.description}
             </Typography>
             <LinearProgress variant="determinate" value={percentageFinished} />
             </CardContent>

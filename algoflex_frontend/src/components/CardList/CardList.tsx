@@ -9,7 +9,6 @@ interface CardListProps {
 }
 
 const CardList = ({cardDatas}: CardListProps) => {
-    
     const [ a, setA] = useState<number>(0);
 
     return (
@@ -18,13 +17,14 @@ const CardList = ({cardDatas}: CardListProps) => {
             <ImageList sx={{ overflow: 'auto' }} rowHeight={164} >
             {cardDatas.map((item) => (
                 <CardItem
-                    cardId={item.cardId}
-                    cardName={item.cardName} 
-                    cardDesc={item.cardDesc}
-                    cardImage={item.cardImage}
+                    uid={item.uid}
+                    name={item.name} 
+                    description={item.description}
+                    imageUrl={item.imageUrl}
                     exerciseCount={item.exerciseCount} 
                     finishedExerciseCount={item.finishedExerciseCount}
-                    favoriteStatus = {item.favoriteStatus} />
+                    favoriteStatus = {item.favoriteStatus}
+                />
             ))}
             </ImageList>
         </div>

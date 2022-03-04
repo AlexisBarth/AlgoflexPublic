@@ -1,8 +1,7 @@
 import { CardList } from "@components";
-import axios from "axios";
+import { client } from '@services/Axios.client';
 import React, {useEffect, useState} from "react";
 import { Grid } from "@mui/material";
-import baseUrl from '../../../components/global';
 
 
 
@@ -10,7 +9,7 @@ const Themes = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        axios.get(baseUrl + `/problems/themes`,  { withCredentials: true})
+        client.get(`/problems/themes`,  { withCredentials: true})
         .then(res => {
         setData(res.data);
         })

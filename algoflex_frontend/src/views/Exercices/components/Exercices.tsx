@@ -15,9 +15,8 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useHistory, useParams } from 'react-router';
 import { Button, Grid } from '@mui/material';
 import { useEffect } from "react";
-import axios from 'axios';
+import { client } from '@services/Axios.client';
 import { CodingQuestionInterface } from '@components/interfaces';
-import baseUrl from '../../../components/global';
 
 function Row(props: { row: CodingQuestionInterface }) {
   const { row } = props;
@@ -74,11 +73,11 @@ export default function Exercices() {
   const [queryData, setQueryData] = React.useState<CodingQuestionInterface[]>([]);
 
   useEffect(() => {
-    axios.get(baseUrl + '/problems/coding-questions?theme=' + idPage.id,  { withCredentials: false})
+    client.get('/problems/coding-questions?theme=' + idPage.id,  { withCredentials: false})
         .then(res => {
         setQueryData(res.data);
         })
-  }, [idPage.id])
+  }, [idPage.id]);
 
   return (
     <Grid container spacing={2}>

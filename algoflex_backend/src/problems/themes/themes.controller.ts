@@ -21,7 +21,7 @@ export class ThemesController {
 
   @Get(':id')
   public async findOne(@Param('id') id: string) {
-    return this.themesService.findOne(+id);
+    return this.themesService.findOne(id);
   }
 
   @Put(':id')
@@ -31,6 +31,6 @@ export class ThemesController {
 
   @Delete(':id')
   public async remove(@Param('id') id: string) {
-    return this.themesService.remove(+id);
+    return this.themesService.remove(id);
   }
 }

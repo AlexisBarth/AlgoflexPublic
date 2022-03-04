@@ -1,7 +1,5 @@
-import { integer } from "@codingame/monaco-languageclient";
-
 export interface CardItemProps {
-    uid?: integer;
+    uid?: number;
     name?: string;
     description?: string;
     imageUrl?: string;

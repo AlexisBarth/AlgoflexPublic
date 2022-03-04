@@ -2,6 +2,7 @@ import { CardList } from "@components";
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import { Grid } from "@mui/material";
+import baseUrl from '../../../components/global';
 
 
 
@@ -9,11 +10,11 @@ const Themes = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        axios.get(`https://staging-algoflex.herokuapp.com/problems/themes`,  { withCredentials: true})
+        axios.get(baseUrl + `/problems/themes`,  { withCredentials: true})
         .then(res => {
         setData(res.data);
         })
-    }, [])
+    }, []);
     
     return (
         <div>

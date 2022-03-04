@@ -44,7 +44,7 @@ export default function CardItem(props: CardItemProps) {
 
     const history = useHistory();
     const faireRedirection = () => {
-        let url = "/theme/"+props.uid;
+        let url = "/theme/" + props.uid;
         history.push(url);
     }
 

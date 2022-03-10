@@ -14,9 +14,9 @@ jobs:
       with:
         heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
         heroku_app_name: "staging-algoflex"
-        # heroku_app_name: "YOUR APP's NAME" #Must be unique in Heroku
         heroku_email: ${{ secrets.HEROKU_EMAIL }}
         usedocker: true
+        appdir: "algoflex_backend"
       env:
         DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
         DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
@@ -28,4 +28,3 @@ jobs:
         FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
         FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
-      working-directory: 'algoflex_backend'

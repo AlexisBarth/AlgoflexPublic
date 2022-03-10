@@ -24,4 +24,12 @@ export class AuthController {
     }
     return this.authService.findById(req.user.uid);
   }
+
+  @Get('ping')
+  public async ping() {
+    return {
+      status: "success",
+      message: "pong",
+    };
+  }
 }

@@ -25,9 +25,9 @@ jobs:
         cache: 'npm'
         cache-dependency-path: ${{ matrix.dir }}/package-lock.json
     - run: |
-      npm ci
-      npm run build
-      npm test
+        npm ci
+        npm run build
+        npm test
 
   sonarcloud:
     runs-on: ubuntu-latest

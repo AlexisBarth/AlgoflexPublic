@@ -16,6 +16,7 @@ RUN apt -y install nodejs
 RUN npm install
 RUN npm run build
 
+EXPOSE 3010
 EXPOSE 4100
 
 CMD ["npm", "run", "start"]

@@ -15,7 +15,7 @@ const routes: Route[] = [
     { component: Home, path: '/', authenticated: false },
     { component: Authentification, path: '/login', authenticated: false},
     { component: ForgetPassword, path: '/forgetPassword', authenticated: false},
-    { component: Editeur, path: '/editeur', authenticated: true}
+    { component: Editeur, path: '/editeur', authenticated: false}
 ];
 
 

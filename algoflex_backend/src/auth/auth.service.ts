@@ -8,6 +8,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Role } from 'src/common';
 
+// Non-sensivite info, public config keys
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyA29TC3w3ppTdQNmvRigb_L8rZb8bFOseY",
   authDomain: "algoflex-dce55.firebaseapp.com",

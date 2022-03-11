@@ -54,8 +54,8 @@ const Ide = (props: IdeProperties) => {
     };
 
     const didMount = (monaco: any) => {
-        ws = new ReconnectingWebSocket('ws://staging-algoflex.herokuapp.com');
-        const webSocket = createLanguageWebSocket("ws://staging-algoflex.herokuapp.com");
+        ws = new ReconnectingWebSocket('wss://staging-algoflex.herokuapp.com');
+        const webSocket = createLanguageWebSocket("wss://staging-algoflex.herokuapp.com");
         MonacoServices.install(monaco, {rootUri: "file:///app/autocomplete/"});
         listen({
             webSocket,

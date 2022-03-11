@@ -26,6 +26,16 @@ interface IProps {
 	addons?: Array<ITerminalAddon>
 
 	/**
+	 * Permet de définir sur la console sera affichée ou non
+	 */
+	hidden?: boolean
+
+	/**
+	 * Taille de la console
+	 */
+	size?: { col: number; row: number }
+
+	/**
 	 * Adds an event listener for when a binary event fires. This is used to
 	 * enable non UTF-8 conformant binary messages to be sent to the backend.
 	 * Currently this is only used for a certain type of mouse reports that
@@ -135,7 +145,7 @@ export default class Console extends React.Component<IProps> {
 	constructor(props: IProps) {
 		super(props)
 
-		this.terminalRef = React.createRef()
+		this.terminalRef = React.createRef();
 
 		// Bind Methods
 		this.onData = this.onData.bind(this)
@@ -163,6 +173,10 @@ export default class Console extends React.Component<IProps> {
 			})
 		}
 
+		if(this.props.size){
+			this.terminal.resize(this.props.size.col, this.props.size.row)
+		}
+
 		// Create Listeners
 		this.terminal.onBinary(this.onBinary)
 		this.terminal.onCursorMove(this.onCursorMove)
@@ -185,7 +199,7 @@ export default class Console extends React.Component<IProps> {
 		if (this.terminalRef.current) {
 			const fitAddon = new FitAddon();
 			this.terminal.loadAddon(fitAddon);
-			this.terminal.open(this.terminalRef.current)
+			this.terminal.open(this.terminalRef.current);
 			fitAddon.fit();
 		}
 	}
@@ -246,6 +260,6 @@ export default class Console extends React.Component<IProps> {
 	}
 
 	render() {
-		return <div className={this.props.className} ref={this.terminalRef} />
+		return <div hidden={this.props.hidden} className={this.props.className} ref={this.terminalRef} />
 	}
 }

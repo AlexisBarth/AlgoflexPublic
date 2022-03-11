@@ -13,7 +13,7 @@ export class AutoCompleteGateway implements OnGatewayDisconnect, OnGatewayConnec
     this.logger.log(`WebSocket Client sucessfully connected`);
     const langServer = [
       'ccls',
-      '--init={"cache": {"directory":"/tmp/algoflex_autocomplete","format":"json"},"index":{"onChange":true,"trackDependency":2}}',
+      '--init={"cache": {"directory":"/app/autocomplete","format":"json"},"index":{"onChange":true,"trackDependency":2}}',
     ];
 
     this.localConnection = rpcServer.createServerProcess('Autocomplete-Server', langServer[0], langServer.slice(1));

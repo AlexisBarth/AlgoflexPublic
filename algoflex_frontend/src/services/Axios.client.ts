@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const client = axios.create({
-  baseURL: 'http://localhost:4100',
+  baseURL: 'https://staging-algoflex.herokuapp.com',
   timeout: 1000,
   withCredentials: true,
 });

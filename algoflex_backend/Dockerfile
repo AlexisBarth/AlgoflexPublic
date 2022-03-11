@@ -3,7 +3,7 @@ FROM ubuntu
 WORKDIR /app
 ADD . .
 
-# Install curl and ccls
+# Install curl, ccls and clang
 RUN apt -y update
 RUN apt -y install ccls curl clang
 RUN mkdir -p "/app/autocomplete" && touch "/app/autocomplete/file.cpp"

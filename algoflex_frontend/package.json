@@ -45,7 +45,7 @@
     "test": "craco test --passWithNoTests",
     "eject": "craco eject"
   },
-  "proxy": "http://localhost:4100",
+  "proxy": "https://staging-algoflex.herokuapp.com",
   "eslintConfig": {
     "extends": [
       "react-app",

@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { User } from 'src/users/entity';
 import { BaseRequest, FirebaseAuthGuard } from '../common';
 import { LoginDto } from './dto';
+const fs = require('fs')
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -27,6 +28,13 @@ export class AuthController {
 
   @Get('ping')
   public async ping() {
+    fs.readFile('/tmp/algoflex_autocomplete/file.cpp', 'utf8' , (err: any, data: any) => {
+      if (err) {
+        console.error(err)
+        return
+      }
+      console.log(data)
+    })
     return {
       status: "success",
       message: "pong",

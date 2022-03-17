@@ -44,7 +44,7 @@ export class AutoCompleteGateway implements OnGatewayDisconnect, OnGatewayConnec
       onError: (cb) =>
         (webSocket.onerror = (event) => {
           if ('message' in event) {
-            cb((event as any).message);
+            cb((event).message);
           }
         }),
       onClose: (cb) => (webSocket.onclose = (event) => cb(event.code, event.reason)),

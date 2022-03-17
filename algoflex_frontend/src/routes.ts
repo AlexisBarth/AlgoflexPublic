@@ -18,5 +18,4 @@ const routes: Route[] = [
     { component: Editeur, path: '/editeur', authenticated: true}
 ];
 
-
 export default routes;

@@ -6,7 +6,7 @@ import { CreateCodingQuestionDto } from './dto/create-coding-question.dto';
 import { UpdateCodingQuestionDto } from './dto/update-coding-question.dto';
 import { CodingQuestion } from './entities/coding-question.entity';
 
-interface findAllCodingQuestionQuery {
+interface FindAllCodingQuestionQuery {
   theme: string;
 }
 @ApiTags('Coding questions')
@@ -15,7 +15,7 @@ export class CodingQuestionsController {
   constructor(private readonly codingQuestionsService: CodingQuestionsService) {}
 
   @Get()
-  findAll(@Query() query?: findAllCodingQuestionQuery) {
+  findAll(@Query() query?: FindAllCodingQuestionQuery) {
     if (query?.theme) {
       return this.codingQuestionsService.findByTheme(query.theme);
     }

@@ -9,7 +9,7 @@ import { Logger } from '@nestjs/common';
 import { Server } from 'ws';
 import BuildListener from './build_listener';
 
-interface compileRequestEvent {
+interface CompileRequestEvent {
   code: string;
   execute: boolean;
 }
@@ -23,7 +23,7 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
   private execute = false;
 
   @SubscribeMessage('compile-request')
-  async handleCompileRequest(client: any, event: compileRequestEvent): Promise<void> {
+  async handleCompileRequest(client: any, event: CompileRequestEvent): Promise<void> {
     if (this.buildListener !== null) {
       return;
     }

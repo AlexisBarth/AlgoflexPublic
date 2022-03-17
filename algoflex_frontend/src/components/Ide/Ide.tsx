@@ -4,8 +4,8 @@ import { PlayArrow, Check } from '@mui/icons-material';
 import { TabContext, TabList } from '@mui/lab';
 import Editor from "@monaco-editor/react";
 import { 
-    MonacoLanguageClient, MonacoServices, 
-    createConnection, CloseAction, ErrorAction 
+    MonacoLanguageClient, MonacoServices,
+    createConnection, CloseAction, ErrorAction
 } from '@codingame/monaco-languageclient';
 import { listen, MessageConnection } from '@codingame/monaco-jsonrpc'
 import { Console, Markdown } from '@components';
@@ -66,14 +66,14 @@ const Ide = (props: IdeProperties) => {
             reconnectionDelayGrowFactor: 1.3,
             connectionTimeout: 10000,
             maxRetries: Infinity,
-            debug: false
+            debug: true,
         };
         return new ReconnectingWebSocket(url, [], socketOptions);
     };
 
     const didMount = (monaco: any) => {
         ws = new ReconnectingWebSocket(webSocketLink);
-        MonacoServices.install(monaco, {rootUri: "file:///tmp/algoflex_autocomplete/"});
+        MonacoServices.install(monaco, {rootUri: "file:///app/autocomplete/"});
         const webSocket = createLanguageWebSocket(webSocketLink);
         listen({
             webSocket,
@@ -139,7 +139,7 @@ const Ide = (props: IdeProperties) => {
                     value={code}
                     onChange={value => setCode(String(value))}
                     beforeMount={didMount}
-                    path='file:///tmp/algoflex_autocomplete/file.cpp'
+                    path='file:///app/autocomplete/file.cpp'
                 />
             </Box>
             <Box mt={1} mb={2}>

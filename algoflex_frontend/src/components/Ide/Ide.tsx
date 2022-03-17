@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Button, Tab, Badge } from '@mui/material';
+import { Box, Button, Tab, Badge, Grid } from '@mui/material';
+import { PlayArrow, Check } from '@mui/icons-material';
 import { TabContext, TabList } from '@mui/lab';
 import Editor from "@monaco-editor/react";
 import { 
@@ -7,7 +8,7 @@ import {
     createConnection, CloseAction, ErrorAction 
 } from '@codingame/monaco-languageclient';
 import { listen, MessageConnection } from '@codingame/monaco-jsonrpc'
-import { Console } from '@components';
+import { Console, Markdown } from '@components';
 import ReconnectingWebsocket from 'reconnecting-websocket';
 import { webSocketLink } from '@services/WebSocket.client';
 
@@ -27,6 +28,8 @@ const Ide = (props: IdeProperties) => {
     const [tab, setTab] = useState('1');
     const [compileDot, setCompileDot] = useState(0);
     const [executeDot, setExecuteDot] = useState(0);
+
+    const markdown = ``
 
     const handleTab = (event: any, value: string) => {
         if(value === '1'){
@@ -69,7 +72,7 @@ const Ide = (props: IdeProperties) => {
     };
 
     const didMount = (monaco: any) => {
-        ws = new ReconnectingWebSocket('ws://localhost:4100');
+        ws = new ReconnectingWebSocket(webSocketLink);
         MonacoServices.install(monaco, {rootUri: "file:///tmp/algoflex_autocomplete/"});
         const webSocket = createLanguageWebSocket(webSocketLink);
         listen({
@@ -126,39 +129,46 @@ const Ide = (props: IdeProperties) => {
     };
 
     return (
-    <Box margin={3}>
-        <Box border='3px #1e1e1e solid' bgcolor="#1e1e1e" boxShadow={3} mt={3} maxWidth={920} minWidth={200} borderRadius={2}>
-            <Editor
-                height="54vh"
-                defaultLanguage="cpp"
-                theme="vs-dark"
-                value={code}
-                onChange={value => setCode(String(value))}
-                beforeMount={didMount}
-                path='file:///tmp/algoflex_autocomplete/file.cpp'
-            />
-        </Box>
-        <Box mt={1} mb={2}>
-            <Box mr={1} display="inline">
-                <Button variant="contained" color="primary" onClick={() => send(false)}> Compile </Button>
+    <Grid container columnSpacing={2} mt={3} alignItems="stretch">
+        <Grid item height={"100%"} xs={12} md={7} order={{ xs:2, md:1}}>
+            <Box border='3px #1e1e1e solid' bgcolor="#1e1e1e" boxShadow={3} borderRadius={1}>
+                <Editor
+                    height="55vh"
+                    defaultLanguage="cpp"
+                    theme="vs-dark"
+                    value={code}
+                    onChange={value => setCode(String(value))}
+                    beforeMount={didMount}
+                    path='file:///tmp/algoflex_autocomplete/file.cpp'
+                />
             </Box>
-            <Box m={1} display="inline">
-                <Button variant="contained" onClick={() => send(true)}> Compile and Run </Button>
+            <Box mt={1} mb={2}>
+                <Box mr={1} display="inline">
+                    <Button startIcon={<Check />} variant="contained" color="primary" onClick={() => send(false)}> Compile </Button>
+                </Box>
+                <Box m={1} display="inline">
+                    <Button startIcon={<PlayArrow />} variant="contained" onClick={() => send(true)}> Compile and Run </Button>
+                </Box>
             </Box>
-        </Box>
-        <Box width={920} border='5px #001e3c solid' bgcolor="#001e3c" borderRadius={2} >
-        <TabContext value={tab}>
-            <Box borderBottom={1} height="inherit" borderColor='divider' color={"white"}>
-                <TabList onChange={handleTab} textColor="inherit">
-                    <Tab label={<Badge badgeContent={compileDot} color="error" variant="dot">Compilation</Badge>} value="1" />
-                    <Tab label={<Badge badgeContent={executeDot} color="error" variant="dot">Execution</Badge>} value="2" />
-                </TabList>
-            </Box>              
-            <Console size={{col: 100, row: 12}} hidden={tab === '2'} ref={consoleCompileRef} options={{ theme: { background: "#001e3c", foreground: "white" },  }} />
-            <Console size={{col: 100, row: 12}} hidden={tab === '1'} ref={consoleExecuteRef} options={{ theme: { background: "#001e3c", foreground: "white" } }} />
-        </TabContext>
-        </Box>
-    </Box>
+            <Box border='5px #001e3c solid' bgcolor="#001e3c" borderRadius={1} boxShadow={3} >
+                <TabContext value={tab}>
+                    <Box borderBottom={1} height="inherit" borderColor='divider' color={"white"} >
+                        <TabList onChange={handleTab} textColor="inherit">
+                            <Tab label={<Badge badgeContent={compileDot} color="error" variant="dot">Compilation</Badge>} value="1" />
+                            <Tab label={<Badge badgeContent={executeDot} color="error" variant="dot">Execution</Badge>} value="2" />
+                        </TabList>
+                    </Box>              
+                    <Console height={12} hidden={tab === '2'} ref={consoleCompileRef} options={{ theme: { background: "#001e3c", foreground: "white" },  }} />
+                    <Console height={12} hidden={tab === '1'} ref={consoleExecuteRef} options={{ theme: { background: "#001e3c", foreground: "white" } }} />
+                </TabContext>
+            </Box>
+        </Grid>
+        <Grid item height={"100%"} xs={12} md={5} mb={{xs:2, md:0}} order={{ xs:1, md:2}}>
+            <Box height="88vh" border='1px gray solid' overflow={'auto'} p={2} bgcolor="white" boxShadow={3} borderRadius={1} >
+                <Markdown text={markdown} />
+            </Box>
+        </Grid>
+    </Grid>
     );
 }
 

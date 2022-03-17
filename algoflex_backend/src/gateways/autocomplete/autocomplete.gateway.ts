@@ -4,7 +4,7 @@ import rpc from '@sourcegraph/vscode-ws-jsonrpc';
 import * as rpcServer from '@sourcegraph/vscode-ws-jsonrpc/lib/server';
 import { Logger } from '@nestjs/common';
 
-@WebSocketGateway(3010)
+@WebSocketGateway()
 export class AutoCompleteGateway implements OnGatewayDisconnect, OnGatewayConnection {
   private localConnection: rpcServer.IConnection;
   private logger: Logger = new Logger('AutocompleteGateway');
@@ -13,7 +13,7 @@ export class AutoCompleteGateway implements OnGatewayDisconnect, OnGatewayConnec
     this.logger.log(`WebSocket Client sucessfully connected`);
     const langServer = [
       'ccls',
-      '--init={"cache": {"directory":"/tmp/algoflex_autocomplete","format":"json"},"index":{"onChange":true,"trackDependency":2}}',
+      '--init={"cache": {"directory":"/app/autocomplete","format":"json"},"index":{"onChange":true,"trackDependency":2}}',
     ];
 
     this.localConnection = rpcServer.createServerProcess('Autocomplete-Server', langServer[0], langServer.slice(1));
@@ -44,7 +44,7 @@ export class AutoCompleteGateway implements OnGatewayDisconnect, OnGatewayConnec
       onError: (cb) =>
         (webSocket.onerror = (event) => {
           if ('message' in event) {
-            cb((event as any).message);
+            cb((event).message);
           }
         }),
       onClose: (cb) => (webSocket.onclose = (event) => cb(event.code, event.reason)),

@@ -43,15 +43,17 @@
     "@types/react-router-dom": "^5.3.1",
     "@types/react-syntax-highlighter": "^13.5.2",
     "@types/ws": "^7.4.7",
-    "craco-alias": "^3.0.1"
+    "craco-alias": "^3.0.1",
+    "serve": "^13.0.2"
   },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test --passWithNoTests",
-    "eject": "craco eject"
+    "serve": "serve -s build",
+    "eject": "craco eject",
+    "test": "craco test --passWithNoTests"
   },
-  "proxy": "http://localhost:4100",
+  "proxy": "https://staging-algoflex.herokuapp.com",
   "eslintConfig": {
     "extends": [
       "react-app",

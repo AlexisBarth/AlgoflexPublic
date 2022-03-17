@@ -1,5 +1,7 @@
 # Algoflex
-Projet Epitech Algoflex
+Projet Epitech Algoflex  
+Website: https://algoflex.netlify.app/  
+API Url: https://staging-algoflex.herokuapp.com
 
 ## Lancement Front-end : 
 

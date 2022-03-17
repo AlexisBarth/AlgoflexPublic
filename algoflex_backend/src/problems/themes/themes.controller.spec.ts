@@ -12,7 +12,7 @@ describe('ThemesController', () => {
         ...dto
       }
     }),
-    findOne: jest.fn(id => {id: id}),
+    findOne: jest.fn(id => {return {id: id}}),
     update: jest.fn((id:string, dto) => {
       return {
         id,

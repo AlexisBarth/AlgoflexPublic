@@ -11,7 +11,7 @@ describe('UsersService', () => {
     findOne: jest.fn().mockImplementation(id => {
       return {id: id}
     }),
-    remove: jest.fn().mockImplementation(dto => {dto})
+    remove: jest.fn().mockImplementation(dto => {return dto})
   }
 
   beforeEach(async () => {

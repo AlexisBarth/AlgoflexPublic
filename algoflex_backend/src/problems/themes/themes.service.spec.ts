@@ -18,7 +18,7 @@ describe('ThemesService', () => {
         ...dto
       }
     }),
-    remove: jest.fn().mockImplementation(dto => {dto})
+    remove: jest.fn().mockImplementation(dto => {return dto})
   }
 
   beforeEach(async () => {

@@ -13,7 +13,7 @@ describe('SubmissionsService', () => {
     }),
     save: jest.fn().mockImplementation(dto => {return {uid: Date.now(), ...dto}}),
     preload: jest.fn().mockImplementation(dto => {return {userId: '1', ...dto}}),
-    remove: jest.fn().mockImplementation(dto => {dto})
+    remove: jest.fn().mockImplementation(dto => {return dto})
   }
 
   beforeEach(async () => {

@@ -6,3 +6,7 @@ export interface CardItemProps{
     finishedExerciseCount?: number;
     favoriteStatus?: boolean;
 }
+
+export interface MarkdownProps{
+    text: string;
+}

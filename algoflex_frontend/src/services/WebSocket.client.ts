@@ -1,1 +1,1 @@
-export const webSocketLink = "ws://staging-algoflex.herokuapp.com";
+export const webSocketLink = "wss://staging-algoflex.herokuapp.com";

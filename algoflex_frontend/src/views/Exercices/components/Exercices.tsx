@@ -4,7 +4,7 @@ import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -12,11 +12,12 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { useHistory, useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router-dom';
 import { Button, Grid } from '@mui/material';
 import { useEffect } from "react";
 import { client } from '@services/Axios.client';
 import { CodingQuestionInterface } from '@components/interfaces';
+import { styled } from '@mui/material/styles';
 
 function Row(props: { row: CodingQuestionInterface }) {
   const { row } = props;
@@ -30,7 +31,7 @@ function Row(props: { row: CodingQuestionInterface }) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset', backgroundColor: 'white'} }}>
+      <TableRow sx={{ '& > *': { borderBottom: 'unset', background: 'red'}}}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -40,9 +41,9 @@ function Row(props: { row: CodingQuestionInterface }) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
+        <TableRow component="th" scope="row">
           {row.name}
-        </TableCell>
+        </TableRow>
         <TableCell align="right">
           <Button size="small" color="primary" variant="contained" onClick={faireRedirection}>
             GO
@@ -79,6 +80,26 @@ export default function Exercices() {
         })
   }, [idPage.id]);
 
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={2}>
@@ -93,9 +114,9 @@ export default function Exercices() {
                     <TableCell align="right"></TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody component="th" >
                   {queryData.map((row) => (
-                    <Row key={row.name} row={row}/>
+                    <TableRow key={row.name} />
                   ))}
                 </TableBody>
               </Table>

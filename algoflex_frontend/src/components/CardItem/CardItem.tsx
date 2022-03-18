@@ -49,8 +49,8 @@ export default function CardItem(props: CardItemProps) {
     }
 
     return (
-        <Card >
-        <CardActionArea onClick={faireRedirection}>
+        <Card data-testid="CardTest">
+        <CardActionArea data-testid="CardActionAreaTest" onClick={faireRedirection}>
             <CardMedia
             component="img"
             height="140"
@@ -67,10 +67,10 @@ export default function CardItem(props: CardItemProps) {
             </CardContent>
         </CardActionArea>
         <CardActions>
-            <Button size="small" color="primary" onClick={faireRedirection}>
+            <Button data-testid="ButtonCompletionTest" size="small" color="primary" onClick={faireRedirection}>
             {testCompletion()}
             </Button>
-            <Button size="small" color="secondary" onClick={() => setFavorite(!favorite)} >
+            <Button data-testid="ButtonFavoriteTest" size="small" color="secondary" onClick={() => setFavorite(!favorite)} >
             {testFavorite()}
             </Button>
         </CardActions>

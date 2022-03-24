@@ -46,12 +46,12 @@ describe('ThemesService', () => {
   })
 
   it('should find a theme', async () => {
-    expect(service.findOne(1)).toEqual(
+    expect(service.findOne('1')).toEqual(
       Promise.resolve({
         id: 1
       }
     ))
-    expect(mockThemesRepository.findOne).toHaveBeenCalledWith(1);
+    expect(mockThemesRepository.findOne).toHaveBeenCalledWith("1");
   })
 
 
@@ -91,9 +91,9 @@ describe('ThemesService', () => {
   })
 
   it('should delete a theme', async () => {
-    service.remove(1)
+    service.remove('1')
 
-    expect(await mockThemesRepository.findOne).toHaveBeenCalledWith(1);
+    expect(await mockThemesRepository.findOne).toHaveBeenCalledWith("1");
     expect(mockThemesRepository.remove).toHaveBeenCalled()
   })
 

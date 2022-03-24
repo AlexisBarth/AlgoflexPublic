@@ -47,7 +47,7 @@ describe('ThemesController', () => {
         id: 1
       }
     ))
-    expect(mockThemesService.findOne).toHaveBeenCalledWith(1);
+    expect(mockThemesService.findOne).toHaveBeenCalledWith("1");
   })
 
   it('should create a new theme', () => {
@@ -94,6 +94,6 @@ describe('ThemesController', () => {
   it('should delete a theme', () => {
     controller.remove('1')
 
-    expect(mockThemesService.remove).toHaveBeenCalledWith(1);
+    expect(mockThemesService.remove).toHaveBeenCalledWith("1");
   })
 });

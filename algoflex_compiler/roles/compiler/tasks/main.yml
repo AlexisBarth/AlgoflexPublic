@@ -21,3 +21,11 @@
 
     - name: Ping
       command: echo Pong
+
+    - name: Copying dockerfiles
+      template:
+        src: ../files/
+        dest: /etc/algo_scripts
+
+    - name: Install docker images
+      ansible.builtin.script: /etc/algo_scripts/init.sh

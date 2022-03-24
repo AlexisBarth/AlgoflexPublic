@@ -1,6 +1,6 @@
 import slugify from 'slugify';
 
-interface slugifyOptions {
+interface SlugifyOptions {
   replacement?: string;
   remove?: RegExp;
   lower?: boolean;
@@ -9,7 +9,7 @@ interface slugifyOptions {
   trim?: boolean;
 }
 
-export function customSlugify(value: string, options?: slugifyOptions) {
+export function customSlugify(value: string, options?: SlugifyOptions) {
   return slugify(value, {
     lower: true,
     ...options,

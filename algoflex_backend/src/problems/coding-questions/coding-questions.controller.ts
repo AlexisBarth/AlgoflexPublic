@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FirebaseAuthGuard, Role, Roles, RolesGuard } from 'src/common';
 import { CodingQuestionsService } from './coding-questions.service';
@@ -6,13 +6,19 @@ import { CreateCodingQuestionDto } from './dto/create-coding-question.dto';
 import { UpdateCodingQuestionDto } from './dto/update-coding-question.dto';
 import { CodingQuestion } from './entities/coding-question.entity';
 
+interface FindAllCodingQuestionQuery {
+  theme: string;
+}
 @ApiTags('Coding questions')
 @Controller('problems/coding-questions')
 export class CodingQuestionsController {
   constructor(private readonly codingQuestionsService: CodingQuestionsService) {}
 
   @Get()
-  findAll() {
+  findAll(@Query() query?: FindAllCodingQuestionQuery) {
+    if (query?.theme) {
+      return this.codingQuestionsService.findByTheme(query.theme);
+    }
     return this.codingQuestionsService.findAll();
   }
 

@@ -11,5 +11,8 @@ export class CreateCodingQuestionDto {
   theme: string;
 
   @IsString()
+  testCases: string;
+
+  @IsString()
   prompt: string;
 }

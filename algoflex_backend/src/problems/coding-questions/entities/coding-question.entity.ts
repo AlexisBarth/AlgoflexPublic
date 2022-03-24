@@ -18,6 +18,9 @@ export class CodingQuestion {
   @Column()
   prompt: string;
 
+  @Column({ default: null })
+  testCases: string;
+
   @JoinColumn()
   submissionStatistics?: SubmissionStatistic;
 }

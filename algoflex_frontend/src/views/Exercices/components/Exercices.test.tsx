@@ -6,7 +6,7 @@ import { act } from "react-dom/test-utils";
 test.todo("Make Exercices tests");
 
 it("Renders correctly", () => {
-    const { queryByTest } = render(<Exercices />);
+    const queryByTest = render(<Exercices />);
     expect(queryByTest).toMatchSnapshot();
 });
 

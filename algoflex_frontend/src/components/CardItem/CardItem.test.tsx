@@ -30,7 +30,7 @@ const testingProps = {
 }
 
 it("Renders correctly", () => {
-    const { queryByTest } = render(<CardItem />);
+    const queryByTest = render(<CardItem />);
     expect(queryByTest).toMatchSnapshot();
 });
 

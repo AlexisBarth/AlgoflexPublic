@@ -4,7 +4,7 @@ import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -17,7 +17,6 @@ import { Button, Grid } from '@mui/material';
 import { useEffect } from "react";
 import { client } from '@services/Axios.client';
 import { CodingQuestionInterface } from '@components/interfaces';
-import { styled } from '@mui/material/styles';
 
 function Row(props: { row: CodingQuestionInterface }) {
   const { row } = props;
@@ -31,7 +30,7 @@ function Row(props: { row: CodingQuestionInterface }) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset', background: 'red'}}}>
+      <TableRow hover sx={{ '& > *': { borderBottom: 0, paddingTop: 0 } }} onClick={() => setOpen(!open)}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -41,10 +40,12 @@ function Row(props: { row: CodingQuestionInterface }) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableRow component="th" scope="row">
-          {row.name}
+        <TableRow component="th" scope="row" align="center">
+          <Typography variant="h6" gutterBottom component="div">
+            {row.name}
+          </Typography>
         </TableRow>
-        <TableCell align="right">
+        <TableCell align="right" onClick={faireRedirection}>
           <Button size="small" color="primary" variant="contained" onClick={faireRedirection}>
             GO
           </Button>
@@ -54,7 +55,7 @@ function Row(props: { row: CodingQuestionInterface }) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h3" gutterBottom component="div">
+              <Typography variant="h6" gutterBottom component="div">
                 {row.name}
               </Typography>
               <Typography variant='h6' gutterBottom component='div'>
@@ -80,43 +81,31 @@ export default function Exercices() {
         })
   }, [idPage.id]);
 
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-      border: 0,
-    },
-  }));
-
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={2}>
+    <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      alignItems="center">
+      <Grid>
       </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={8} alignItems="center">
             <TableContainer component={Paper}>
               <Table aria-label="collapsible table">
                 <TableHead>
                   <TableRow>
-                    <TableCell />
-                    <TableCell>Exercise list</TableCell>
-                    <TableCell align="right"></TableCell>
+                    <TableCell/>
+                    <TableCell align='center'>
+                      <Typography variant="h6" gutterBottom component="div">
+                        Liste d'exercices
+                      </Typography>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody component="th" >
                   {queryData.map((row) => (
-                    <TableRow key={row.name} />
+                    <Row key={row.name} row={row} />
                   ))}
                 </TableBody>
               </Table>

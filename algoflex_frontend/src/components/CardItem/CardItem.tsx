@@ -8,7 +8,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import { CardItemProps } from '../interfaces';
+import { CardItemProps } from '@components/interfaces';
+import { useHistory } from 'react-router-dom';
 
 export default function CardItem(props: CardItemProps) {
     const [favorite, setFavorite] = useState(props.favoriteStatus);
@@ -41,29 +42,35 @@ export default function CardItem(props: CardItemProps) {
         }
     }
 
+    const history = useHistory();
+    const faireRedirection = () => {
+        let url = "/theme/" + props.uid;
+        history.push(url);
+    }
+
     return (
-        <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea>
+        <Card data-testid="CardTest">
+        <CardActionArea data-testid="CardActionAreaTest" onClick={faireRedirection}>
             <CardMedia
             component="img"
             height="140"
-            image={props.cardImage}
+            image={props.imageUrl}
             />
             <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-                {props.cardName}
+                {props.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-                {props.cardDesc}
+                {props.description}
             </Typography>
             <LinearProgress variant="determinate" value={percentageFinished} />
             </CardContent>
         </CardActionArea>
         <CardActions>
-            <Button size="small" color="primary">
+            <Button data-testid="ButtonCompletionTest" size="small" color="primary" onClick={faireRedirection}>
             {testCompletion()}
             </Button>
-            <Button size="small" color="secondary" onClick={() => setFavorite(!favorite)} >
+            <Button data-testid="ButtonFavoriteTest" size="small" color="secondary" onClick={() => setFavorite(!favorite)} >
             {testFavorite()}
             </Button>
         </CardActions>

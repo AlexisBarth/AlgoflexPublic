@@ -4,7 +4,7 @@ import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -12,44 +12,26 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { useHistory, useParams } from 'react-router-dom';
+import { Button, Grid } from '@mui/material';
+import { useEffect } from "react";
+import { client } from '@services/Axios.client';
+import { CodingQuestionInterface } from '@components/interfaces';
+import { styled } from '@mui/material/styles';
 
-function createData(
-  name: string,
-  calories: string,
-  fat: string,
-  carbs: string,
-  protein: string,
-  price: number,
-) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: '2020-01-05',
-        customerId: '11091700',
-        amount: 3,
-      },
-      {
-        date: '2020-01-02',
-        customerId: 'Anonymous',
-        amount: 1,
-      },
-    ],
-  };
-}
-
-function Row(props: { row: ReturnType<typeof createData> }) {
+function Row(props: { row: CodingQuestionInterface }) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const history = useHistory();
+
+  const faireRedirection = () => {
+      let url = "/exercice/"+row.uid;
+      history.push(url);
+  }
 
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset', backgroundColor: 'darkgray' } }}>
+      <TableRow sx={{ '& > *': { borderBottom: 'unset', background: 'red'}}}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -59,23 +41,24 @@ function Row(props: { row: ReturnType<typeof createData> }) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
+        <TableRow component="th" scope="row">
           {row.name}
+        </TableRow>
+        <TableCell align="right">
+          <Button size="small" color="primary" variant="contained" onClick={faireRedirection}>
+            GO
+          </Button>
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h3" gutterBottom component="div">
-                Exercice name + topic
+                {row.name}
               </Typography>
               <Typography variant='h6' gutterBottom component='div'>
-                Description Exercice
+                {row.description}
               </Typography>
             </Box>
           </Collapse>
@@ -85,34 +68,60 @@ function Row(props: { row: ReturnType<typeof createData> }) {
   );
 }
 
-const rows = [
-  createData('Exo 1', '12/09/2021', '6.0', '24', 'ACHIEVED', 3.99),
-  createData('Exo 2', '--', '--', '--', 'NOT ATTEMPTED', 4.99),
-  createData('Exo 3', '26/02/2021', '16.0', '24', 'IN PROGRESS', 3.79),
-  createData('Exo 4', '30/05/2021', '3.7', '67', 'HIGH SCORE', 2.5),
-  createData('Exo 5', '35/06/2021', '16.0', '49', 'ATTEMPTED', 1.5),
-];
 
 export default function Exercices() {
+  let idPage = useParams<any>();
+  const [queryData, setQueryData] = React.useState<CodingQuestionInterface[]>([]);
+
+  useEffect(() => {
+    client.get('/problems/coding-questions?theme=' + idPage.id,  { withCredentials: false})
+        .then(res => {
+        setQueryData(res.data);
+        })
+  }, [idPage.id]);
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+
   return (
-    <TableContainer component={Paper} sx={{ width: 800 , maxHeight: 1500, overflow: 'auto' }}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Exercise list</TableCell>
-            <TableCell align="right">Last attempt</TableCell>
-            <TableCell align="right">Last score</TableCell>
-            <TableCell align="right">Best Score</TableCell>
-            <TableCell align="right">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Grid container spacing={2}>
+      <Grid item xs={2}>
+      </Grid>
+          <Grid item xs={8}>
+            <TableContainer component={Paper}>
+              <Table aria-label="collapsible table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell />
+                    <TableCell>Exercise list</TableCell>
+                    <TableCell align="right"></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody component="th" >
+                  {queryData.map((row) => (
+                    <TableRow key={row.name} />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </Grid>
   );
 }

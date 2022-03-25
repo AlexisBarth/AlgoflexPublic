@@ -13,8 +13,7 @@ const CardList = ({cardDatas}: CardListProps) => {
 
     return (
         <div>
-            <Button onClick={() => setA(a + 1)} >Bouton</Button>
-            <ImageList sx={{ overflow: 'auto' }} rowHeight={164} >
+            <ImageList sx={{ overflow: 'auto' }} variant="woven" rowHeight={164} gap={10} >
             {cardDatas.map((item) => (
                 <CardItem
                     uid={item.uid}

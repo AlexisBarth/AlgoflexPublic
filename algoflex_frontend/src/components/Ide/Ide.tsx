@@ -26,9 +26,9 @@ const Ide = (props: CodingQuestionInterface) => {
     const [compileDot, setCompileDot] = useState(0);
     const [executeDot, setExecuteDot] = useState(0);
 
-    const [markdown, setMarkdown] = useState(`
+    const markdown = `
 # ${props.name}  
-${props.description}`);
+${props.description}`;
 
     const handleTab = (event: any, value: string) => {
         if(value === '1'){

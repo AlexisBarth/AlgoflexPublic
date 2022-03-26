@@ -8,6 +8,7 @@ import { SubmissionsService } from 'src/problems/submissions/submissions.service
 import { Submission } from 'src/problems/submissions/entities/submission.entity';
 import { User } from 'src/users/entity';
 import { BuildGateway } from './compilation/build.gateway';
+import { AutoCompleteGateway } from './autocomplete/autocomplete.gateway';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { BuildGateway } from './compilation/build.gateway';
     TypeOrmModule.forFeature([CodingQuestion, Submission, User]),
   ],
   providers: [
+    AutoCompleteGateway,
     BuildGateway,
     CodingQuestionsService,
     SubmissionsService,

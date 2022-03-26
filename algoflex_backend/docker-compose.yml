@@ -1,9 +1,16 @@
 version: "3.7"
 services:
+
+  backend:
+    build: .
+    restart: always
+    ports:
+      - "4100:4100"
+
   db:
     image: postgres
     restart: always
     ports:
       - "5432:5432"
     environment:
-       POSTGRES_PASSWORD: "pass123"
+      POSTGRES_PASSWORD: "pass123"

@@ -64,7 +64,7 @@ class Firebase {
     }
 
     //add pseudo and profile pick
-    addProfile = async (name: string, photo: string) => {
+    addProfile = async (name='', photo='') => {
         await this.auth.currentUser?.updateProfile({displayName: name, photoURL: photo});
         return;
     }

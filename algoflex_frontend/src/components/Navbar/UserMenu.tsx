@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Button} from "@mui/material";
+import {Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Button, Typography} from "@mui/material";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import {Link} from "react-router-dom";
@@ -8,7 +8,10 @@ import {FirebaseContext} from "@services/Firebase";
 
 export default function UserMenu() {
     const firebase = useContext(FirebaseContext);
+    const firebasePseudo = firebase.auth.currentUser?.displayName;
     const firebaseUser = firebase.auth.currentUser?.email;
+    const imageUser =  firebase.auth.currentUser?.photoURL;
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event:any) => {
@@ -20,7 +23,6 @@ export default function UserMenu() {
 
     const logout = () => {
         if (firebase != null) {
-            console.log("Déconnexion");
             firebase.signoutUser();
         }
     };
@@ -28,8 +30,11 @@ export default function UserMenu() {
     return (
         <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                <Typography variant="h6" style={{color: 'inherit', textDecoration: 'none', margin:'1vh'}}>
+                    {firebasePseudo?.toString()}
+                </Typography>
                 <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-                    <Avatar sx={{ width: 32, height: 32 }}>{firebaseUser != null ? firebaseUser[0] : ""}</Avatar>
+                    <Avatar sx={{ width: 32, height: 32 }} src={imageUser?.toString()}>{firebaseUser != null ? firebaseUser[0] : ""}</Avatar>
                 </IconButton>
             </Box>
         <Menu
@@ -40,7 +45,7 @@ export default function UserMenu() {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-            <MenuItem component={Link} to='about' style={{ color: 'inherit', textDecoration: 'none'}}>
+            <MenuItem component={Link} to='userSettings' style={{ color: 'inherit', textDecoration: 'none'}}>
                 <ListItemIcon>
                     <Settings fontSize="small" />
                 </ListItemIcon>

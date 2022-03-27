@@ -23,12 +23,16 @@ class Firebase {
             firebase.app();
         }
         this.auth = firebase.auth();
-        this.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        this.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
     }
 
     // inscription
-    signupUser = async (email: string, password: string) => {
-        const { user } = await this.auth.createUserWithEmailAndPassword(email, password);
+    signupUser = async (email: string, password: string, username: string, photo = '') => {
+        const { user } = await this.auth.createUserWithEmailAndPassword(email, password)
+            .then((acc) => {
+                this.addProfile(username, photo)
+                return acc;
+        });
         const token = await user?.getIdToken(true);
         if (token === undefined) {
             return;
@@ -50,6 +54,22 @@ class Firebase {
         deleteCookie('token');
         this.auth.signOut();
     };
+
+   //edit mail
+    editEmailUser = async (email: string) => {
+        await this.auth.currentUser?.updateEmail(email);
+    }
+
+    // edit Password
+    editPasswordUser = async (email: string) => {
+        await this.auth.currentUser?.updatePassword(email);
+    }
+
+    //add pseudo and profile pick
+    addProfile = async (name: string, photo: string) => {
+        await this.auth.currentUser?.updateProfile({displayName: name, photoURL: photo});
+        return;
+    }
 
     // récupérer le mot de passe
     passwordReset = (email: string) => this.auth.sendPasswordResetEmail(email);

@@ -3,10 +3,8 @@ import CardList from "./CardList/CardList";
 import Console from "./Console/Console";
 import NotFound from "./Errors/NotFound";
 import Ide from "./Ide/Ide";
-import Login from "./Login/Login";
 import Logout from "./Logout/Logout";
 import Navbar from "./Navbar/Navbar";
-import Signup from "./Signup/Signup";
 import TwitterFlow from "./TwitterFlow/TwitterFlow";
 import Markdown from "./Markdown/Markdown"
 
@@ -16,10 +14,8 @@ export {
     Console,
     NotFound,
     Ide,
-    Login,
     Logout,
     Navbar,
-    Signup,
     TwitterFlow,
     Markdown
 }

@@ -1,5 +1,3 @@
-import { Button } from '@mui/material';
-import { useState } from 'react';
 import ImageList from '@mui/material/ImageList';
 import { CardItem } from '@components';
 import { CardItemProps } from '../interfaces';
@@ -9,8 +7,6 @@ interface CardListProps {
 }
 
 const CardList = ({cardDatas}: CardListProps) => {
-    const [ a, setA] = useState<number>(0);
-
     return (
         <div>
             <ImageList sx={{ overflow: 'auto' }} variant="woven" rowHeight={164} gap={10} >

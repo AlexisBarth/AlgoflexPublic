@@ -15,3 +15,6 @@ export interface CodingQuestionInterface {
     theme?: string;
     prompt?: string;
 }
+export interface MarkdownProps{
+    text: string;
+}

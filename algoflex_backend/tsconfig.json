@@ -23,5 +23,6 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "useUnknownInCatchVariables": false,
+    "esModuleInterop": true,
   }
 }

@@ -17,6 +17,14 @@ export class CodingQuestionsService {
     return this.codingQuestionRepository.find();
   }
 
+  async findByTheme(theme: string): Promise<CodingQuestion[]> {
+    return this.codingQuestionRepository.find({
+      where: {
+        theme,
+      },
+    });
+  }
+
   async findOne(id: string): Promise<CodingQuestion> {
     const codingQuestion = await this.codingQuestionRepository.findOne(id);
     if (!codingQuestion) {

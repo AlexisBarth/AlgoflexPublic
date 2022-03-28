@@ -22,5 +22,4 @@ const routes: Route[] = [
     { component: Exercices, path: '/theme/:id', authenticated: false}
 ];
 
-
 export default routes;

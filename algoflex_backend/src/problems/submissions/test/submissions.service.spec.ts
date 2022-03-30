@@ -5,10 +5,10 @@ import { SubmissionsService } from '../submissions.service';
 
 describe('SubmissionsService', () => {
   let service: SubmissionsService;
-
+  
   const mockSubmissionRepository = {
     find: jest.fn().mockImplementation(() => {}),
-    findOne: jest.fn().mockImplementation((uid:string, userId:string)=>{
+    findOne: jest.fn().mockImplementation((uid:string, userId:string) => {
       return {uid: uid, userId:userId}
     }),
     save: jest.fn().mockImplementation(dto => {return {uid: Date.now(), ...dto}}),

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Theme } from './entities';
-import { ThemesService } from './themes.service';
+import { Theme } from '../entities';
+import { ThemesService } from '../themes.service';
 
 describe('ThemesService', () => {
   let service: ThemesService;
@@ -71,6 +71,7 @@ describe('ThemesService', () => {
     expect(mockThemesRepository.save).toHaveBeenCalledWith(dto);
   })
 
+  // Not implemented yet
   it.skip('should update a theme', async () => {
     let dto = {
       name:"Test Type PUT",

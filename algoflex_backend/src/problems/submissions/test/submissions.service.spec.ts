@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Submission } from './entities/submission.entity';
-import { SubmissionsService } from './submissions.service';
+import { Submission } from '../entities/submission.entity';
+import { SubmissionsService } from '../submissions.service';
 
 describe('SubmissionsService', () => {
   let service: SubmissionsService;

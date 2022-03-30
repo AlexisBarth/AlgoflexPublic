@@ -7,7 +7,6 @@ interface CardListProps {
 }
 
 const CardList = ({cardDatas}: CardListProps) => {
-
     return (
         <div>
             <ImageList sx={{ overflow: 'auto' }} variant="woven" rowHeight={164} gap={10} >

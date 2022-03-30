@@ -8,12 +8,14 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
-import { Server } from 'ws';
+import { Server, WebSocket } from 'ws';
 
 import { CodingQuestion } from 'src/problems/coding-questions/entities/coding-question.entity';
+import { User } from 'src/users/entity';
+import { FirebaseStrategy } from 'src/auth/strategies';
 import { Submission } from 'src/problems/submissions/entities/submission.entity';
-import BuildListener from './build_listener';
 import { CompileRequestEvent, DockerTestResult } from '../models';
+import BuildListener from './build_listener';
 
 @WebSocketGateway()
 export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
@@ -23,12 +25,14 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
     private readonly codingQuestionRepository: Repository<CodingQuestion>,
     @InjectRepository(Submission)
     private readonly submissionRepository: Repository<Submission>,
+    private readonly firebaseStrategy: FirebaseStrategy,
   ) {}
 
   @WebSocketServer()
   server: Server;
   private buildListener: BuildListener | null = null;
   private logger: Logger = new Logger('BuildGateway');
+  private currentUser: User;
   private execute = false;
   private solution = '';
 
@@ -54,7 +58,7 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
   }
 
   @SubscribeMessage('execute-request')
-  async handle(client: any): Promise<void> {
+  async handle(client: WebSocket): Promise<void> {
     if (this.buildListener === null) {
       return;
     }
@@ -76,7 +80,7 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
       language: 'cpp',
       questionId: codingQuestion.uid,
       solution: this.solution,
-      userId: 'jean-paul',
+      userId: this.currentUser.uid,
       status,
     });
     this.removeDocker();
@@ -87,8 +91,30 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
     this.removeDocker();
   }
 
-  handleConnection(_client: WebSocket, ..._args: any[]) {
+  async handleConnection(_client: WebSocket, args: any) {
+    const token = this.getToken(args);
+    await this.fetchUser(token);
+
     this.logger.log(`WebSocket Client sucessfully connected`);
+  }
+
+  private getToken(req: any) {
+    const cookies: string[] = req.headers?.cookie.split('; ');
+    const tokenCookie = cookies.find(cookie => {
+      const [name, _value] = cookie.split('=');
+      return name === 'token';
+    });
+
+    if (!tokenCookie) {
+      throw new Error(`Unauthorized request`);
+    }
+    const [_, token] = tokenCookie.split('=');
+
+    return token;
+  }
+
+  private async fetchUser(token: string) {
+    this.currentUser = await this.firebaseStrategy.validate(token);
   }
 
   private removeDocker() {

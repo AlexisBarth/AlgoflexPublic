@@ -1,6 +1,6 @@
 import React from 'react';
 import CardItem from './CardItem';
-import { render, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 test.todo("Make CardItem tests");
 
@@ -15,7 +15,7 @@ const testingProps = {
 }
 
 it("Renders correctly", () => {
-    const { queryByTest } = render(<CardItem />);
+    const queryByTest = render(<CardItem />);
     expect(queryByTest).toMatchSnapshot();
 });
 

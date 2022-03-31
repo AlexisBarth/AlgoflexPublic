@@ -6,7 +6,7 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="MuiGrid-root MuiGrid-container css-1jvme59-MuiGrid-root"
+        class="MuiGrid-root MuiGrid-container css-gqb43v-MuiGrid-root"
       >
         <div
           class="MuiGrid-root css-vj1n65-MuiGrid-root"
@@ -60,7 +60,7 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="MuiGrid-root MuiGrid-container css-1jvme59-MuiGrid-root"
+      class="MuiGrid-root MuiGrid-container css-gqb43v-MuiGrid-root"
     >
       <div
         class="MuiGrid-root css-vj1n65-MuiGrid-root"

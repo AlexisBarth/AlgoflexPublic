@@ -8,6 +8,10 @@ export interface CardItemProps {
     favoriteStatus?: boolean;
 }
 
+export interface MarkdownProps{
+    text: string;
+}
+
 export interface CodingQuestionInterface {
     uid?: string;
     name?: string;
@@ -15,7 +19,4 @@ export interface CodingQuestionInterface {
     theme?: string;
     prompt?: string;
     backgroundColor?: string;
-}
-export interface MarkdownProps{
-    text: string;
 }

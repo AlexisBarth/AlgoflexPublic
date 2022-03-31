@@ -42,7 +42,7 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
       return;
     }
 
-    const questionId = '1';
+    const questionId = event.questionId;
     const codingQuestion = await this.getCodingQuestion(questionId);
     this.solution = event.code;
     this.buildListener = await BuildListener.create(event.code, codingQuestion.testCases);

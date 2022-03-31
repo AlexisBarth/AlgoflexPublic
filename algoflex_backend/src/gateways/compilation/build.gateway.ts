@@ -42,7 +42,6 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
       return;
     }
 
-    // TODO: const questionId = event.codingQuestionId;
     const questionId = '1';
     const codingQuestion = await this.getCodingQuestion(questionId);
     this.solution = event.code;
@@ -57,25 +56,6 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
       })
     );
   }
-  // this.buildListener = await BuildListener.create(
-  //   event.code,
-  //   `{
-  //       "exercice": [
-  //           {
-  //               "entree": ["30"],
-  //               "sorties": ["a"],
-  //               "maxtime": 30000,
-  //               "maxmemory": 10
-  //           },
-  //           {
-  //               "entree": ["8"],
-  //               "sorties": ["a"],
-  //               "maxtime": 30000,
-  //               "maxmemory": 10
-  //           }
-  //       ]
-  //   }`,
-  // );
 
   @SubscribeMessage('execute-request')
   async handle(client: WebSocket): Promise<void> {

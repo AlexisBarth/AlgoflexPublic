@@ -3,44 +3,11 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { CodingQuestionsService } from '../coding-questions.service';
 import { CodingQuestion } from '../entities/coding-question.entity';
 import { codingQuestionStub } from './stub/coding-question.stub';
+import { codingQuestionRepositoryStub } from './stub/coding-question.repository.stub';
 
 describe('CodingQuestionsService', () => {
   let service: CodingQuestionsService;
-  let codingQuestionList : CodingQuestion[] = [];
-
-  const mockCodingQuestionRepository = {
-    find: jest.fn().mockImplementation(() => codingQuestionList),
-    findOne: jest.fn().mockImplementation((uid:string) => {
-      let codingQuestion : CodingQuestion | undefined;
-      codingQuestion = codingQuestionList.find(e => e.uid === uid);
-      return codingQuestion
-    }),
-    save: jest.fn().mockImplementation(dto => {
-      if (codingQuestionList.find(e => e.uid === dto.uid))
-        return dto;
-      let uid: String;
-      uid = Date.now().toString();
-      dto.uid = uid;
-      codingQuestionList.push(dto);
-      return dto;
-    }),
-    preload: jest.fn().mockImplementation((dto) => {
-      let id : String = dto.uid;
-      let codingQuestion : CodingQuestion | undefined;
-      codingQuestion = codingQuestionList.find(e => e.uid === id);
-      
-      if (!codingQuestion) return undefined
-      codingQuestionList.filter(i => i !== codingQuestion);
-
-      dto.uid = id;
-      codingQuestionList.push(dto);
-      return dto;
-    }),
-    remove: jest.fn().mockImplementation(dto => {
-      codingQuestionList = codingQuestionList.filter(i => i !== dto);
-      return dto;
-    })
-  }
+  let repository = codingQuestionRepositoryStub();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -48,7 +15,7 @@ describe('CodingQuestionsService', () => {
         CodingQuestionsService,
         {
           provide: getRepositoryToken(CodingQuestion),
-          useValue: mockCodingQuestionRepository,
+          useValue: codingQuestionRepositoryStub(),
         },
       ],
     }).compile();
@@ -65,7 +32,7 @@ describe('CodingQuestionsService', () => {
     
     codingQuestions = await service.findAll();
     expect(codingQuestions).toBeTruthy()
-    expect(mockCodingQuestionRepository.find).toHaveBeenCalled();
+    expect(repository.find).toHaveBeenCalled();
   })
 
   it('should create a new codingQuestions then finds it', async () => {
@@ -84,11 +51,11 @@ describe('CodingQuestionsService', () => {
       ...dto
     })
 
-    expect(mockCodingQuestionRepository.save).toHaveBeenCalledWith({uid: codingQuestionCreate.uid, ...dto});
+    expect(repository.save).toHaveBeenCalledWith({uid: codingQuestionCreate.uid, ...dto});
 
     let codingQuestionFind = await service.findOne(codingQuestionCreate.uid);
     expect(codingQuestionFind.uid).toEqual(codingQuestionCreate.uid)
-    expect(mockCodingQuestionRepository.findOne).toHaveBeenCalledWith(codingQuestionCreate.uid);
+    expect(repository.findOne).toHaveBeenCalledWith(codingQuestionCreate.uid);
 
   })
 
@@ -120,7 +87,7 @@ describe('CodingQuestionsService', () => {
       }
     )
 
-    expect(mockCodingQuestionRepository.save).toHaveBeenCalled();
+    expect(repository.save).toHaveBeenCalled();
   })
 
   it('should create then delete a codingQuestions', async () => {
@@ -139,9 +106,9 @@ describe('CodingQuestionsService', () => {
     })
 
     await service.remove(codingQuestionCreate.uid)
-    expect(mockCodingQuestionRepository.findOne).toHaveBeenCalledWith(codingQuestionCreate.uid);
-    expect(mockCodingQuestionRepository.remove).toHaveBeenCalled()
-    expect(await mockCodingQuestionRepository.findOne(codingQuestionCreate.uid)).toBeUndefined();
+    expect(repository.findOne).toHaveBeenCalledWith(codingQuestionCreate.uid);
+    expect(repository.remove).toHaveBeenCalled()
+    expect(await repository.findOne(codingQuestionCreate.uid)).toBeUndefined();
   })
 
 });

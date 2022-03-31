@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CodingQuestionsService } from '../coding-questions.service';
+import { CreateCodingQuestionDto } from '../dto/create-coding-question.dto';
 import { CodingQuestion } from '../entities/coding-question.entity';
-import { codingQuestionStub } from './stub/coding-question.stub';
 import { codingQuestionRepositoryStub } from './stub/coding-question.repository.stub';
+import { createCodingQuestionDtoStub } from './stub/create-coding-question.stub';
 
 describe('CodingQuestionsService', () => {
   let service: CodingQuestionsService;
@@ -38,12 +39,7 @@ describe('CodingQuestionsService', () => {
   it('should create a new codingQuestions then finds it', async () => {
     let codingQuestionCreate: CodingQuestion;
     
-    let dto = {
-      name: codingQuestionStub().name,
-      description: codingQuestionStub().description,
-      theme: codingQuestionStub().theme,
-      prompt: codingQuestionStub().prompt,
-    }
+    let dto = createCodingQuestionDtoStub();
 
     codingQuestionCreate = await service.create(dto)
     expect(codingQuestionCreate).toEqual({
@@ -62,11 +58,12 @@ describe('CodingQuestionsService', () => {
   it('should update a codingQuestions after it was created', async () => {
     let codingQuestionCreate: CodingQuestion;
     
-    let dto = {
+    let dto:CreateCodingQuestionDto = {
       name: 'oldName',
       description: 'oldDescription',
       theme: 'oldTheme',
-      prompt: 'oldPrompt',
+      testCases: 'oldTestCases',
+      prompt: 'oldPrompt'
     }
     codingQuestionCreate = await service.create(dto)
     expect(codingQuestionCreate).toEqual({
@@ -93,10 +90,11 @@ describe('CodingQuestionsService', () => {
   it('should create then delete a codingQuestions', async () => {
     let codingQuestionCreate: CodingQuestion;
     
-    let dto = {
+    let dto:CreateCodingQuestionDto = {
       name: 'nameToDelete',
       description: 'descriptionToDelete',
       theme: 'themeToDelete',
+      testCases: 'testCasesToDelete',
       prompt: 'promptToDelete',
     }
     codingQuestionCreate = await service.create(dto)

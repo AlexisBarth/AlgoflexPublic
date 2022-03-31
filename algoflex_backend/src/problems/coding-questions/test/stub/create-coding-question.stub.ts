@@ -6,6 +6,7 @@ export const createCodingQuestionDtoStub = (): CreateCodingQuestionDto => {
         name: 'mockName',
         description: 'mockDescription',
         theme: 'mockTheme',
+        testCases: 'mockTestCases',
         prompt: 'mockPrompt'
     }
 }

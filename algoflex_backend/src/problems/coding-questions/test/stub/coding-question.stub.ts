@@ -9,6 +9,7 @@ export const codingQuestionStub = (): CodingQuestion => {
         description: 'mockDescription',
         theme: 'mockTheme',
         prompt: 'mockPrompt',
+        testCases: 'mockTestCases',
         submissionStatistics: submissionStatisticStub()
     }
 }

@@ -1,3 +1,4 @@
+import { DockerTestResult } from "src/gateways/models";
 import { Submission } from "../../entities/submission.entity";
 
 // On envoie pas l'objet par réference pour evité que l'objet soit muté, on retourne une fonction
@@ -8,6 +9,6 @@ export const submissionStub = (): Submission => {
         questionId: '1',
         solution: 'solution',
         userId: '1',
-        status: 'mockStatus'
+        status: DockerTestResult.Success
     }
 }

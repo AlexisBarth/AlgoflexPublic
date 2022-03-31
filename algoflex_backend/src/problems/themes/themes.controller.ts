@@ -1,8 +1,9 @@
+import { ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+
 import { ThemesService } from './themes.service';
 import { CreateThemeDto } from './dto/create-theme.dto';
 import { UpdateThemeDto } from './dto/update-theme.dto';
-import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Themes')
 @Controller('problems/themes')

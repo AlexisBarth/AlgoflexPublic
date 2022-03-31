@@ -30,7 +30,7 @@ function Row(props: { row: CodingQuestionInterface }) {
 
   return (
     <React.Fragment>
-      <TableRow hover sx={{ '& > *': { borderBottom: 0, paddingTop: 0 } }} onClick={() => setOpen(!open)}>
+      <TableRow hover sx={{ '& > *': { borderBottom: 0, paddingTop: 0 } }} style={{backgroundColor: row.backgroundColor}} onClick={() => setOpen(!open)}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -40,11 +40,11 @@ function Row(props: { row: CodingQuestionInterface }) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableRow component="th" scope="row" align="center">
-          <Typography variant="h6" gutterBottom component="div">
+        <TableCell component="th" scope="row" align="center">
+          <Typography variant="h6" component="div">
             {row.name}
           </Typography>
-        </TableRow>
+        </TableCell>
         <TableCell align="right" onClick={faireRedirection}>
           <Button size="small" color="primary" variant="contained" onClick={faireRedirection}>
             GO
@@ -58,7 +58,7 @@ function Row(props: { row: CodingQuestionInterface }) {
               <Typography variant="h6" gutterBottom component="div">
                 {row.name}
               </Typography>
-              <Typography variant='h6' gutterBottom component='div'>
+              <Typography gutterBottom component='div'>
                 {row.description}
               </Typography>
             </Box>
@@ -69,25 +69,30 @@ function Row(props: { row: CodingQuestionInterface }) {
   );
 }
 
-
 export default function Exercices() {
   let idPage = useParams<any>();
   const [queryData, setQueryData] = React.useState<CodingQuestionInterface[]>([]);
+  const [theme, setTheme] = React.useState({name: "", description: ""});
 
   useEffect(() => {
     client.get('/problems/coding-questions?theme=' + idPage.id,  { withCredentials: false})
         .then(res => {
         setQueryData(res.data);
-        })
-  }, [idPage.id]);
+        });
+        client.get(`/problems/themes/` + idPage.id,  { withCredentials: true})
+        .then(res => {
+        setTheme(res.data);
+        });
 
+      }, [idPage.id]);
 
   return (
     <Grid
       container
       direction="row"
       justifyContent="center"
-      alignItems="center">
+      alignItems="center"
+      marginTop={6}>
       <Grid>
       </Grid>
           <Grid item xs={8} alignItems="center">
@@ -96,17 +101,22 @@ export default function Exercices() {
                 <TableHead>
                   <TableRow>
                     <TableCell/>
-                    <TableCell align='center'>
-                      <Typography variant="h6" gutterBottom component="div">
-                        Liste d'exercices
+                    <TableCell>
+                      <Typography variant="h6" gutterBottom component="div" textAlign="center">
+                        {theme.name}
+                      </Typography>
+                      <Typography gutterBottom component="div" textAlign="justify">
+                        {theme.description}
                       </Typography>
                     </TableCell>
+                    <TableCell/>
                   </TableRow>
                 </TableHead>
                 <TableBody component="th" >
-                  {queryData.map((row) => (
-                    <Row key={row.name} row={row} />
-                  ))}
+                  {queryData.map((row, index) => {                  
+                    row.backgroundColor = (index%2 === 0 ? "#f5f5f5" : "white");
+                    return <Row key={row.name} row={row} />
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>

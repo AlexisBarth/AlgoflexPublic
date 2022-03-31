@@ -57,21 +57,23 @@ export default function CardItem(props: CardItemProps) {
             image={props.imageUrl}
             />
             <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-                {props.name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-                {props.description}
-            </Typography>
-            <LinearProgress variant="determinate" value={percentageFinished} />
+                <Typography gutterBottom variant="h5" component="div">
+                    {props.name}
+                </Typography>
+                    <div style={{ margin: 1, overflow: "hidden", textOverflow: "ellipsis", width: '11rem' }}>
+                        <Typography variant="body2" color="text.secondary" noWrap>
+                            {props.description}
+                        </Typography>
+                    </div>
+                <LinearProgress variant="determinate" value={percentageFinished} />
             </CardContent>
         </CardActionArea>
         <CardActions>
             <Button data-testid="ButtonCompletionTest" size="small" color="primary" onClick={faireRedirection}>
-            {testCompletion()}
+                {testCompletion()}
             </Button>
             <Button data-testid="ButtonFavoriteTest" size="small" color="secondary" onClick={() => setFavorite(!favorite)} >
-            {testFavorite()}
+                {testFavorite()}
             </Button>
         </CardActions>
         </Card>

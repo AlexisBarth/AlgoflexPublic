@@ -6,13 +6,13 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="MuiGrid-root MuiGrid-container css-1hbmzt3-MuiGrid-root"
+        class="MuiGrid-root MuiGrid-container css-1jvme59-MuiGrid-root"
       >
         <div
           class="MuiGrid-root css-vj1n65-MuiGrid-root"
         />
         <div
-          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8 css-15482qt-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8 css-vl5ofk-MuiGrid-root"
         >
           <div
             class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiTableContainer-root css-11xur9t-MuiPaper-root-MuiTableContainer-root"
@@ -32,15 +32,20 @@ Object {
                     scope="col"
                   />
                   <th
-                    class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignCenter MuiTableCell-sizeMedium css-1ndpvdd-MuiTableCell-root"
+                    class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
                     scope="col"
                   >
                     <div
-                      class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-18k87ye-MuiTypography-root"
-                    >
-                      Liste d'exercices
-                    </div>
+                      class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-baxsg6-MuiTypography-root"
+                    />
+                    <div
+                      class="MuiTypography-root MuiTypography-body1 MuiTypography-gutterBottom css-d6l48a-MuiTypography-root"
+                    />
                   </th>
+                  <th
+                    class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+                    scope="col"
+                  />
                 </tr>
               </thead>
               <th
@@ -55,13 +60,13 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="MuiGrid-root MuiGrid-container css-1hbmzt3-MuiGrid-root"
+      class="MuiGrid-root MuiGrid-container css-1jvme59-MuiGrid-root"
     >
       <div
         class="MuiGrid-root css-vj1n65-MuiGrid-root"
       />
       <div
-        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8 css-15482qt-MuiGrid-root"
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8 css-vl5ofk-MuiGrid-root"
       >
         <div
           class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiTableContainer-root css-11xur9t-MuiPaper-root-MuiTableContainer-root"
@@ -81,15 +86,20 @@ Object {
                   scope="col"
                 />
                 <th
-                  class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignCenter MuiTableCell-sizeMedium css-1ndpvdd-MuiTableCell-root"
+                  class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
                   scope="col"
                 >
                   <div
-                    class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-18k87ye-MuiTypography-root"
-                  >
-                    Liste d'exercices
-                  </div>
+                    class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-baxsg6-MuiTypography-root"
+                  />
+                  <div
+                    class="MuiTypography-root MuiTypography-body1 MuiTypography-gutterBottom css-d6l48a-MuiTypography-root"
+                  />
                 </th>
+                <th
+                  class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+                  scope="col"
+                />
               </tr>
             </thead>
             <th

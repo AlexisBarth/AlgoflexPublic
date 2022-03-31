@@ -1,10 +1,9 @@
 import React from 'react';
 import Exercices from './Exercices';
-import { render, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 
 test.todo("Make Exercices tests");
-
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
@@ -16,9 +15,9 @@ jest.mock('react-router-dom', () => ({
 
 
 it("Renders correctly", () => {
-    const queryByTest = render(<Exercices />);
-    expect(queryByTest).toMatchSnapshot();
-});
+    const view = render(<Exercices />);
+    expect(view).toMatchSnapshot();
+  });
 
 describe('Exercices', () => {
     it('Should work !', () => {

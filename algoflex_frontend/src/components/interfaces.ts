@@ -18,4 +18,5 @@ export interface CodingQuestionInterface {
     description?: string;
     theme?: string;
     prompt?: string;
+    backgroundColor?: string;
 }

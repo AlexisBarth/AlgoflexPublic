@@ -1,6 +1,7 @@
 import ImageList from '@mui/material/ImageList';
 import { CardItem } from '@components';
 import { CardItemProps } from '../interfaces';
+import { Box } from '@mui/material';
 
 interface CardListProps {
     cardDatas: CardItemProps[]; 
@@ -8,8 +9,8 @@ interface CardListProps {
 
 const CardList = ({cardDatas}: CardListProps) => {
     return (
-        <div>
-            <ImageList sx={{ overflow: 'auto' }} variant="woven" rowHeight={164} gap={10} >
+        <Box marginTop={6}>
+            <ImageList sx={{ overflow: 'auto' }} rowHeight={10} gap={10} cols={3}>
             {cardDatas.map((item) => (
                 <CardItem
                     uid={item.uid}
@@ -22,7 +23,7 @@ const CardList = ({cardDatas}: CardListProps) => {
                 />
             ))}
             </ImageList>
-        </div>
+        </Box>
     );
 }
 

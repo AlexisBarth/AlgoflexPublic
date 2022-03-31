@@ -71,9 +71,9 @@ ${props.description}`;
     };
 
     const didMount = (monaco: any) => {
-        ws = new ReconnectingWebSocket(webSocketLink);
+        ws = new ReconnectingWebSocket(webSocketLink + '/compile');
         MonacoServices.install(monaco, {rootUri: "file:///app/autocomplete/"});
-        const webSocket = createLanguageWebSocket(webSocketLink);
+        const webSocket = createLanguageWebSocket(webSocketLink + '/autocomplete');
         listen({
             webSocket,
             onConnection: connection => {

@@ -1,5 +1,13 @@
 import { CodingQuestion } from "../../entities/coding-question.entity"
-import { submissionStatisticStub } from "./submission-statistics.stub"
+import { SubmissionStatistic } from "../../entities/submission-statistics"
+
+export const submissionStatisticStub = (): SubmissionStatistic => {
+    return {
+        uid: '1',
+        correctCount: 1,
+        failureCount: 0
+    }
+}
 
 // On envoie pas l'objet par réference pour evité que l'objet soit muté, on retourne une fonction
 export const codingQuestionStub = (): CodingQuestion => {

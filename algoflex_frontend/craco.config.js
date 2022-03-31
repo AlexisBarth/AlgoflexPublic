@@ -2,7 +2,7 @@ const CracoAlias = require("craco-alias");
 
 module.exports = {
   webpack: {
-    configure: {
+    options: {
       ignoreWarnings: [
         function ignoreSourcemapsloaderWarnings(warning) {
           return (

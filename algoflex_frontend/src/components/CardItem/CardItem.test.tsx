@@ -1,7 +1,6 @@
 import React from 'react';
 import CardItem from './CardItem';
 import { render, fireEvent } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
 
 test.todo("Make CardItem tests");
 

@@ -3,7 +3,6 @@ import {useHistory } from 'react-router-dom';
 import { FirebaseContext } from '@services/Firebase';
 import {Button, Grid, Paper, Stack, TextField, Typography, Snackbar, Alert, Box, Avatar} from '@mui/material';
 import Image from '../../../img/settings.png';
-import React from 'react';
 
 const UserSettings = () => {
 

@@ -17,13 +17,9 @@ const Navbar = () => {
     const AuthContent = () => {
         if (IsAuthenticated()){
             return (<>
-                <Typography variant="h6" component={Link} to='themes'
+                <Typography variant="h6" component={Link} to='/themes'
                             style={{color: 'inherit', textDecoration: 'none', margin:'1vh'}}>
                     Themes
-                </Typography>
-                <Typography variant="h6" component={Link} to='exercices'
-                            style={{color: 'inherit', textDecoration: 'none', margin:'1vh'}}>
-                    Exercices
                 </Typography>
             </>);
         }
@@ -37,7 +33,7 @@ const Navbar = () => {
             </>);
         }
         return(<>
-                <Typography variant="h6" component={Link} to='login' style={{ color: 'inherit', textDecoration: 'none', margin:'1vh' }}>
+                <Typography variant="h6" component={Link} to='/login' style={{ color: 'inherit', textDecoration: 'none', margin:'1vh' }}>
                     Log in
                 </Typography>
             </>);
@@ -51,7 +47,7 @@ const Navbar = () => {
                     <Typography variant="h6" component={Link} to='/' style={{ color: 'inherit', textDecoration: 'none', margin:'1vh' }}>
                         Accueil
                     </Typography>
-                    <Typography variant="h6" component={Link} to='about' style={{ color: 'inherit', textDecoration: 'none', margin:'1vh' }}>
+                    <Typography variant="h6" component={Link} to='/about' style={{ color: 'inherit', textDecoration: 'none', margin:'1vh' }}>
                         À propos
                     </Typography>
                     <AuthContent/>

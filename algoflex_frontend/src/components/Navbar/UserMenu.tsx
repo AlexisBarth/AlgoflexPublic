@@ -45,7 +45,7 @@ export default function UserMenu() {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-            <MenuItem component={Link} to='userSettings' style={{ color: 'inherit', textDecoration: 'none'}}>
+            <MenuItem component={Link} to='/userSettings' style={{ color: 'inherit', textDecoration: 'none'}}>
                 <ListItemIcon>
                     <Settings fontSize="small" />
                 </ListItemIcon>

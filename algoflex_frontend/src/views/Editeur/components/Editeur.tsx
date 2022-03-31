@@ -17,7 +17,7 @@ const Editeur = () => {
     }, [idPage]);
 
     return (
-        <div>
+        <div style={{marginTop:"8vh"}}>
             <Ide uid={exercice?.uid} prompt={exercice?.prompt} name={exercice?.name} theme={exercice?.theme} description={exercice?.description} />
         </div>
     );

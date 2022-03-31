@@ -22,7 +22,7 @@ const routes: Route[] = [
     { component: ForgetPassword, path: '/forgetPassword', authenticated: false},
     { component: Editeur, path: '/exercice/:id', authenticated: false},
     { component: Themes, path: '/themes', authenticated: false},
-    { component: Exercices, path: '/theme/:id', authenticated: false}
+    { component: Exercices, path: '/theme/:id', authenticated: false},
     { component: UserSettings, path: '/userSettings', authenticated: true}
 ];
 

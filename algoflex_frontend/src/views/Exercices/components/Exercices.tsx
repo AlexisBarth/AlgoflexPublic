@@ -92,7 +92,7 @@ export default function Exercices() {
       direction="row"
       justifyContent="center"
       alignItems="center"
-      marginTop={6}>
+      marginTop={'8vh'}>
       <Grid>
       </Grid>
           <Grid item xs={8} alignItems="center">

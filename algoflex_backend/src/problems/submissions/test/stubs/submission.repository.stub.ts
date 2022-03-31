@@ -11,21 +11,17 @@ export const mockSubmissionRepository = {
     }),
     save: jest.fn().mockImplementation(dto => {
         if (submissionList.find(e => e.uid === dto.uid))
-        return dto;
-        let uid: String;
-        uid = Date.now().toString();
-        dto.uid = uid;
+            return dto;
+        dto.uid = Date.now().toString();
         submissionList.push(dto);
         return dto;
     }),
     preload: jest.fn().mockImplementation((dto) => {
         let id : String = dto.uid;
-        let submission : Submission | undefined;
-        submission = submissionList.find(e => e.uid === id);
+        let submission = submissionList.find(e => e.uid === id);
 
         if (!submission) return undefined
-        submissionList.filter(i => i !== submission);
-
+        submissionList = submissionList.filter(i => i !== submission);
         dto.uid = id;
         submissionList.push(dto);
         return dto;

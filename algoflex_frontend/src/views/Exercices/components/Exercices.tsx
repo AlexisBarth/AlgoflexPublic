@@ -12,44 +12,25 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { useHistory, useParams } from 'react-router-dom';
+import { Button, Grid } from '@mui/material';
+import { useEffect } from "react";
+import { client } from '@services/Axios.client';
+import { CodingQuestionInterface } from '@components/interfaces';
 
-function createData(
-  name: string,
-  calories: string,
-  fat: string,
-  carbs: string,
-  protein: string,
-  price: number,
-) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: '2020-01-05',
-        customerId: '11091700',
-        amount: 3,
-      },
-      {
-        date: '2020-01-02',
-        customerId: 'Anonymous',
-        amount: 1,
-      },
-    ],
-  };
-}
-
-function Row(props: { row: ReturnType<typeof createData> }) {
+function Row(props: { row: CodingQuestionInterface }) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const history = useHistory();
+
+  const faireRedirection = () => {
+      let url = "/exercice/"+row.uid;
+      history.push(url);
+  }
 
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset', backgroundColor: 'darkgray' } }}>
+      <TableRow hover sx={{ '& > *': { borderBottom: 0, paddingTop: 0 } }} style={{backgroundColor: row.backgroundColor}} onClick={() => setOpen(!open)}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -59,23 +40,26 @@ function Row(props: { row: ReturnType<typeof createData> }) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
+        <TableCell component="th" scope="row" align="center">
+          <Typography variant="h6" component="div">
+            {row.name}
+          </Typography>
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
+        <TableCell align="right" onClick={faireRedirection}>
+          <Button size="small" color="primary" variant="contained" onClick={faireRedirection}>
+            GO
+          </Button>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h3" gutterBottom component="div">
-                Exercice name + topic
+              <Typography variant="h6" gutterBottom component="div">
+                {row.name}
               </Typography>
-              <Typography variant='h6' gutterBottom component='div'>
-                Description Exercice
+              <Typography gutterBottom component='div'>
+                {row.description}
               </Typography>
             </Box>
           </Collapse>
@@ -85,34 +69,58 @@ function Row(props: { row: ReturnType<typeof createData> }) {
   );
 }
 
-const rows = [
-  createData('Exo 1', '12/09/2021', '6.0', '24', 'ACHIEVED', 3.99),
-  createData('Exo 2', '--', '--', '--', 'NOT ATTEMPTED', 4.99),
-  createData('Exo 3', '26/02/2021', '16.0', '24', 'IN PROGRESS', 3.79),
-  createData('Exo 4', '30/05/2021', '3.7', '67', 'HIGH SCORE', 2.5),
-  createData('Exo 5', '35/06/2021', '16.0', '49', 'ATTEMPTED', 1.5),
-];
-
 export default function Exercices() {
+  let idPage = useParams<any>();
+  const [queryData, setQueryData] = React.useState<CodingQuestionInterface[]>([]);
+  const [theme, setTheme] = React.useState({name: "", description: ""});
+
+  useEffect(() => {
+    client.get('/problems/coding-questions?theme=' + idPage.id,  { withCredentials: false})
+        .then(res => {
+        setQueryData(res.data);
+        });
+        client.get(`/problems/themes/` + idPage.id,  { withCredentials: true})
+        .then(res => {
+        setTheme(res.data);
+        });
+
+      }, [idPage.id]);
+
   return (
-    <TableContainer component={Paper} sx={{ width: 800 , maxHeight: 1500, overflow: 'auto' }}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Exercise list</TableCell>
-            <TableCell align="right">Last attempt</TableCell>
-            <TableCell align="right">Last score</TableCell>
-            <TableCell align="right">Best Score</TableCell>
-            <TableCell align="right">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      alignItems="center"
+      marginTop={6}>
+      <Grid>
+      </Grid>
+          <Grid item xs={8} alignItems="center">
+            <TableContainer component={Paper}>
+              <Table aria-label="collapsible table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell/>
+                    <TableCell>
+                      <Typography variant="h6" gutterBottom component="div" textAlign="center">
+                        {theme.name}
+                      </Typography>
+                      <Typography gutterBottom component="div" textAlign="justify">
+                        {theme.description}
+                      </Typography>
+                    </TableCell>
+                    <TableCell/>
+                  </TableRow>
+                </TableHead>
+                <TableBody component="th" >
+                  {queryData.map((row, index) => {                  
+                    row.backgroundColor = (index%2 === 0 ? "#f5f5f5" : "white");
+                    return <Row key={row.name} row={row} />
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </Grid>
   );
 }

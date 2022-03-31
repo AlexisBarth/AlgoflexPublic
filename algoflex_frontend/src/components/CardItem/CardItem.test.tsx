@@ -15,8 +15,8 @@ const testingProps = {
 }
 
 it("Renders correctly", () => {
-    const queryByTest = render(<CardItem />);
-    expect(queryByTest).toMatchSnapshot();
+    const view = render(<CardItem />);
+    expect(view).toMatchSnapshot();
 });
 
 describe('CardItem', () => {

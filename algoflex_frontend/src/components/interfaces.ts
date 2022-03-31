@@ -14,6 +14,7 @@ export interface CodingQuestionInterface {
     description?: string;
     theme?: string;
     prompt?: string;
+    backgroundColor?: string;
 }
 export interface MarkdownProps{
     text: string;

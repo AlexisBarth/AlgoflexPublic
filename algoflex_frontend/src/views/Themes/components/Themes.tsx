@@ -12,15 +12,15 @@ const Themes = () => {
         client.get(`/problems/themes`,  { withCredentials: true})
         .then(res => {
         setData(res.data);
-        })
+        });
     }, []);
     
     return (
         <div>
             <Grid container spacing={8}>
-                <Grid item xs={3}>
+                <Grid item xs={2}>
                 </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={8}>
                         <CardList cardDatas={data} />
                     </Grid>
             </Grid>  

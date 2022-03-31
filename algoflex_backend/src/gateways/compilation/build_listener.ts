@@ -1,5 +1,6 @@
 import Docker from 'dockerode';
 import crypto from 'crypto';
+import { DockerTestResult } from '../models';
 const parseImage = 'algoflex/parse:1.0';
 const compileImage = 'algoflex/compile:1.0';
 const executeImage = 'algoflex/execute:1.0';
@@ -105,6 +106,14 @@ export default class BuildListener {
 
   public isExecuted() {
     return this.hasExecuted;
+  }
+
+  public async getStatus(): Promise<DockerTestResult> {
+    let inspect = await this.executeContainer?.inspect();
+    if (!inspect) {
+      return DockerTestResult.ServerError;
+    }
+    return inspect.State.ExitCode as DockerTestResult;
   }
 
   private async timeout(ms: number) {

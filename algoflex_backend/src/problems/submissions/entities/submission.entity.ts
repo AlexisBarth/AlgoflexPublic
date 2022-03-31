@@ -1,3 +1,4 @@
+import { DockerTestResult } from 'src/gateways/models';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
@@ -17,6 +18,6 @@ export class Submission {
   @Column()
   userId: string;
 
-  @Column()
-  status: string;
+  @Column({ default: null })
+  status: DockerTestResult;
 }

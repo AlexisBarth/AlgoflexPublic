@@ -1,14 +1,10 @@
+import { Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { UpdateSubmissionDto } from './dto/update-submission.dto';
 import { Submission } from './entities/submission.entity';
-
-enum SubmissionStatus {
-  Correct = "CORRECT",
-  Incorrect = "INCORRECT",
-}
 
 @Injectable()
 export class SubmissionsService {
@@ -36,7 +32,6 @@ export class SubmissionsService {
     const submission: Partial<Submission> = {
       ...createSubmissionDto,
       userId: id,
-      status: SubmissionStatus.Correct,
     }
     return this.submissionRepository.save(submission);
   }

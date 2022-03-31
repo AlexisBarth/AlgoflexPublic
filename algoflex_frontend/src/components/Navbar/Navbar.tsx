@@ -17,9 +17,13 @@ const Navbar = () => {
     const AuthContent = () => {
         if (IsAuthenticated()){
             return (<>
-                <Typography variant="h6" component={Link} to='editeur'
+                <Typography variant="h6" component={Link} to='themes'
                             style={{color: 'inherit', textDecoration: 'none', margin:'1vh'}}>
-                    Editeur
+                    Themes
+                </Typography>
+                <Typography variant="h6" component={Link} to='exercices'
+                            style={{color: 'inherit', textDecoration: 'none', margin:'1vh'}}>
+                    Exercices
                 </Typography>
             </>);
         }

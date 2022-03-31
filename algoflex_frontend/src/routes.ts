@@ -4,9 +4,9 @@ import Login from '@views/Login';
 import Signup from '@views/Signup';
 import ForgetPassword from '@views/ForgetPassword';
 import Editeur from '@views/Editeur';
+import UserSettings from "@views/UserSettings";
 import Themes from '@views/Themes';
 import Exercices from '@views/Exercices';
-import UserSettings from "@views/UserSettings";
 
 interface Route{
     component: any,

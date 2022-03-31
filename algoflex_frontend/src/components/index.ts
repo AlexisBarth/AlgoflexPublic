@@ -5,7 +5,6 @@ import NotFound from "./Errors/NotFound";
 import Ide from "./Ide/Ide";
 import Logout from "./Logout/Logout";
 import Navbar from "./Navbar/Navbar";
-import TwitterFlow from "./TwitterFlow/TwitterFlow";
 import Markdown from "./Markdown/Markdown"
 
 export {
@@ -16,6 +15,5 @@ export {
     Ide,
     Logout,
     Navbar,
-    TwitterFlow,
     Markdown
 }

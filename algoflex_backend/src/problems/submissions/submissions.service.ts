@@ -41,6 +41,7 @@ export class SubmissionsService {
       uid: submissionId,
       ...updateSubmissionDto,
     });
+    console.log(submission);
 
     if (!submission || submission.userId !== userId) {
       throw new NotFoundException(`Coding question #${submissionId} not found`);

@@ -84,7 +84,7 @@ describe('ThemesController', () => {
 
   describe('update', () => {
     describe('when update is called', () => {
-      let themeId: String;
+      let themeId: string;
 
       beforeEach(async () => {
         themeId = await controller.update(themeStub().uid, createThemeDtoStub());

@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { baseRequestStub } from 'src/users/test/stubs/base-request.stub';
-import { Submission } from '../entities/submission.entity';
-import { SubmissionsController } from '../submissions.controller';
-import { SubmissionsService } from '../submissions.service';
-import { createSubmissionDtoStub } from './stubs/create-submission.stub';
-import { submissionStub } from './stubs/submission.stub';
+import { Submission } from './entities/submission.entity';
+import { SubmissionsController } from './submissions.controller';
+import { SubmissionsService } from './submissions.service';
+import { createSubmissionDtoStub } from './test/stubs/create-submission.stub';
+import { submissionStub } from './test/stubs/submission.stub';
 
 // Ceci va appeler le mock service au lieu du vrai Service
 jest.mock('./../submissions.service');

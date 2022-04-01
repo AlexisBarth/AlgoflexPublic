@@ -48,9 +48,8 @@ Object {
                   />
                 </tr>
               </thead>
-              <th
+              <tbody
                 class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
-                role="rowgroup"
               />
             </table>
           </div>
@@ -102,9 +101,8 @@ Object {
                 />
               </tr>
             </thead>
-            <th
+            <tbody
               class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
-              role="rowgroup"
             />
           </table>
         </div>

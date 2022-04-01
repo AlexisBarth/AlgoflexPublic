@@ -1,7 +1,6 @@
 import Docker from 'dockerode';
 import crypto from 'crypto';
 import { DockerTestResult } from '../models';
-import fs from 'fs';
 const parseImage = 'algoflex/parse:1.0';
 const compileImage = 'algoflex/compile:1.0';
 const executeImage = 'algoflex/execute:1.0';
@@ -18,9 +17,9 @@ export default class BuildListener {
     this.dockerInstance = new Docker({
       host: process.env.DOCKER_API_IP,
       port: process.env.DOCKER_API_PORT,
-      ca: fs.readFileSync('ca.pem'),
-      cert: fs.readFileSync('cert.pem'),
-      key: fs.readFileSync('key.pem'),
+      ca: process.env.CERTIFICAT_CA,
+      cert: process.env.CERTIFICAT_CERT,
+      key: process.env.CERTIFICAT_KEY,
       version: 'v1.41'
     });
     this.hasExecuted = undefined;

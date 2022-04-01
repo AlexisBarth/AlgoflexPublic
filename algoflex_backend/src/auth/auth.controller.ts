@@ -32,4 +32,15 @@ export class AuthController {
       message: "pong",
     };
   }
+
+  @Get('conf')
+  public async getConf() {
+    return {
+      status: "success",
+      message: "conf details",
+      dockerApiIp: process.env.DOCKER_API_IP ?? 'undefined',
+      dockerPort: process.env.DOCKER_API_PORT ?? 'undefined',
+      dbNameFromEnv: process.env.DATABASE_NAME,
+    };
+  }
 }

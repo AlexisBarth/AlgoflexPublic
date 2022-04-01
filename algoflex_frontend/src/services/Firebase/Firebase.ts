@@ -42,7 +42,7 @@ class Firebase {
         if (token === undefined) {
             return;
         }
-        setCookie('token', token);
+        setCookie('token', token, true);
     }
 
     // deconnexion

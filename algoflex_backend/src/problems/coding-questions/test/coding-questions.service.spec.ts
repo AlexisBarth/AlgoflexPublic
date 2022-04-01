@@ -101,8 +101,7 @@ describe('CodingQuestionsService', () => {
     expect(await service.update(codingQuestionCreate.uid, dtoUpdated)).toEqual({
         uid: codingQuestionCreate.uid,
         ...dtoUpdated
-      }
-    )
+    })
 
     expect(repository.save).toHaveBeenCalled();
   })

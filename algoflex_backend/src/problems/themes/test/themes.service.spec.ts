@@ -1,25 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { CreateThemeDto } from '../dto/create-theme.dto';
 import { Theme } from '../entities';
 import { ThemesService } from '../themes.service';
+import { createThemeDtoStub } from './stubs/create-theme.stub';
+import { themeRepositoryStub } from './stubs/submission.repository.stub';
 
 describe('ThemesService', () => {
   let service: ThemesService;
-
-  const mockThemesRepository = {
-    find: jest.fn(() => []),
-    findOne: jest.fn().mockImplementation(id => {
-      return {id: id}
-    }),
-    save: jest.fn().mockImplementation(theme => Promise.resolve({id: Date.now(), ...theme})),
-    update: jest.fn((id, dto) => {
-      return {
-        id,
-        ...dto
-      }
-    }),
-    remove: jest.fn().mockImplementation(dto => {return dto})
-  }
+  let repository = themeRepositoryStub();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,7 +16,7 @@ describe('ThemesService', () => {
         ThemesService,
         {
           provide: getRepositoryToken(Theme),
-          useValue: mockThemesRepository,
+          useValue: repository,
         },
       ],
     }).compile();
@@ -40,62 +29,82 @@ describe('ThemesService', () => {
   });
 
   it('should find all themes', async () => {
-    service.findAll()
+    let themes: Theme[];
 
-    expect(mockThemesRepository.find).toHaveBeenCalled();
+    repository.clear();
+    themes = await service.findAll();
+    expect(themes).toBeTruthy();
+    expect(repository.find).toHaveBeenCalled();
   })
 
-  it('should find a theme', async () => {
-    expect(service.findOne('1')).toEqual(
-      Promise.resolve({
-        id: 1
-      }
-    ))
-    expect(mockThemesRepository.findOne).toHaveBeenCalledWith("1");
+  it('should create a new themes then finds it by id', async () => {
+    let themeCreate: Theme;
+    let dto = createThemeDtoStub();
+    let themeFind: Theme;
+
+    repository.clear();
+    themeCreate = await service.create(dto)
+    expect(themeCreate).toEqual({
+      uid: expect.any(String),
+      ...dto
+    })
+    expect(repository.save).toHaveBeenCalledWith({uid: themeCreate.uid, ...dto});
+
+    themeFind = await service.findOne(themeCreate.uid);
+    expect(themeFind.uid).toEqual(themeCreate.uid)
+    expect(repository.findOne).toHaveBeenCalledWith(themeCreate.uid);
   })
 
 
-  it('should create a new theme', async () => {
-    let dto = {
-      name:"Test Type PUT",
-      type:"Test name PUT",
-      imageUrl:"Test desc PUT",
-      users: [1],
-      problems: [1]
+  // Not Implemented
+  it.skip('should update a themes after it was created', async () => {
+    let themeCreate: Theme;
+    let dto:CreateThemeDto = {
+      name: 'oldName',
+      description: 'oldDescription',
+      imageUrl: 'oldImageUrl',
     }
-    expect(await service.create(dto)).toEqual({
-      id: expect.any(Number),
+  
+    repository.clear();
+    themeCreate = await service.create(dto)
+    expect(themeCreate).toEqual({
+      uid: expect.any(String),
       ...dto
     })
 
-    expect(mockThemesRepository.save).toHaveBeenCalledWith(dto);
-  })
-
-  // Not implemented yet
-  it.skip('should update a theme', async () => {
-    let dto = {
-      name:"Test Type PUT",
-      type:"Test name PUT",
-      imageUrl:"Test desc PUT",
-      users: [1],
-      problems: [1]
+    let dtoUpdated = {
+      name: 'newName',
+      description: 'newDescription',
+      imageUrl: 'newImageUrl',
     }
-    
-    expect(service.update(1, dto)).toEqual(
-      Promise.resolve({
-        id:1,
-        ...dto
-      }
-    ))
 
-    expect(mockThemesRepository.update).toHaveBeenCalledWith(1, dto);
+    expect(await service.update(Number(themeCreate.uid), dtoUpdated)).toEqual({
+        uid: themeCreate.uid,
+        ...dtoUpdated
+    })
+
+    expect(repository.save).toHaveBeenCalled();
   })
 
-  it('should delete a theme', async () => {
-    service.remove('1')
+  it('should create then delete a themes', async () => {
+    let themeCreate: Theme;
+    let dto:CreateThemeDto = {
+      name: 'nameToDelete',
+      description: 'descriptionToDelete',
+      imageUrl: 'imageUrlToDelete',
+    }
 
-    expect(await mockThemesRepository.findOne).toHaveBeenCalledWith("1");
-    expect(mockThemesRepository.remove).toHaveBeenCalled()
+    repository.clear();
+    themeCreate = await service.create(dto)
+    expect(themeCreate).toEqual({
+      uid: expect.any(String),
+      ...dto
+    })
+
+    await service.remove(themeCreate.uid)
+    expect(repository.findOne).toHaveBeenCalledWith(themeCreate.uid);
+    expect(repository.remove).toHaveBeenCalled()
+    expect(await repository.findOne(themeCreate.uid)).toBeUndefined();
   })
 
 });

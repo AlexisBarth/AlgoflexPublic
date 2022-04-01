@@ -92,13 +92,12 @@ describe('SubmissionsService', () => {
         uid: submissionCreate.uid,
         userId: '1',
         ...dtoUpdated
-      }
-    )
+    })
 
     expect(repository.save).toHaveBeenCalled();
   })
 
-  it('should create then delete a submissions', async () => {
+  it('should create then delete a submission', async () => {
     let submissionCreate: Submission;
     let dto:CreateSubmissionDto = {
       language: 'languageToDelete',

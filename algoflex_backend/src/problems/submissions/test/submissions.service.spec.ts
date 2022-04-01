@@ -1,20 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { CreateSubmissionDto } from '../dto/create-submission.dto';
 import { Submission } from '../entities/submission.entity';
 import { SubmissionsService } from '../submissions.service';
+import { createSubmissionDtoStub } from './stubs/create-submission.stub';
+import { submissionRepositoryStub } from './stubs/submission.repository.stub';
 
 describe('SubmissionsService', () => {
   let service: SubmissionsService;
-  
-  const mockSubmissionRepository = {
-    find: jest.fn().mockImplementation(() => {}),
-    findOne: jest.fn().mockImplementation((uid:string, userId:string) => {
-      return {uid: uid, userId:userId}
-    }),
-    save: jest.fn().mockImplementation(dto => {return {uid: Date.now(), ...dto}}),
-    preload: jest.fn().mockImplementation(dto => {return {userId: '1', ...dto}}),
-    remove: jest.fn().mockImplementation(dto => {return dto})
-  }
+  let repository = submissionRepositoryStub();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -22,7 +16,7 @@ describe('SubmissionsService', () => {
         SubmissionsService,
         {
           provide: getRepositoryToken(Submission),
-          useValue: mockSubmissionRepository,
+          useValue: repository,
         },
       ],
     }).compile();
@@ -34,61 +28,96 @@ describe('SubmissionsService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should find all submissions', async () => {
-    service.findAll('1')
+  it('should create a submission then find all submissions', async () => {
+    let submissions: Submission[];
+    let submissionCreate: Submission;
+    let dto = createSubmissionDtoStub();
 
-    expect(mockSubmissionRepository.find).toHaveBeenCalledWith({userId: '1'});
+    repository.clear();
+    submissions = await service.findAll('1');
+    expect(submissions).toBeFalsy();
+
+    submissionCreate = await service.create('1', dto);
+    expect(submissionCreate).toEqual({
+      uid: expect.any(String),
+      userId: '1',
+      ...dto
+    })
+    submissions = await service.findAll('1');
+    expect(submissions).toBeTruthy();
+    expect(repository.find).toHaveBeenCalledWith({userId: '1'});
   })
 
-  it('should find a submission', async () => {
-    expect(service.findOne('1', '1')).toEqual(
-      Promise.resolve({
-        uid: '1', 
-        userId: '1'
-      }
-    ))
-    expect(mockSubmissionRepository.findOne).toHaveBeenCalledWith({uid: '1', userId: '1'});
+  it('should create a submission then find a submission', async () => {
+    let submissionCreate: Submission;
+    let dto = createSubmissionDtoStub();
+    let submissionFind: Submission;
+
+    repository.clear();
+    submissionCreate = await service.create('1', dto)
+    expect(submissionCreate).toEqual({
+      uid: expect.any(String),
+      userId: '1',
+      ...dto
+    })
+    expect(repository.save).toHaveBeenCalledWith({...dto, uid: submissionCreate.uid, userId: '1'});
+
+    submissionFind = await service.findOne(submissionCreate.uid, '1');
+    expect(submissionFind.uid).toEqual(submissionCreate.uid)
+    expect(repository.findOne).toHaveBeenCalledWith({uid: submissionCreate.uid, userId: '1'});
   })
 
-  it.skip('should create a new submission', async () => {
-    let dto = {
-      language:'string',
-      questionId:'string',
-      solution:'string'
+  it('should create a submission then updates it', async () => {
+    let submissionCreate: Submission;
+    let dto:CreateSubmissionDto = {
+      language: 'oldLanguage',
+      questionId: 'oldQuestionId',
+      solution: 'oldSolution'
     }
-    expect(await service.create('1', dto)).toEqual({
-        uid: expect.any(Number),
+  
+    repository.clear();
+    submissionCreate = await service.create('1', dto)
+    expect(submissionCreate).toEqual({
+      uid: expect.any(String),
+      userId: '1',
+      ...dto
+    })
+
+    let dtoUpdated = {
+      language: 'newLanguage',
+      questionId: 'newQuestionId',
+      solution: 'newSolution'
+    }
+    expect(await service.update(submissionCreate.uid, '1', dtoUpdated)).toEqual({
+        uid: submissionCreate.uid,
         userId: '1',
-        status: "CORRECT",
-        ...dto
+        ...dtoUpdated
       }
     )
 
-    expect(mockSubmissionRepository.save).toHaveBeenCalledWith({userId: '1', status: "CORRECT", ...dto});
+    expect(repository.save).toHaveBeenCalled();
   })
 
-  it('should update a submission', async () => {
-    let dto = {
-      language:'string',
-      questionId:'string',
-      solution:'string',
-      status: 'CORRECT',
+  it('should create then delete a submissions', async () => {
+    let submissionCreate: Submission;
+    let dto:CreateSubmissionDto = {
+      language: 'languageToDelete',
+      questionId: 'questionIdToDelete',
+      solution: 'solutionToDelete'
     }
-    expect(await service.update('1', '1', dto)).toEqual({
-        uid: '1',
-        userId: '1',
-        ...dto
-      }
-    )
 
-    expect(mockSubmissionRepository.save).toHaveBeenCalled();
-  })
+    repository.clear();
+    submissionCreate = await service.create('1', dto)
+    expect(submissionCreate).toEqual({
+      uid: expect.any(String),
+      userId: '1',
+      ...dto
+    })
 
-  it('should delete a submission', async () => {
-    service.remove('1')
-
-    expect(await mockSubmissionRepository.findOne).toHaveBeenCalledWith('1');
-    expect(mockSubmissionRepository.remove).toHaveBeenCalled()
+    await service.remove(submissionCreate.uid)
+    expect(repository.findOne).toHaveBeenCalledWith(submissionCreate.uid);
+    expect(repository.remove).toHaveBeenCalled()
+    expect(await repository.findOne(submissionCreate.uid)).toBeUndefined();
   })
 
 });

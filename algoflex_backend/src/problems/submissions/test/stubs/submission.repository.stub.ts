@@ -3,26 +3,32 @@ import { Submission } from "../../entities/submission.entity"
 let submissionList : Submission[] = [];
 
 export const mockSubmissionRepository = {
-    find: jest.fn().mockImplementation(() => submissionList),
-    findOne: jest.fn().mockImplementation((uid:string) => {
-        let submission : Submission | undefined;
-        submission = submissionList.find(e => e.uid === uid);
-        return submission
+    clear: () => {submissionList = []},
+    find: jest.fn().mockImplementation(user => {
+        return submissionList.find(e => e.userId === user.userId);
     }),
-    save: jest.fn().mockImplementation(dto => {
-        if (submissionList.find(e => e.uid === dto.uid))
+    findOne: jest.fn().mockImplementation((submission) => {
+        if (submission.uid === undefined) {
+            return submissionList.find(e => (e.uid === submission));
+        } else {
+            return submissionList.find(e => (e.uid === submission.uid));
+        }
+    }),
+    save: jest.fn().mockImplementation((dto: Submission) => {
+        if (submissionList.find(e => e.uid === dto.uid)) {
             return dto;
+        }
         dto.uid = Date.now().toString();
         submissionList.push(dto);
         return dto;
     }),
-    preload: jest.fn().mockImplementation((dto) => {
-        let id : String = dto.uid;
-        let submission = submissionList.find(e => e.uid === id);
-
-        if (!submission) return undefined
-        submissionList = submissionList.filter(i => i !== submission);
-        dto.uid = id;
+    preload: jest.fn().mockImplementation((dto: Submission) => {
+        let oldSubmission = submissionList.find(e => e.uid === dto.uid);
+        if (!oldSubmission) {
+            return undefined
+        }
+        submissionList = submissionList.filter(i => i !== oldSubmission);
+        dto.userId = oldSubmission.userId
         submissionList.push(dto);
         return dto;
     }),

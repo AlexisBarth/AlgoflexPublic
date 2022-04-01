@@ -3,28 +3,26 @@ import { CodingQuestion } from "../../entities/coding-question.entity"
 let codingQuestionList : CodingQuestion[] = [];
 
 export const mockCodingQuestionRepository = {
+    clear: () => {codingQuestionList = []},
     find: jest.fn().mockImplementation(() => codingQuestionList),
-    findOne: jest.fn().mockImplementation((uid:string) => {
-        let codingQuestion : CodingQuestion | undefined;
-
-        codingQuestion = codingQuestionList.find(e => e.uid === uid);
-        return codingQuestion
+    findOne: jest.fn().mockImplementation((uid: string) => {
+        return codingQuestionList.find(e => e.uid === uid);
     }),
-    save: jest.fn().mockImplementation(dto => {
-        if (codingQuestionList.find(e => e.uid === dto.uid))
+    save: jest.fn().mockImplementation((dto: CodingQuestion) => {
+        if (codingQuestionList.find(e => e.uid === dto.uid)) {
             return dto;
+        }
         dto.uid = Date.now().toString();
         codingQuestionList.push(dto);
         return dto;
     }),
-    preload: jest.fn().mockImplementation((dto) => {
-        let id : String = dto.uid;
-        let codingQuestion = codingQuestionList.find(e => e.uid === id);
+    preload: jest.fn().mockImplementation((dto: CodingQuestion) => {
+        let oldCodingQuestion = codingQuestionList.find(e => e.uid === dto.uid);
 
-        if (!codingQuestion) return undefined
-        codingQuestionList = codingQuestionList.filter(i => i !== codingQuestion);
-
-        dto.uid = id;
+        if (!oldCodingQuestion) {
+            return undefined
+        }
+        codingQuestionList = codingQuestionList.filter(i => i !== oldCodingQuestion);
         codingQuestionList.push(dto);
         return dto;
     }),

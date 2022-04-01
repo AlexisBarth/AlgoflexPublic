@@ -64,25 +64,6 @@ describe('CodingQuestionsController', () => {
     })
   })
 
-  describe('findAll', () => {
-    describe('when findAll is called', () => {
-      let codingQuestion: CodingQuestion[];
-
-      beforeEach(async () => {
-        codingQuestion = await controller.findAll();
-      })
-      
-      test('then it should call codingQuestionsService', () => {
-        expect(service.findAll).toBeCalledWith();
-      })
-
-      test('then it should return a codingQuestion', () => {
-        expect(codingQuestion).toEqual([codingQuestionStub()]);
-      })
-
-    })
-  })
-
   describe('create', () => {
     describe('when create is called', () => {
       let codingQuestion: CodingQuestion;

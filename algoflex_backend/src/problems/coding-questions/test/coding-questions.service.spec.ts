@@ -30,17 +30,38 @@ describe('CodingQuestionsService', () => {
 
   it('should find all codingQuestions', async () => {
     let codingQuestions: CodingQuestion[];
-    
+
+    repository.clear();
     codingQuestions = await service.findAll();
-    expect(codingQuestions).toBeTruthy()
+    expect(codingQuestions).toBeTruthy();
     expect(repository.find).toHaveBeenCalled();
   })
 
-  it('should create a new codingQuestions then finds it', async () => {
+  it('should create a new codingQuestions then finds it by id', async () => {
     let codingQuestionCreate: CodingQuestion;
-    
+    let dto = createCodingQuestionDtoStub();
+    let codingQuestionFind: CodingQuestion;
+
+    repository.clear();
+    codingQuestionCreate = await service.create(dto)
+    expect(codingQuestionCreate).toEqual({
+      uid: expect.any(String),
+      ...dto
+    })
+    expect(repository.save).toHaveBeenCalledWith({uid: codingQuestionCreate.uid, ...dto});
+
+    codingQuestionFind = await service.findOne(codingQuestionCreate.uid);
+    expect(codingQuestionFind.uid).toEqual(codingQuestionCreate.uid)
+    expect(repository.findOne).toHaveBeenCalledWith(codingQuestionCreate.uid);
+  })
+
+  it('should create a new codingQuestions then finds it by themes', async () => {
+    let codingQuestionCreate: CodingQuestion;
+    let codingQuestionFind: CodingQuestion[];
     let dto = createCodingQuestionDtoStub();
 
+    repository.clear();
+    dto.theme = 'uniqueTheme'
     codingQuestionCreate = await service.create(dto)
     expect(codingQuestionCreate).toEqual({
       uid: expect.any(String),
@@ -48,16 +69,13 @@ describe('CodingQuestionsService', () => {
     })
 
     expect(repository.save).toHaveBeenCalledWith({uid: codingQuestionCreate.uid, ...dto});
-
-    let codingQuestionFind = await service.findOne(codingQuestionCreate.uid);
-    expect(codingQuestionFind.uid).toEqual(codingQuestionCreate.uid)
-    expect(repository.findOne).toHaveBeenCalledWith(codingQuestionCreate.uid);
-
+    codingQuestionFind = await service.findByTheme(codingQuestionCreate.theme);
+    expect(codingQuestionFind).toHaveLength(1);
+    expect(codingQuestionFind[0].uid).toEqual(codingQuestionCreate.uid)
   })
 
   it('should update a codingQuestions after it was created', async () => {
     let codingQuestionCreate: CodingQuestion;
-    
     let dto:CreateCodingQuestionDto = {
       name: 'oldName',
       description: 'oldDescription',
@@ -65,6 +83,8 @@ describe('CodingQuestionsService', () => {
       testCases: 'oldTestCases',
       prompt: 'oldPrompt'
     }
+  
+    repository.clear();
     codingQuestionCreate = await service.create(dto)
     expect(codingQuestionCreate).toEqual({
       uid: expect.any(String),
@@ -89,7 +109,6 @@ describe('CodingQuestionsService', () => {
 
   it('should create then delete a codingQuestions', async () => {
     let codingQuestionCreate: CodingQuestion;
-    
     let dto:CreateCodingQuestionDto = {
       name: 'nameToDelete',
       description: 'descriptionToDelete',
@@ -97,6 +116,8 @@ describe('CodingQuestionsService', () => {
       testCases: 'testCasesToDelete',
       prompt: 'promptToDelete',
     }
+
+    repository.clear();
     codingQuestionCreate = await service.create(dto)
     expect(codingQuestionCreate).toEqual({
       uid: expect.any(String),

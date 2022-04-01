@@ -14,8 +14,6 @@ export default class BuildListener {
   private hasExecuted?: boolean;
 
   private constructor() {
-    console.log(process.env.DOCKER_API_IP);
-    console.log(process.env.DOCKER_API_PORT);
     this.dockerInstance = new Docker({
       host: process.env.DOCKER_API_IP,
       port: process.env.DOCKER_API_PORT,

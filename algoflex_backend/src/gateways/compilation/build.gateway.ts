@@ -99,7 +99,11 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
   }
 
   private getToken(req: any) {
-    const cookies: string[] = req.headers?.cookie.split('; ');
+    if (!req.headers?.cookie) {
+      throw Error('ERR_AUTHORIZATION, No cookie token provided');
+    }
+
+    const cookies: string[] = req.headers.cookie.split('; ');
     const tokenCookie = cookies.find(cookie => {
       const [name, _value] = cookie.split('=');
       return name === 'token';

@@ -4,7 +4,7 @@ import { CreateThemeDto } from '../dto/create-theme.dto';
 import { Theme } from '../entities';
 import { ThemesService } from '../themes.service';
 import { createThemeDtoStub } from './stubs/create-theme.stub';
-import { themeRepositoryStub } from './stubs/submission.repository.stub';
+import { themeRepositoryStub } from './stubs/theme.repository.stub';
 
 describe('ThemesService', () => {
   let service: ThemesService;

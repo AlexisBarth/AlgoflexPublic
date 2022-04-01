@@ -7,7 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
-const DOMAIN_WHITE_LIST = ['http://localhost:3000', 'https://staging-algoflex.heroku.app'];
+const DOMAIN_WHITE_LIST = ['http://localhost:3000', 'https://staging-algoflex.heroku.app', 'https://algoflex.netlify.app'];
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

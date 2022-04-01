@@ -17,7 +17,7 @@ import { Submission } from 'src/problems/submissions/entities/submission.entity'
 import { CompileRequestEvent, DockerTestResult } from '../models';
 import BuildListener from './build_listener';
 
-@WebSocketGateway()
+@WebSocketGateway({ path: '/compile' })
 export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
 
   constructor(
@@ -35,6 +35,7 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
   private currentUser: User;
   private execute = false;
   private solution = '';
+  private questionId = '';
 
   @SubscribeMessage('compile-request')
   async handleCompileRequest(client: any, event: CompileRequestEvent): Promise<void> {
@@ -42,9 +43,8 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
       return;
     }
 
-    // TODO: const questionId = event.codingQuestionId;
-    const questionId = '1';
-    const codingQuestion = await this.getCodingQuestion(questionId);
+    this.questionId = event.questionId;
+    const codingQuestion = await this.getCodingQuestion(this.questionId);
     this.solution = event.code;
     this.buildListener = await BuildListener.create(event.code, codingQuestion.testCases);
     this.execute = event.execute;
@@ -57,25 +57,6 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
       })
     );
   }
-  // this.buildListener = await BuildListener.create(
-  //   event.code,
-  //   `{
-  //       "exercice": [
-  //           {
-  //               "entree": ["30"],
-  //               "sorties": ["a"],
-  //               "maxtime": 30000,
-  //               "maxmemory": 10
-  //           },
-  //           {
-  //               "entree": ["8"],
-  //               "sorties": ["a"],
-  //               "maxtime": 30000,
-  //               "maxmemory": 10
-  //           }
-  //       ]
-  //   }`,
-  // );
 
   @SubscribeMessage('execute-request')
   async handle(client: WebSocket): Promise<void> {
@@ -83,8 +64,7 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
       return;
     }
 
-    const questionId = '1';
-    const codingQuestion = await this.getCodingQuestion(questionId);
+    const codingQuestion = await this.getCodingQuestion(this.questionId);
     const hasCompiled = await this.buildListener.build();
     let status = DockerTestResult.NotCompiled;
 

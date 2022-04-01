@@ -11,25 +11,24 @@ import { listen, MessageConnection } from '@codingame/monaco-jsonrpc'
 import { Console, Markdown } from '@components';
 import ReconnectingWebsocket from 'reconnecting-websocket';
 import { webSocketLink } from '@services/WebSocket.client';
+import { CodingQuestionInterface } from '@components/interfaces';
 
 const ReconnectingWebSocket = require('reconnecting-websocket');
 
 let ws : ReconnectingWebsocket | null = null;
 
-interface IdeProperties {
-    baseCode?: string;
-}
-
-const Ide = (props: IdeProperties) => {
+const Ide = (props: CodingQuestionInterface) => {
     const consoleCompileRef = React.useRef<Console>(null);
     const consoleExecuteRef = React.useRef<Console>(null);
 
-    const [code, setCode] = useState(props.baseCode);
+    const [code, setCode] = useState(props.prompt);
     const [tab, setTab] = useState('1');
     const [compileDot, setCompileDot] = useState(0);
     const [executeDot, setExecuteDot] = useState(0);
 
-    const markdown = ``
+    const markdown = `
+# ${props.name}  
+${props.description}`;
 
     const handleTab = (event: any, value: string) => {
         if(value === '1'){
@@ -72,9 +71,9 @@ const Ide = (props: IdeProperties) => {
     };
 
     const didMount = (monaco: any) => {
-        ws = new ReconnectingWebSocket(webSocketLink);
+        ws = new ReconnectingWebSocket(webSocketLink + '/compile');
         MonacoServices.install(monaco, {rootUri: "file:///app/autocomplete/"});
-        const webSocket = createLanguageWebSocket(webSocketLink);
+        const webSocket = createLanguageWebSocket(webSocketLink + '/autocomplete');
         listen({
             webSocket,
             onConnection: connection => {
@@ -85,7 +84,7 @@ const Ide = (props: IdeProperties) => {
         });
     };
 
-    const send = (execute : boolean) => {
+    const send = (execute : boolean, questionId: string | undefined) => {
         if(ws !== null && ws.readyState === ws.OPEN) {
             ws.onmessage = (event: MessageEvent) => {
                 let result = JSON.parse(event.data);
@@ -122,6 +121,7 @@ const Ide = (props: IdeProperties) => {
                 data: {
                     code,
                     execute,
+                    questionId
                 },
             };
             ws.send(JSON.stringify(data));
@@ -144,10 +144,10 @@ const Ide = (props: IdeProperties) => {
             </Box>
             <Box mt={1} mb={2}>
                 <Box mr={1} display="inline">
-                    <Button startIcon={<Check />} variant="contained" color="primary" onClick={() => send(false)}> Compile </Button>
+                    <Button startIcon={<Check />} variant="contained" color="primary" onClick={() => send(false, props.uid)}> Compile </Button>
                 </Box>
                 <Box m={1} display="inline">
-                    <Button startIcon={<PlayArrow />} variant="contained" onClick={() => send(true)}> Compile and Run </Button>
+                    <Button startIcon={<PlayArrow />} variant="contained" onClick={() => send(true, props.uid)}> Compile and Run </Button>
                 </Box>
             </Box>
             <Box border='5px #001e3c solid' bgcolor="#001e3c" borderRadius={1} boxShadow={3} >

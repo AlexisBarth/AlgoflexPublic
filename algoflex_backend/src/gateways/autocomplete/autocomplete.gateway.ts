@@ -4,7 +4,7 @@ import rpc from '@sourcegraph/vscode-ws-jsonrpc';
 import * as rpcServer from '@sourcegraph/vscode-ws-jsonrpc/lib/server';
 import { Logger } from '@nestjs/common';
 
-@WebSocketGateway()
+@WebSocketGateway({ path: '/autocomplete' })
 export class AutoCompleteGateway implements OnGatewayDisconnect, OnGatewayConnection {
   private localConnection: rpcServer.IConnection;
   private logger: Logger = new Logger('AutocompleteGateway');

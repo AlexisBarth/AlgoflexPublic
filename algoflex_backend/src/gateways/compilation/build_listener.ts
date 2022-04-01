@@ -14,7 +14,11 @@ export default class BuildListener {
   private hasExecuted?: boolean;
 
   private constructor() {
-    this.dockerInstance = new Docker({ socketPath: '/var/run/docker.sock' });
+    this.dockerInstance = new Docker({
+      host: process.env.DOCKER_API_IP,
+      port: process.env.DOCKER_API_PORT,
+      version: 'v1.41'
+    });
     this.hasExecuted = undefined;
   }
 
@@ -121,10 +125,10 @@ export default class BuildListener {
   }
 
   public getCompileLink() {
-    return `ws://localhost:2376/containers/${this.getCompileId()}/attach/ws?logs=1&stream=1&stdout=1&stderr=1`;
+    return `ws://${process.env.DOCKER_API_IP}:${process.env.DOCKER_API_PORT}/containers/${this.getCompileId()}/attach/ws?logs=1&stream=1&stdout=1&stderr=1`;
   }
 
   public getExecuteLink() {
-    return `ws://localhost:2376/containers/${this.getExecuteId()}/attach/ws?logs=1&stream=1&stdout=1&stderr=1`;
+    return `ws://${process.env.DOCKER_API_IP}:${process.env.DOCKER_API_PORT}/containers/${this.getExecuteId()}/attach/ws?logs=1&stream=1&stdout=1&stderr=1`;
   }
 }

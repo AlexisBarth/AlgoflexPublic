@@ -23,9 +23,9 @@
       command: echo Pong
 
     - name: Copying dockerfiles
-      template:
+      copy:
         src: ../files/
         dest: /etc/algo_scripts
 
     - name: Install docker images
-      ansible.builtin.script: /etc/algo_scripts/init.sh
+      command: bash /etc/algo_scripts/init.sh

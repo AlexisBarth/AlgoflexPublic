@@ -1,9 +1,9 @@
-export function setCookie(name: string, value: string, httpOnly: boolean = false, duration: number = 0) {
+export function setCookie(name: string, value: string, secure: boolean = false, duration: number = 0) {
     const date = new Date();
 
     date.setTime(duration > 0 ? duration : date.getTime() + (7 * 24 * 60 * 60 * 1000));
 
-    const a = `${name}=${value}; expires=${date.toUTCString()}; path=/; ${httpOnly ? 'Secure; HttpOnly' : ''}`;
+    const a = `${name}=${value}; expires=${date.toUTCString()}; path=/; ${secure ? 'Secure' : ''}`;
     document.cookie = a;
 }
 

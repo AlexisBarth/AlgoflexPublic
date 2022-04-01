@@ -40,6 +40,7 @@ export class AuthController {
       message: "conf details",
       dockerApiIp: process.env.DOCKER_API_IP,
       dockerPort: process.env.DOCKER_PORT,
+      dbNameFromEnv: process.env.DATABASE_NAME,
     };
   }
 }

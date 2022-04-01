@@ -7,7 +7,7 @@ import { createSubmissionDtoStub } from './test/stubs/create-submission.stub';
 import { submissionStub } from './test/stubs/submission.stub';
 
 // Ceci va appeler le mock service au lieu du vrai Service
-jest.mock('./../submissions.service');
+jest.mock('./submissions.service');
 
 describe('SubmissionsController', () => {
   let controller: SubmissionsController;

@@ -4,8 +4,10 @@ import Image from "../../../img/logo.png";
 
 const Home = () => {
     useEffect(() => {
-        const script = document.createElement("script");
+        let script = document.createElement("script");
         script.src = "https://platform.twitter.com/widgets.js";
+        script.integrity = "sha384-+WKoS+sXCt/fwZxO8IOpYtJ/AIJIDhzpXZomciIYeIRKuxyQHpmp6oLiXsM8fq4G";
+        script.crossOrigin= "anonymous";
         script.async = true;
         document.body.appendChild(script);
     }, [])

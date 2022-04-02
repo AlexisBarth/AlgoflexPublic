@@ -6,12 +6,12 @@ import { CreateThemeDto } from './dto/create-theme.dto';
 import { UpdateThemeDto } from './dto/update-theme.dto';
 import { FirebaseAuthGuard, RolesGuard, Roles, Role } from 'src/common';
 
+@UseGuards(FirebaseAuthGuard, RolesGuard)
 @ApiTags('Themes')
 @Controller('problems/themes')
 export class ThemesController {
   constructor(private readonly themesService: ThemesService) {}
 
-  @UseGuards(FirebaseAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Post()
   public async create(@Body() createThemeDto: CreateThemeDto) {
@@ -28,14 +28,12 @@ export class ThemesController {
     return this.themesService.findOne(id);
   }
 
-  @UseGuards(FirebaseAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Put(':id')
   public async update(@Param('id') id: string, @Body() updateThemeDto: UpdateThemeDto) {
     return this.themesService.update(+id, updateThemeDto);
   }
 
-  @UseGuards(FirebaseAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Delete(':id')
   public async remove(@Param('id') id: string) {

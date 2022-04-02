@@ -37,7 +37,7 @@ describe('CodingQuestionsService', () => {
     expect(repository.find).toHaveBeenCalled();
   })
 
-  it('should create a new codingQuestions then finds it by id', async () => {
+  it('should create a new codingQuestion then finds it by id', async () => {
     let codingQuestionCreate: CodingQuestion;
     let dto = createCodingQuestionDtoStub();
     let codingQuestionFind: CodingQuestion;
@@ -55,7 +55,7 @@ describe('CodingQuestionsService', () => {
     expect(repository.findOne).toHaveBeenCalledWith(codingQuestionCreate.uid);
   })
 
-  it('should create a new codingQuestions then finds it by themes', async () => {
+  it('should create a new codingQuestion then finds it by themes', async () => {
     let codingQuestionCreate: CodingQuestion;
     let codingQuestionFind: CodingQuestion[];
     let dto = createCodingQuestionDtoStub();
@@ -74,7 +74,7 @@ describe('CodingQuestionsService', () => {
     expect(codingQuestionFind[0].uid).toEqual(codingQuestionCreate.uid)
   })
 
-  it('should update a codingQuestions after it was created', async () => {
+  it('should update a codingQuestion after it was created', async () => {
     let codingQuestionCreate: CodingQuestion;
     let dto:CreateCodingQuestionDto = {
       name: 'oldName',
@@ -106,7 +106,7 @@ describe('CodingQuestionsService', () => {
     expect(repository.save).toHaveBeenCalled();
   })
 
-  it('should create then delete a codingQuestions', async () => {
+  it('should create then delete a codingQuestion', async () => {
     let codingQuestionCreate: CodingQuestion;
     let dto:CreateCodingQuestionDto = {
       name: 'nameToDelete',

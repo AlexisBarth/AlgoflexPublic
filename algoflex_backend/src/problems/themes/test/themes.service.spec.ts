@@ -37,7 +37,7 @@ describe('ThemesService', () => {
     expect(repository.find).toHaveBeenCalled();
   })
 
-  it('should create a new themes then finds it by id', async () => {
+  it('should create a new theme then finds it by id', async () => {
     let themeCreate: Theme;
     let dto = createThemeDtoStub();
     let themeFind: Theme;
@@ -57,7 +57,7 @@ describe('ThemesService', () => {
 
 
   // Not Implemented
-  it.skip('should update a themes after it was created', async () => {
+  it.skip('should update a theme after it was created', async () => {
     let themeCreate: Theme;
     let dto:CreateThemeDto = {
       name: 'oldName',
@@ -86,7 +86,7 @@ describe('ThemesService', () => {
     expect(repository.save).toHaveBeenCalled();
   })
 
-  it('should create then delete a themes', async () => {
+  it('should create then delete a theme', async () => {
     let themeCreate: Theme;
     let dto:CreateThemeDto = {
       name: 'nameToDelete',

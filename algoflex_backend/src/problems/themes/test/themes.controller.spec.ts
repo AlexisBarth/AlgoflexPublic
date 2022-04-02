@@ -56,7 +56,7 @@ describe('ThemesController', () => {
         expect(service.findAll).toBeCalledWith();
       })
 
-      test('then it should return a theme', () => {
+      test('then it should return themes', () => {
         expect(theme).toEqual([themeStub()]);
       })
 

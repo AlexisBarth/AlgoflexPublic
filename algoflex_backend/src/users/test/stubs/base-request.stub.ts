@@ -1,4 +1,4 @@
-import { BaseRequest, RequestUser } from "src/common"
+import { BaseRequest, RequestUser, Role } from "src/common"
 
 export const requestUserStub = (): RequestUser => {
     return {
@@ -7,7 +7,7 @@ export const requestUserStub = (): RequestUser => {
         favoriteLangage: 'French',
         lastLogin: 1,
         createdAt: 1,
-        role: 'mockRole'
+        role: Role.Admin
     }
 }
 

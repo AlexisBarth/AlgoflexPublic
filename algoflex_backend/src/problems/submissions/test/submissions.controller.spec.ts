@@ -59,7 +59,7 @@ describe('SubmissionsController', () => {
         expect(service.findAll).toBeCalledWith(baseRequestStub()!.user!.uid);
       })
 
-      test('then it should return a submission', () => {
+      test('then it should return submissions', () => {
         expect(submission).toEqual([submissionStub()]);
       })
 

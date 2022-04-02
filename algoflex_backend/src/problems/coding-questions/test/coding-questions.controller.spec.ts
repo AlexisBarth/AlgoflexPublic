@@ -57,7 +57,7 @@ describe('CodingQuestionsController', () => {
         expect(service.findAll).toBeCalledWith();
       })
 
-      test('then it should return a codingQuestion', () => {
+      test('then it should return codingQuestions', () => {
         expect(codingQuestion).toEqual([codingQuestionStub()]);
       })
 

@@ -61,7 +61,7 @@ describe('UsersService', () => {
       firstName: 'firstNameToDelete',
       lastName: 'lastNameToDelete',
       email: 'emailToDelete',
-      password: 'passwordToDelete'
+      password: process.env.PASSWORD as string
     }
 
     repository.clear();

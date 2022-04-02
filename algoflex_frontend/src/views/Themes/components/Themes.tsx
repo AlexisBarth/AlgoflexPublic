@@ -16,7 +16,7 @@ const Themes = () => {
     }, []);
 
     return (
-        <div>
+        <div style={{marginTop:"8vh"}}>
             <Grid container spacing={8}>
                 <Grid item xs={2}>
                 </Grid>

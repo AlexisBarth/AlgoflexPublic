@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { FirebaseContext } from '@services/Firebase';
-import { Button } from '@mui/material';
+import {Button, Typography} from '@mui/material';
+import * as React from "react";
 
 const Logout = () => {
 
@@ -8,15 +9,14 @@ const Logout = () => {
 
     const logout = () => {
         if (firebase != null) {
-            console.log("Déconnexion");
             firebase.signoutUser();
         }
     };
 
     return (
-        <Button onClick={logout}>
+        <Typography component={Button} onClick={logout} style={{ color: 'inherit', textDecoration: 'none'}}>
             Logout
-        </Button>
+        </Typography>
     );
 };
 

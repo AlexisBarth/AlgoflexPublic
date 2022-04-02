@@ -9,6 +9,8 @@ import { CodingQuestion } from './entities/coding-question.entity';
 interface FindAllCodingQuestionQuery {
   theme: string;
 }
+
+@UseGuards(FirebaseAuthGuard, RolesGuard)
 @ApiTags('Coding questions')
 @Controller('problems/coding-questions')
 export class CodingQuestionsController {
@@ -27,7 +29,6 @@ export class CodingQuestionsController {
     return this.codingQuestionsService.findOne(id);
   }
 
-  @UseGuards(FirebaseAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @ApiResponse({
     status: 200,
@@ -43,14 +44,12 @@ export class CodingQuestionsController {
     return this.codingQuestionsService.create(createCodingQuestionDto);
   }
 
-  @UseGuards(FirebaseAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Put(':id')
   update(@Param('id') id: string, @Body() updateCodingQuestionDto: UpdateCodingQuestionDto) {
     return this.codingQuestionsService.update(id, updateCodingQuestionDto);
   }
 
-  @UseGuards(FirebaseAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param('id') id: string) {

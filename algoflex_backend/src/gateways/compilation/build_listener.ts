@@ -17,6 +17,9 @@ export default class BuildListener {
     this.dockerInstance = new Docker({
       host: process.env.DOCKER_API_IP,
       port: process.env.DOCKER_API_PORT,
+      ca: process.env.CERTIFICAT_CA,
+      cert: process.env.CERTIFICAT_CERT,
+      key: process.env.CERTIFICAT_KEY,
       version: 'v1.41'
     });
     this.hasExecuted = undefined;
@@ -125,10 +128,10 @@ export default class BuildListener {
   }
 
   public getCompileLink() {
-    return `ws://${process.env.DOCKER_API_IP}:${process.env.DOCKER_API_PORT}/containers/${this.getCompileId()}/attach/ws?logs=1&stream=1&stdout=1&stderr=1`;
+    return `wss://${process.env.DOCKER_API_IP}:${process.env.DOCKER_API_PORT}/containers/${this.getCompileId()}/attach/ws?logs=1&stream=1&stdout=1&stderr=1`;
   }
 
   public getExecuteLink() {
-    return `ws://${process.env.DOCKER_API_IP}:${process.env.DOCKER_API_PORT}/containers/${this.getExecuteId()}/attach/ws?logs=1&stream=1&stdout=1&stderr=1`;
+    return `wss://${process.env.DOCKER_API_IP}:${process.env.DOCKER_API_PORT}/containers/${this.getExecuteId()}/attach/ws?logs=1&stream=1&stdout=1&stderr=1`;
   }
 }

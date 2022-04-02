@@ -30,3 +30,5 @@ jobs:
         FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
         FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
+        DOCKER_API_IP: ${{ secrets.DOCKER_API_IP }}
+        DOCKER_API_PORT: ${{ secrets.DOCKER_API_PORT }}

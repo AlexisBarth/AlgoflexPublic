@@ -11,7 +11,6 @@ const Editeur = () => {
 
     useEffect(() => {
         client.get(`/problems/coding-questions/${idPage.id}`).then((result) => {
-            console.log(result.data);
             setExercice(result.data);
         });
     }, [idPage]);

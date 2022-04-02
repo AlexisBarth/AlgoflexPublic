@@ -21,7 +21,7 @@ const Ide = (props: CodingQuestionInterface) => {
     const consoleCompileRef = React.useRef<Console>(null);
     const consoleExecuteRef = React.useRef<Console>(null);
 
-    const [code, setCode] = useState(props.prompt);
+    const [code, setCode] = useState('');
     const [tab, setTab] = useState('1');
     const [compileDot, setCompileDot] = useState(0);
     const [executeDot, setExecuteDot] = useState(0);
@@ -71,9 +71,9 @@ ${props.description}`;
     };
 
     const didMount = (monaco: any) => {
-        ws = new ReconnectingWebSocket(webSocketLink);
+        ws = new ReconnectingWebSocket(webSocketLink + '/compile');
         MonacoServices.install(monaco, {rootUri: "file:///app/autocomplete/"});
-        const webSocket = createLanguageWebSocket(webSocketLink);
+        const webSocket = createLanguageWebSocket(webSocketLink + '/autocomplete');
         listen({
             webSocket,
             onConnection: connection => {
@@ -121,7 +121,8 @@ ${props.description}`;
                 data: {
                     code,
                     execute,
-                    questionId
+                    questionId,
+                    token: localStorage.getItem('token'),
                 },
             };
             ws.send(JSON.stringify(data));
@@ -136,7 +137,7 @@ ${props.description}`;
                     height="55vh"
                     defaultLanguage="cpp"
                     theme="vs-dark"
-                    value={code}
+                    value={props.prompt}
                     onChange={value => setCode(String(value))}
                     beforeMount={didMount}
                     path='file:///app/autocomplete/file.cpp'

@@ -101,6 +101,14 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      ".module.ts",
+      "<rootDir>/src/main.ts",
+      ".stub.ts",
+      ".spec.ts",
+      ".eslintrc.js"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },

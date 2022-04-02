@@ -1,9 +1,10 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dto';
 import { User } from '../entity';
 import { UsersService } from '../users.service';
-import { createUserDtoStub } from './stubs/create-user.stub';
+import { createUserDtoStub, updateUserDtoStub } from './stubs/create-user.stub';
 import { userRepositoryStub } from './stubs/user.repository.stub';
 
 describe('UsersService', () => {
@@ -75,5 +76,41 @@ describe('UsersService', () => {
     expect(repository.findOne).toHaveBeenCalledWith(userCreate.uid);
     expect(repository.remove).toHaveBeenCalled()
     expect(await repository.findOne(userCreate.uid)).toBeUndefined();
+  })
+
+  it('should create then update a user', async () => {
+    let userCreate: User;
+    let userUpdate: User;
+    let createUserDto = createUserDtoStub();
+    let updateUserDto = updateUserDtoStub();
+
+    repository.clear();
+    userCreate = repository.save(createUserDto);
+    expect(userCreate).toEqual({
+      uid: expect.any(String),
+      firstName: createUserDtoStub().firstName,
+      lastName: createUserDtoStub().lastName,
+      email: createUserDtoStub().email,
+      password: createUserDtoStub().password,
+    })
+    userUpdate = repository.save(updateUserDto);
+    expect(userUpdate).toEqual({
+      uid: expect.any(String),
+      firstName: updateUserDto.firstName,
+      lastName: updateUserDto.lastName,
+      email: updateUserDto.email,
+      password: updateUserDto.password,
+    })
+
+  })
+
+  it('should check exeptions', async () => {
+    repository.clear();
+    await expect(async () => { 
+      await service.findById('1');
+    }).rejects.toThrowError(NotFoundException);
+    await expect(async () => { 
+      await service.remove('1');
+    }).rejects.toThrowError(NotFoundException);
   })
 });

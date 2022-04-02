@@ -27,7 +27,7 @@ jobs:
     - run: |
         npm ci
         npm run build
-        npm test:cov
+        npm run test:cov
 
   sonarcloud:
     runs-on: ubuntu-latest

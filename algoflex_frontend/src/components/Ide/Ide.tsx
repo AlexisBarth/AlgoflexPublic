@@ -121,7 +121,8 @@ ${props.description}`;
                 data: {
                     code,
                     execute,
-                    questionId
+                    questionId,
+                    token: localStorage.getItem('token'),
                 },
             };
             ws.send(JSON.stringify(data));

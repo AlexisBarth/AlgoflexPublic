@@ -32,10 +32,10 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
   server: Server;
   private buildListener: BuildListener | null = null;
   private logger: Logger = new Logger('BuildGateway');
-  private currentUser: User;
   private execute = false;
   private solution = '';
   private questionId = '';
+  private userToken: string;
 
   @SubscribeMessage('compile-request')
   async handleCompileRequest(client: any, event: CompileRequestEvent): Promise<void> {
@@ -43,6 +43,7 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
       return;
     }
 
+    this.userToken = event.token;
     this.questionId = event.questionId;
     const codingQuestion = await this.getCodingQuestion(this.questionId);
     this.solution = event.code;
@@ -64,6 +65,7 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
       return;
     }
 
+    const user = await this.fetchUser(this.userToken);
     const codingQuestion = await this.getCodingQuestion(this.questionId);
     const hasCompiled = await this.buildListener.build();
     let status = DockerTestResult.NotCompiled;
@@ -80,7 +82,7 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
       language: 'cpp',
       questionId: codingQuestion.uid,
       solution: this.solution,
-      userId: this.currentUser.uid,
+      userId: user.uid,
       status,
     });
     this.removeDocker();
@@ -91,34 +93,16 @@ export class BuildGateway implements OnGatewayDisconnect, OnGatewayConnection {
     this.removeDocker();
   }
 
-  async handleConnection(_client: WebSocket, args: any) {
-    const token = this.getToken(args);
-    await this.fetchUser(token);
-
+  async handleConnection(_client: WebSocket, _args: any) {
     this.logger.log(`WebSocket Client sucessfully connected`);
   }
 
-  private getToken(req: any) {
-    if (!req.headers?.cookie) {
-      throw Error('ERR_AUTHORIZATION, No cookie token provided');
+  private async fetchUser(token: string): Promise<User> {
+    const user = await this.firebaseStrategy.validate(token);
+    if (!user) {
+      this.logger.error('No user found on compile request');
     }
-
-    const cookies: string[] = req.headers.cookie.split('; ');
-    const tokenCookie = cookies.find(cookie => {
-      const [name, _value] = cookie.split('=');
-      return name === 'token';
-    });
-
-    if (!tokenCookie) {
-      throw new Error(`Unauthorized request`);
-    }
-    const [_, token] = tokenCookie.split('=');
-
-    return token;
-  }
-
-  private async fetchUser(token: string) {
-    this.currentUser = await this.firebaseStrategy.validate(token);
+    return user;
   }
 
   private removeDocker() {

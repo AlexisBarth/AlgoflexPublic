@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateThemeDto } from '../dto/create-theme.dto';
@@ -105,6 +106,18 @@ describe('ThemesService', () => {
     expect(repository.findOne).toHaveBeenCalledWith(themeCreate.uid);
     expect(repository.remove).toHaveBeenCalled()
     expect(await repository.findOne(themeCreate.uid)).toBeUndefined();
+  })
+
+  it('should check exeptions', async () => {
+    repository.clear();
+    await expect(async () => { 
+      await service.findOne('1');
+    }).rejects.toThrowError(NotFoundException);
+
+    await expect(async () => { 
+      await service.remove('1');
+    }).rejects.toThrowError(NotFoundException);
+    expect(await service.update(1, createThemeDtoStub())).not.toBeNull();
   })
 
 });

@@ -129,7 +129,10 @@ describe('UserMetaService', () => {
 
   it('should update UserMeta', async () => {
     let userMetaCreate: UserMeta;
-    let userMetadto = updateUserMetaDtoStub();
+    let dto = {
+      questionId: updateUserMetaDtoStub().questionId,
+      userCode: updateUserMetaDtoStub().userCode
+    } 
     let codingQuestionCreate: CodingQuestion;
     let codingQuestionDto = createCodingQuestionDtoStub();
 
@@ -138,10 +141,10 @@ describe('UserMetaService', () => {
 
     // Create coding question
     codingQuestionCreate = codingQuestionRepository.save(codingQuestionDto);
-    userMetadto.questionId = codingQuestionCreate.uid;
+    dto.questionId = codingQuestionCreate.uid;
 
     // Create user Meta
-    userMetaCreate = userMetaRepository.save(userMetadto);
+    userMetaCreate = userMetaRepository.save(dto);
     expect(userMetaRepository.save).toHaveBeenCalled();
 
   })

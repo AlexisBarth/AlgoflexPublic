@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateSubmissionDto } from '../dto/create-submission.dto';
@@ -119,4 +120,18 @@ describe('SubmissionsService', () => {
     expect(await repository.findOne(submissionCreate.uid)).toBeUndefined();
   })
 
+  it('should check exeptions', async () => {
+    repository.clear();
+    await expect(async () => { 
+      await service.findOne('1', '1');
+    }).rejects.toThrowError(NotFoundException);
+
+    await expect(async () => { 
+      await service.update('1', '1', createSubmissionDtoStub());
+    }).rejects.toThrowError(NotFoundException);
+
+    await expect(async () => { 
+      await service.remove('1');
+    }).rejects.toThrowError(NotFoundException);
+  })
 });

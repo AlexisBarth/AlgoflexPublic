@@ -1,4 +1,4 @@
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { baseRequestStub } from 'src/users/test/stubs/base-request.stub';
 import { Submission } from '../entities/submission.entity';

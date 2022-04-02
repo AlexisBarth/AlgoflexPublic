@@ -144,7 +144,7 @@ describe('UserMetaService', () => {
     dto.questionId = codingQuestionCreate.uid;
 
     // Create user Meta
-    userMetaCreate = userMetaRepository.save(dto);
+    userMetaRepository.save(dto);
     expect(userMetaRepository.save).toHaveBeenCalled();
 
   })

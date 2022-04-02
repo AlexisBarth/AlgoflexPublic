@@ -1,3 +1,4 @@
+import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CodingQuestionsService } from '../coding-questions.service';
@@ -127,6 +128,28 @@ describe('CodingQuestionsService', () => {
     expect(repository.findOne).toHaveBeenCalledWith(codingQuestionCreate.uid);
     expect(repository.remove).toHaveBeenCalled()
     expect(await repository.findOne(codingQuestionCreate.uid)).toBeUndefined();
+  })
+
+  it('should check exeptions', async () => {
+    repository.clear();
+
+    await expect(async () => { 
+      await service.findOne('1');
+    }).rejects.toThrowError(NotFoundException);
+
+    await expect(async () => {
+      let codingQuestion = await service.create(createCodingQuestionDtoStub());
+      codingQuestion.name = codingQuestion.uid;
+      await service.create(codingQuestion); // The second time it should throw an exception
+    }).rejects.toThrowError(ConflictException);
+
+    await expect(async () => { 
+      await service.update('1', createCodingQuestionDtoStub());
+    }).rejects.toThrowError(NotFoundException);
+
+    await expect(async () => { 
+      await service.remove('1');
+    }).rejects.toThrowError(NotFoundException);
   })
 
 });

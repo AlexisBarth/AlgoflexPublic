@@ -51,6 +51,7 @@ describe('CodingQuestionsController', () => {
 
       beforeEach(async () => {
         codingQuestion = await controller.findAll();
+        codingQuestion = await controller.findAll({theme: "theme"});
       })
       
       test('then it should call codingQuestionsService', () => {
@@ -120,5 +121,4 @@ describe('CodingQuestionsController', () => {
 
     })
   })
-
 });

@@ -20,9 +20,9 @@ const routes: Route[] = [
     { component: Login, path: '/login', authenticated: false},
     { component: Signup, path: '/signup', authenticated: false},
     { component: ForgetPassword, path: '/forgetPassword', authenticated: false},
-    { component: Editeur, path: '/exercice/:id', authenticated: false},
-    { component: Themes, path: '/themes', authenticated: false},
-    { component: Exercices, path: '/theme/:id', authenticated: false},
+    { component: Editeur, path: '/exercice/:id', authenticated: true},
+    { component: Themes, path: '/themes', authenticated: true},
+    { component: Exercices, path: '/theme/:id', authenticated: true},
     { component: UserSettings, path: '/userSettings', authenticated: true}
 ];
 

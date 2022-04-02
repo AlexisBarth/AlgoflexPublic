@@ -16,7 +16,7 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [pseudo, setPseudo] = useState('');
-    const [photo, setPhoto] = useState<string>();
+    const [photo, setPhoto] = useState<File>();
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -38,8 +38,7 @@ const Signup = () => {
 
     const addPhoto = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files != null) {
-            const file = URL.createObjectURL(e.target.files[0]);
-            setPhoto(file);
+            setPhoto(e.target.files[0]);
         }
     };
 

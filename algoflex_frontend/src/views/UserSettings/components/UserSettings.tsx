@@ -22,7 +22,7 @@ const UserSettings = () => {
     const [password, setPassword] = useState<string>();
     const [confirmPassword, setConfirmPassword] = useState<string>();
     const [pseudo, setPseudo] = useState(firebasePseudo?.toString());
-    const [photo, setPhoto] = useState(imageUser?.toString());
+    const [photo, setPhoto] = useState<File>();
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -71,8 +71,7 @@ const UserSettings = () => {
 
     const addPhoto = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files != null) {
-            const file = URL.createObjectURL(e.target.files[0]);
-            setPhoto(file);
+            setPhoto(e.target.files[0]);
         }
     };
 
@@ -107,7 +106,7 @@ const UserSettings = () => {
                         </Box>
                     </Grid>
                     <Grid item xs={6} style={{display:'flex', justifyContent:'center'}}>
-                        <Stack component='form' onSubmit={handleSubmit} gap={2} style = {{width: '30vh'}}>
+                        <Stack component='form' onSubmit={handleSubmit} gap={2} style = {{width: '30vh'}} data-testid="formUser">
                             <TextField
                                 onChange={e => setPseudo(e.target.value)}
                                 value={pseudo}
@@ -117,7 +116,8 @@ const UserSettings = () => {
                                 onChange={e => setEmail(e.target.value)}
                                 value={email}
                                 label={'Email'}
-                                type='email'>
+                                type='email'
+                                data-testid="email">
                             </TextField>
                             <TextField
                                 onChange={e => setPassword(e.target.value)}

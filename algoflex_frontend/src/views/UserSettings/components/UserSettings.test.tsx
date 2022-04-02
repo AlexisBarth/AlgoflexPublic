@@ -1,9 +1,17 @@
-import UserSettings from './UserSettings'
-import {render} from '@testing-library/react'
-import '@testing-library/jest-dom'
+import UserSettings from './UserSettings';
+import React from 'react';
+import '@testing-library/jest-dom';
 
-test.todo("Make UserSettings tests");
+const currentUser = { uid: 1 };
+interface Context {
+    currentUser: { uid: number } | null;
+}
+const AuthContext = React.createContext<Context>({ currentUser: null });
 
-test('load component UserSettings', async () => {
-    render(<UserSettings/>)
-});
+describe('user settings edit', () => {
+    test('render userSettings', () => {
+        <AuthContext.Provider value={{ currentUser }}>
+                <UserSettings />
+        </AuthContext.Provider>
+    })
+})

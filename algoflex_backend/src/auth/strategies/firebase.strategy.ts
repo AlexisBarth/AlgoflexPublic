@@ -1,6 +1,6 @@
-import { Strategy } from 'passport-firebase-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ExtractJwt, Strategy,  } from 'passport-firebase-jwt';
 import * as firebase from 'firebase-admin';
 import { ServiceAccount } from 'firebase-admin';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
@@ -20,7 +20,7 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase-auth'
 
   constructor(private readonly authService: AuthService) {
     super({
-      jwtFromRequest: (req: any) => req.cookies.token,
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
 
     this.firebaseApp = firebase.initializeApp({

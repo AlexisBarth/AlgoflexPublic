@@ -14,7 +14,7 @@ async function getUserInfo() {
         const res = await client.get('auth/user-info');
         console.log(res);
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 

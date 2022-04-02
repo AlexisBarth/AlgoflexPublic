@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CodingQuestion } from 'src/problems/coding-questions/entities/coding-question.entity';
@@ -146,6 +147,22 @@ describe('UserMetaService', () => {
     // Create user Meta
     userMetaRepository.save(dto);
     expect(userMetaRepository.save).toHaveBeenCalled();
-
   })
+
+  it('should check exeptions', async () => {
+    userMetaRepository.clear();
+    codingQuestionRepository.clear();
+    await expect(async () => { 
+      await service.findOne('1', '1');
+    }).rejects.toThrowError(NotFoundException);
+
+    await expect(async () => { 
+      await service.create('1', createUserMetaDtoStub());
+    }).rejects.toThrowError(NotFoundException);
+
+    await expect(async () => { 
+      await service.remove('1');
+    }).rejects.toThrowError(NotFoundException);
+  })
+
 });

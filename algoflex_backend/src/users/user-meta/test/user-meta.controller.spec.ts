@@ -1,5 +1,7 @@
+import { UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { baseRequestStub } from 'src/users/test/stubs/base-request.stub';
+import { Role } from 'src/common';
+import { baseRequestStub, requestUserStub } from 'src/users/test/stubs/base-request.stub';
 import { UserMeta } from '../entities/user-meta.entity';
 import { UserMetaController } from '../user-meta.controller';
 import { UserMetaService } from '../user-meta.service';
@@ -98,8 +100,24 @@ describe('UserMetaController', () => {
       test('then it should return a userMeta', () => {
         expect(userMeta).toEqual(userMetaStub());
       })
-
     })
+  })
+
+  
+  it('should check exeptions', async () => {
+    let baseRequest = baseRequestStub();
+    baseRequest.user = undefined;
+
+    await expect(async () => { 
+      let requestUser = requestUserStub();
+      requestUser.role = Role.User;
+
+      controller.verifyAccessToMetadata(requestUser, 'undefined');
+    }).rejects.toThrowError(UnauthorizedException);
+
+    expect(async () => { 
+      controller.verifyAccessToMetadata(requestUserStub(), requestUserStub().uid)
+    }).not.toThrow();
   })
 
 });

@@ -9,7 +9,6 @@ const Logout = () => {
 
     const logout = () => {
         if (firebase != null) {
-            console.log("Déconnexion");
             firebase.signoutUser();
         }
     };

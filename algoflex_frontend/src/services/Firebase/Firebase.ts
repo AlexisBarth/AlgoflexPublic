@@ -83,7 +83,6 @@ class Firebase {
     addProfile = async (name='', photo?: File) => {
         if (photo) {
             const url = await this.uploadImage(photo);
-            console.log("URL", url);
             await this.auth.currentUser?.updateProfile({displayName: name, photoURL: url});
         }
     }

@@ -5,8 +5,12 @@ let codingQuestionList : CodingQuestion[] = [];
 export const mockCodingQuestionRepository = {
     clear: () => {codingQuestionList = []},
     find: jest.fn().mockImplementation(() => codingQuestionList),
-    findOne: jest.fn().mockImplementation((uid: string) => {
-        return codingQuestionList.find(e => e.uid === uid);
+    findOne: jest.fn().mockImplementation((codingQuestion) => {
+        if (codingQuestion.uid === undefined) {
+            return codingQuestionList.find(e => (e.uid === codingQuestion));
+        } else {
+            return codingQuestionList.find(e => (e.uid === codingQuestion.uid));
+        }
     }),
     save: jest.fn().mockImplementation((dto: CodingQuestion) => {
         if (codingQuestionList.find(e => e.uid === dto.uid)) {

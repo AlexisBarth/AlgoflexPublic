@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './dto';
 import { User } from 'src/users/entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,7 +8,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Role } from 'src/common';
 
-// Non-sensivite info, public config keys
+// Non-sensitive info, public config keys
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyA29TC3w3ppTdQNmvRigb_L8rZb8bFOseY",
   authDomain: "algoflex-dce55.firebaseapp.com",
@@ -55,8 +55,12 @@ export class AuthService {
     return this.userRepository.save(user);
   }
 
-  async findById(id: string) {
-    return this.userRepository.findOne(id);
+  async findById(id: string): Promise<User> {
+    const user = await this.userRepository.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`User with id #${id} not found`);
+    }
+    return user;
   }
 
   private async findByEmail(email: string | undefined): Promise<User | undefined> {

@@ -13,6 +13,7 @@ const CardList = ({cardDatas}: CardListProps) => {
             <ImageList sx={{ overflow: 'auto' }} rowHeight={10} gap={10} cols={3}>
             {cardDatas.map((item) => (
                 <CardItem
+                    key={item.uid}
                     uid={item.uid}
                     name={item.name} 
                     description={item.description}

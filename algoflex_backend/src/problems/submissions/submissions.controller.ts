@@ -1,9 +1,10 @@
+import { ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards, Req, UnauthorizedException } from '@nestjs/common';
+
+import { BaseRequest, FirebaseAuthGuard, Role, Roles, RolesGuard } from 'src/common';
 import { SubmissionsService } from './submissions.service';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { UpdateSubmissionDto } from './dto/update-submission.dto';
-import { ApiTags } from '@nestjs/swagger';
-import { BaseRequest, FirebaseAuthGuard, Role, Roles, RolesGuard } from 'src/common';
 
 @ApiTags('Submissions')
 @UseGuards(FirebaseAuthGuard, RolesGuard)
@@ -27,6 +28,7 @@ export class SubmissionsController {
     return this.submissionsService.findOne(id, req.user.uid);
   }
 
+  @Roles(Role.Admin)
   @Post()
   create(@Req() req: BaseRequest, @Body() createSubmissionDto: CreateSubmissionDto) {
     if (!req.user) {
@@ -35,6 +37,7 @@ export class SubmissionsController {
     return this.submissionsService.create(req.user.uid, createSubmissionDto);
   }
 
+  @Roles(Role.Admin)
   @Put(':id')
   update(
     @Req() req: BaseRequest,

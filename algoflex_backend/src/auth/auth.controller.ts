@@ -18,7 +18,7 @@ export class AuthController {
 
   @UseGuards(FirebaseAuthGuard)
   @Get('user-info')
-  public async getUserInfo(@Req() req: BaseRequest): Promise<User | undefined> {
+  public async getUserInfo(@Req() req: BaseRequest): Promise<User> {
     if (!req.user) {
       throw new NotFoundException();
     }

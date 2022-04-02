@@ -9,12 +9,12 @@ const Themes = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        client.get(`/problems/themes`,  { withCredentials: true})
-        .then(res => {
-        setData(res.data);
-        });
+        client.get(`/problems/themes`)
+            .then(res => {
+                setData(res.data);
+            });
     }, []);
-    
+
     return (
         <div style={{marginTop:"8vh"}}>
             <Grid container spacing={8}>

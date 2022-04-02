@@ -40,7 +40,7 @@ function Row(props: { row: CodingQuestionInterface }) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row" align="center">
+        <TableCell scope="row" align="center">
           <Typography variant="h6" component="div">
             {row.name}
           </Typography>
@@ -75,16 +75,15 @@ export default function Exercices() {
   const [theme, setTheme] = React.useState({name: "", description: ""});
 
   useEffect(() => {
-    client.get('/problems/coding-questions?theme=' + idPage.id,  { withCredentials: false})
-        .then(res => {
+    client.get('/problems/coding-questions?theme=' + idPage.id)
+      .then(res => {
         setQueryData(res.data);
-        });
-        client.get(`/problems/themes/` + idPage.id,  { withCredentials: true})
+      });
+      client.get(`/problems/themes/` + idPage.id)
         .then(res => {
-        setTheme(res.data);
+          setTheme(res.data);
         });
-
-      }, [idPage.id]);
+  }, [idPage.id]);
 
   return (
     <Grid
@@ -112,7 +111,7 @@ export default function Exercices() {
                     <TableCell/>
                   </TableRow>
                 </TableHead>
-                <TableBody component="th" >
+                <TableBody>
                   {queryData.map((row, index) => {                  
                     row.backgroundColor = (index%2 === 0 ? "#f5f5f5" : "white");
                     return <Row key={row.name} row={row} />

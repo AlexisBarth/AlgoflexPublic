@@ -6,7 +6,7 @@ import { createCodingQuestionDtoStub } from 'src/problems/coding-questions/test/
 import { CreateUserMetaDto } from '../dto/create-user-meta.dto';
 import { UserMeta } from '../entities/user-meta.entity';
 import { UserMetaService } from '../user-meta.service';
-import { createUserMetaDtoStub } from './stubs/create-user-meta.stub';
+import { createUserMetaDtoStub, updateUserMetaDtoStub } from './stubs/create-user-meta.stub';
 import { userMetaRepositoryStub } from './stubs/user-meta.repository.stub';
 
 describe('UserMetaService', () => {
@@ -127,4 +127,22 @@ describe('UserMetaService', () => {
     expect(await userMetaRepository.findOne(userMetaCreate.uid)).toBeUndefined();
   })
 
+  it('should update UserMeta', async () => {
+    let userMetaCreate: UserMeta;
+    let userMetadto = updateUserMetaDtoStub();
+    let codingQuestionCreate: CodingQuestion;
+    let codingQuestionDto = createCodingQuestionDtoStub();
+
+    userMetaRepository.clear();
+    codingQuestionRepository.clear();
+
+    // Create coding question
+    codingQuestionCreate = codingQuestionRepository.save(codingQuestionDto);
+    userMetadto.questionId = codingQuestionCreate.uid;
+
+    // Create user Meta
+    userMetaCreate = userMetaRepository.save(userMetadto);
+    expect(userMetaRepository.save).toHaveBeenCalled();
+
+  })
 });

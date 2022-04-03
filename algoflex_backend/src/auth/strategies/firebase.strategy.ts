@@ -44,9 +44,9 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase-auth'
 
   async verifyUser(firebaseUser: DecodedIdToken): Promise<User> {
     try {
-      return this.authService.findById(firebaseUser.uid);
+      return await this.authService.findById(firebaseUser.uid);
     } catch (err) {
-      return this.authService.register(firebaseUser);
+      return await this.authService.register(firebaseUser);
     }
   }
 }

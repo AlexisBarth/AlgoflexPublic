@@ -107,7 +107,8 @@
       "<rootDir>/src/main.ts",
       ".stub.ts",
       ".spec.ts",
-      ".eslintrc.js"
+      ".eslintrc.js",
+      "<rootDir>/src/gateways/"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

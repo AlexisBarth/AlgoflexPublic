@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import * as Joi from '@hapi/joi';
+
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ProblemsModule } from './problems/problems.module';
-import * as Joi from '@hapi/joi';
+import { BuildModule } from './gateways/build.module';
 
 @Module({
   imports: [
@@ -25,13 +27,14 @@ import * as Joi from '@hapi/joi';
       autoLoadEntities: true,
       synchronize: true,
       ssl: {
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
       },
     }),
     AuthModule,
     DatabaseModule,
     ProblemsModule,
     UsersModule,
+    BuildModule,
   ],
 })
 export class AppModule {}

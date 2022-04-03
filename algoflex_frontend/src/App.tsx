@@ -1,26 +1,27 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import About from './components/pages/About';
-import Home from './components/pages/Home';
-import Welcome from './components/pages/Welcome';
-import Login from './components/pages/Login';
-import Signup from './components/pages/Signup';
-import NotFound from './components/pages/NotFound';
-import ForgetPassword from './components/pages/ForgetPassword';
+import { Navbar, NotFound} from '@components';
+import IsAuthenticated from '@services/Authentication.utils';
+import routes from './routes';
+
 
 const App = () => {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/welcome" exact component={Welcome} />
-        <Route path="/about" exact component={About} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/ForgetPassword" exact component={ForgetPassword} />
-        <Route path="/signup" exact component={Signup} />
-        <Route component={NotFound} />
-      </Switch>
-    </BrowserRouter>
-  );
+
+	const GetRoutes = () => {
+		return <Switch>{routes.map((element) => {
+			if(element.authenticated && !IsAuthenticated()){
+				return null;
+			}
+			return <Route key={element.path} path={element.path} exact component={element.component} />;
+		}).concat(<Route key={"notfound"} component={NotFound} />)}
+		</Switch>;
+	}
+
+	return (
+		<BrowserRouter>
+			<Navbar />
+			<GetRoutes />
+		</BrowserRouter>
+	);
 };
 
 export default App;

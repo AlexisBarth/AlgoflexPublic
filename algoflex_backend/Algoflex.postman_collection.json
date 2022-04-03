@@ -1,0 +1,559 @@
+{
+	"info": {
+		"_postman_id": "031ab966-e5b9-4ac6-871f-25fb9438d628",
+		"name": "Algoflex",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Themes",
+			"item": [
+				{
+					"name": "Theme List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/themes",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"themes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Theme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"GetId\", function () {\r",
+									"    var jsonData = pm.response.json()\r",
+									"    pm.globals.set(\"themeId\", jsonData.id)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type\":\"Test Type\",\r\n    \"name\":\"Test name\",\r\n    \"desc\":\"Test desc\",\r\n    \"image\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/themes",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"themes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Theme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    themeId = pm.globals.get(\"themeId\");\r",
+									"    pm.expect(pm.response.json().id).to.eq(themeId)\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/themes/{{themeId}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"themes",
+								"{{themeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Theme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    themeId = pm.globals.get(\"themeId\");\r",
+									"    pm.expect(pm.response.json().id).to.eq(themeId)\r",
+									"    pm.expect(pm.response.json().type).to.eq(\"Test Type PUT\")\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type\":\"Test Type PUT\",\r\n    \"name\":\"Test name PUT\",\r\n    \"desc\":\"Test desc PUT\",\r\n    \"image\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/themes/{{themeId}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"themes",
+								"{{themeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Theme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/themes/{{themeId}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"themes",
+								"{{themeId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ThemeImages",
+			"item": [
+				{
+					"name": "ThemeIamge List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/themeImages",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"themeImages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Theme Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"GetId\", function () {\r",
+									"    var jsonData = pm.response.json()\r",
+									"    pm.globals.set(\"themeImageId\", jsonData.id)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Test name\",\r\n    \"description\":\"Test description\",\r\n    \"url\":\"Test url\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/themeImages",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"themeImages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ThemeImage",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    themeImageId = pm.globals.get(\"themeImageId\");\r",
+									"    pm.expect(pm.response.json().id).to.eq(themeImageId)\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/themeImages/{{themeImageId}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"themeImages",
+								"{{themeImageId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put ThemeImage",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    themeImageId = pm.globals.get(\"themeImageId\");\r",
+									"    pm.expect(pm.response.json().id).to.eq(themeImageId)\r",
+									"    pm.expect(pm.response.json().description).to.eq(\"Test description PUT\")\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Test name PUT\",\r\n    \"description\":\"Test description PUT\",\r\n    \"url\":\"Test url PUT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/themeImages/{{themeImageId}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"themeImages",
+								"{{themeImageId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete ThemeImage",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/themeImages/{{themeImageId}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"themeImages",
+								"{{themeImageId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "User List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/users",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"GetId\", function () {\r",
+									"    var jsonData = pm.response.json()\r",
+									"    pm.globals.set(\"userId\", jsonData.id)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Test firstName\",\r\n    \"lastName\":\"Test lastName\",\r\n    \"password\":\"Test password\",\r\n    \"mail\":\"Test mail\",\r\n    \"favorite_langage\":\"Test favorite_langage\",\r\n    \"last_login\":\"2011-10-05T14:48:00.000Z\",\r\n    \"created_at\":\"2011-10-05T14:48:00.000Z\",\r\n    \"role\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/users",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    userId = pm.globals.get(\"userId\");\r",
+									"    pm.expect(pm.response.json().id).to.eq(userId)\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/users/{{userId}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    userId = pm.globals.get(\"userId\");\r",
+									"    pm.expect(pm.response.json().id).to.eq(userId)\r",
+									"    pm.expect(pm.response.json().firstName).to.eq(\"Test firstName PUT\")\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Test firstName PUT\",\r\n    \"lastName\":\"Test lastName PUT\",\r\n    \"password\":\"Test password PUT\",\r\n    \"mail\":\"Test mail PUT\",\r\n    \"favorite_langage\":\"Test favorite_langage PUT\",\r\n    \"last_login\":\"2011-10-05T14:48:00.000Z\",\r\n    \"created_at\":\"2011-10-05T14:48:00.000Z\",\r\n    \"role\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/users/{{userId}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Theme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/users/{{userId}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

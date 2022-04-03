@@ -17,6 +17,6 @@ import { User } from 'src/users/entity';
   ],
   controllers: [AuthController],
   providers: [AuthService, FirebaseStrategy],
-  exports: [AuthService],
+  exports: [AuthService, FirebaseStrategy],
 })
 export class AuthModule {}

@@ -18,10 +18,18 @@ export class AuthController {
 
   @UseGuards(FirebaseAuthGuard)
   @Get('user-info')
-  public async getUserInfo(@Req() req: BaseRequest): Promise<User | undefined> {
+  public async getUserInfo(@Req() req: BaseRequest): Promise<User> {
     if (!req.user) {
       throw new NotFoundException();
     }
     return this.authService.findById(req.user.uid);
+  }
+
+  @Get('ping')
+  public async ping() {
+    return {
+      status: "success",
+      message: "pong",
+    };
   }
 }

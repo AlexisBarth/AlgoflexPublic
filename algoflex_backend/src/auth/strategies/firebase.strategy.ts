@@ -1,11 +1,12 @@
-import { Strategy } from 'passport-firebase-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from '../auth.service';
-import { User } from 'src/users/entity';
+import { ExtractJwt, Strategy,  } from 'passport-firebase-jwt';
 import * as firebase from 'firebase-admin';
 import { ServiceAccount } from 'firebase-admin';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
+
+import { User } from 'src/users/entity';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase-auth') {
@@ -19,7 +20,7 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase-auth'
 
   constructor(private readonly authService: AuthService) {
     super({
-      jwtFromRequest: (req: any) => req.cookies.token,
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
 
     this.firebaseApp = firebase.initializeApp({
@@ -42,10 +43,10 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase-auth'
   }
 
   async verifyUser(firebaseUser: DecodedIdToken): Promise<User> {
-    const existingUser = await this.authService.findById(firebaseUser.uid);
-    if (!existingUser) {
-      return this.authService.register(firebaseUser);
+    try {
+      return await this.authService.findById(firebaseUser.uid);
+    } catch (err) {
+      return await this.authService.register(firebaseUser);
     }
-    return existingUser;
   }
 }

@@ -1,5 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
-import { Theme } from 'src/problems/themes/entities';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
@@ -13,11 +12,8 @@ export class User {
   @Column({ nullable: true })
   favoriteLangage?: string;
 
-  @JoinTable()
-  @ManyToMany(() => Theme, (theme) => theme.users, {
-    cascade: true,
-  })
-  favoriteThemes?: Theme[];
+  @Column("text", { array: true, nullable: true })
+  favoriteThemes?: string[];
 
   @Column({ nullable: true })
   lastLogin: number;

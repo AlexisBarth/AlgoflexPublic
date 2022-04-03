@@ -1,14 +1,18 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards } from '@nestjs/common';
+
 import { ThemesService } from './themes.service';
 import { CreateThemeDto } from './dto/create-theme.dto';
 import { UpdateThemeDto } from './dto/update-theme.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { FirebaseAuthGuard, RolesGuard, Roles, Role } from 'src/common';
 
+@UseGuards(FirebaseAuthGuard, RolesGuard)
 @ApiTags('Themes')
 @Controller('problems/themes')
 export class ThemesController {
   constructor(private readonly themesService: ThemesService) {}
 
+  @Roles(Role.Admin)
   @Post()
   public async create(@Body() createThemeDto: CreateThemeDto) {
     return this.themesService.create(createThemeDto);
@@ -21,16 +25,18 @@ export class ThemesController {
 
   @Get(':id')
   public async findOne(@Param('id') id: string) {
-    return this.themesService.findOne(+id);
+    return this.themesService.findOne(id);
   }
 
+  @Roles(Role.Admin)
   @Put(':id')
   public async update(@Param('id') id: string, @Body() updateThemeDto: UpdateThemeDto) {
     return this.themesService.update(+id, updateThemeDto);
   }
 
+  @Roles(Role.Admin)
   @Delete(':id')
   public async remove(@Param('id') id: string) {
-    return this.themesService.remove(+id);
+    return this.themesService.remove(id);
   }
 }

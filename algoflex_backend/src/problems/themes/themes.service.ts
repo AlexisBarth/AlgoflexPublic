@@ -16,7 +16,7 @@ export class ThemesService {
     return this.themeRepository.find();
   }
 
-  async findOne(id: number): Promise<Theme> {
+  async findOne(id: string): Promise<Theme> {
     const theme = await this.themeRepository.findOne(id);
     if (!theme) {
       throw new NotFoundException(`Theme ${id} not found`);
@@ -32,7 +32,7 @@ export class ThemesService {
     return `This action updates a #${id} ${updateThemeDto} theme`;
   }
 
-  async remove(id: number): Promise<Theme> {
+  async remove(id: string): Promise<Theme> {
     const theme = await this.themeRepository.findOne(id);
     if (!theme) {
       throw new NotFoundException(`Theme #${id} not found`);

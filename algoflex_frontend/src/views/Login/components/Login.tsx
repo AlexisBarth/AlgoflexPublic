@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, FormEvent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FirebaseContext } from '@services/Firebase';
+import { FirebaseContext } from '../../../services/Firebase';
 import {Button, Grid, TextField, Typography, Stack, Paper, Alert, Snackbar, Box} from '@mui/material';
 import Image from '../../../img/login.jpg';
 
@@ -54,23 +54,22 @@ const Login = () => {
                     <Typography variant="h4" style={{color: 'inherit', textDecoration: 'none', margin:"2vh"}}>
                         Login
                     </Typography>
-                    <Stack component="form" onSubmit={handleSubmit} gap={2} data-testid="form" >
+                    <Stack component="form" onSubmit={handleSubmit} gap={2} data-testid="login-form">
                         <TextField
                             onChange={e => setEmail(e.target.value)}
                             value={email}
                             label={"Email"}
                             type="email"
-                            data-testid="email">
+                            inputProps={{"data-testid":"login-email"}}>
                         </TextField>
                         <TextField
                             onChange={e => setPassword(e.target.value)}
                             value={password}
                             label={"Mot de passe"}
                             type="password"
-                            data-testid="password"
-                            inputProps={{minLength: 6 }}>
+                            inputProps={{"data-testid":"login-password", minLength: 6 }}>
                         </TextField>
-                        <Button type="submit" style={{ marginBottom:"2vh"}}>Connexion</Button>
+                        <Button type="submit" style={{ marginBottom:"2vh"}} data-testid="login-submit">Connexion</Button>
                     </Stack>
                     <Typography variant="caption" component={Link} to='/signup'
                                 style={{color: 'inherit', textDecoration: 'none'}}>

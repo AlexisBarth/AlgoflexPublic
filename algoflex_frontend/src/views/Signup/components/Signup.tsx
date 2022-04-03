@@ -1,6 +1,6 @@
 import React, { useState, useContext, ChangeEvent, FormEvent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FirebaseContext } from '@services/Firebase';
+import { FirebaseContext } from '../../../services/Firebase';
 import {Button, Grid, Paper, Stack, TextField, Typography, Snackbar, Alert, Box} from "@mui/material";
 import Image from "../../../img/login.jpg";
 
@@ -53,38 +53,39 @@ const Signup = () => {
                 <Typography variant="h4" style={{color: 'inherit', textDecoration: 'none', margin:"2vh"}}>
                     Signup
                 </Typography>
-                <Stack component="form" onSubmit={handleSubmit} gap={2}>
+                <Stack component="form" onSubmit={handleSubmit} gap={2} data-testid="signup-form">
                     <TextField
                         onChange={e => setPseudo(e.target.value)}
                         value={pseudo}
                         label={"Pseudo"}
-                    >
+                        inputProps={{"data-testid":"signup-pseudo"}}>
                     </TextField>
                     <TextField
                         onChange={e => setEmail(e.target.value)}
                         value={email}
                         label={"Email"}
-                        type="email">
+                        type="email"
+                        inputProps={{"data-testid":"signup-email"}}>
                     </TextField>
                     <TextField
                         onChange={e => setPassword(e.target.value)}
                         value={password}
                         label={"Mot de passe"}
                         type="password"
-                        inputProps={{minLength: 6 }}>
+                        inputProps={{"data-testid":"signup-password", minLength: 6 }}>
                     </TextField>
                     <TextField
                         onChange={e => setConfirmPassword(e.target.value)}
                         value={confirmPassword}
                         label={"Confirmer le mot de passe"}
                         type="password"
-                        inputProps={{minLength: 6 }}>
+                        inputProps={{"data-testid":"signup-confirm-password", minLength: 6 }}>
                     </TextField>
                     <input type='file'
                            id='photo' name='photo'
                            accept='image/png, image/jpeg'
                            onChange={addPhoto}/>
-                    <Button type="submit" style={{ marginBottom:"2vh"}}>Créer compte</Button>
+                    <Button type="submit" style={{ marginBottom:"2vh"}} data-testid={"signup-submit"}>Créer compte</Button>
                 </Stack>
                 <Typography variant="caption" component={Link} to='/login'
                             style={{color: 'inherit', textDecoration: 'none'}}>

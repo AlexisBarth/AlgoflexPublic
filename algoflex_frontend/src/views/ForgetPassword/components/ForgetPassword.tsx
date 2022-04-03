@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { FirebaseContext } from '@services/Firebase';
+import { FirebaseContext } from '../../../services/Firebase';
 import Image from "../../../img/login.jpg";
 import {Alert, Box, Button, Grid, Paper, Snackbar, Stack, TextField, Typography} from "@mui/material";
 
@@ -53,15 +53,15 @@ const ForgetPassword = () => {
                     <Typography variant="h4" style={{color: 'inherit', textDecoration: 'none', margin:"2vh"}}>
                         Mot de passe oublié
                     </Typography>
-                    <Stack component="form" onSubmit={handleSubmit} gap={2} data-testid="form" >
+                    <Stack component="form" onSubmit={handleSubmit} gap={2} data-testid="forget-form">
                         <TextField
                             onChange={e => setEmail(e.target.value)}
                             value={email}
                             label={"Email"}
                             type="email"
-                            data-testid="email">
+                            inputProps={{"data-testid":"forget-email"}}>
                         </TextField>
-                        <Button type="submit" style={{ marginBottom:"2vh"}}>Récupérer mot de passe</Button>
+                        <Button type="submit" style={{ marginBottom:"2vh"}} data-testid={"forget-submit"}>Récupérer mot de passe</Button>
                     </Stack>
                     <Typography variant="caption" component={Link} to='/login'
                                 style={{color: 'inherit', textDecoration: 'none'}}>

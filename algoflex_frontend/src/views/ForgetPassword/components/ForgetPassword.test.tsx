@@ -4,7 +4,6 @@ import {render, fireEvent, screen} from "@testing-library/react";
 import {BrowserRouter} from "react-router-dom";
 import * as React from "react";
 
-
 test.todo("Make ForgetPassword tests");
 
 describe('ForgetPassword form test', () => {

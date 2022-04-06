@@ -7,6 +7,7 @@ import Editeur from '@views/Editeur';
 import UserSettings from "@views/UserSettings";
 import Themes from '@views/Themes';
 import Exercices from '@views/Exercices';
+import CreateExercice from '@views/CreateExercice';
 
 interface Route{
     component: any,
@@ -23,7 +24,8 @@ const routes: Route[] = [
     { component: Editeur, path: '/exercice/:id', authenticated: true},
     { component: Themes, path: '/themes', authenticated: true},
     { component: Exercices, path: '/theme/:id', authenticated: true},
-    { component: UserSettings, path: '/userSettings', authenticated: true}
+    { component: UserSettings, path: '/userSettings', authenticated: true},
+    { component: CreateExercice, path: '/createExercice', authenticated: true}
 ];
 
 export default routes;

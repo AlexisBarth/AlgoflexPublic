@@ -12,7 +12,7 @@ const App = () => {
 				return null;
 			}
 			return <Route key={element.path} path={element.path} exact component={element.component} />;
-		}).concat(<Route key={"notfound"} component={NotFound} />)}
+		})}
 		</Switch>;
 	}
 

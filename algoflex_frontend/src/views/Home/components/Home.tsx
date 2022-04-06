@@ -6,7 +6,7 @@ const Home = () => {
     useEffect(() => {
         let script = document.createElement("script");
         script.src = "https://platform.twitter.com/widgets.js";
-        script.integrity = "sha384-+WKoS+sXCt/fwZxO8IOpYtJ/AIJIDhzpXZomciIYeIRKuxyQHpmp6oLiXsM8fq4G";
+        script.integrity = "sha384-IlPT+5NWgbYho34wiHWaNnIwGDBfJS3nH5z1nMxNN7g4bJUfqe3jStgkObLR6wkN";
         script.crossOrigin= "anonymous";
         script.async = true;
         document.body.appendChild(script);
